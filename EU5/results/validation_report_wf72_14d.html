@@ -1,0 +1,83 @@
+<html><head><meta charset='UTF-8'><title>EU5 Multitask Validation Report (WF72/14d)</title>
+<style>body{font-family:Arial;margin:20px;} table{border-collapse:collapse;margin-top:10px;} th,td{border:1px solid #ccc;padding:6px 10px;text-align:right;} th{background:#f0f0f0;} h1{margin-top:0;} .section{margin-bottom:30px;} code{background:#f5f5f5;padding:2px 4px;border-radius:3px;} .meta{color:#333;margin-bottom:10px;}</style>
+</head><body>
+<h1>EU5 Multitask Validation Report (Walk-Forward 72 bln / 14 hari)</h1>
+<p>Laporan ini khusus untuk eksperimen BiLSTM multitask (konfigurasi terbaik hasil tuning: w14, h224, tanh, lr 7e‑4, epochs 60, batch 96, λ=1.1, σ=0.12). Validasi dilakukan dengan Walk-Forward Fixed: train 72 bulan, test 14 hari, step 14 hari, memakai lima fold terakhir dari <code>wf72_14d_folds.csv</code>.</p>
+<div class='section'><h2>Ringkasan MAE per Fold</h2>
+<p>MAE HLC rata-rata = 23.94 pips (median 22.03). Fold terbaik #46 (14.28 pips), fold terburuk #43 (41.82 pips).</p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>mae_open_pips</th>
+      <th>mae_high_pips</th>
+      <th>mae_low_pips</th>
+      <th>mae_close_pips</th>
+      <th>mae_avg_hlc_pips</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>43</td><td>18.21</td><td>32.51</td><td>34.89</td><td>58.06</td><td>41.82</td></tr>
+    <tr><td>44</td><td>10.16</td><td>12.38</td><td>27.90</td><td>25.82</td><td>22.03</td></tr>
+    <tr><td>45</td><td>9.37</td><td>39.71</td><td>24.52</td><td>14.46</td><td>26.23</td></tr>
+    <tr><td>46</td><td>9.01</td><td>10.86</td><td>12.99</td><td>19.00</td><td>14.28</td></tr>
+    <tr><td>47</td><td>6.99</td><td>13.95</td><td>9.86</td><td>22.21</td><td>15.34</td></tr>
+  </tbody>
+</table>
+</div>
+<div class='section'><h2>Detail Fold (jadwal & sampel)</h2>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>train_start</th>
+      <th>train_end_exclusive</th>
+      <th>test_start</th>
+      <th>test_end_exclusive</th>
+      <th>train_samples</th>
+      <th>test_samples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>43</td><td>2019-08-15</td><td>2025-08-15</td><td>2025-08-15</td><td>2025-08-29</td><td>9343</td><td>60</td></tr>
+    <tr><td>44</td><td>2019-08-29</td><td>2025-08-29</td><td>2025-08-29</td><td>2025-09-12</td><td>9343</td><td>60</td></tr>
+    <tr><td>45</td><td>2019-09-12</td><td>2025-09-12</td><td>2025-09-12</td><td>2025-09-26</td><td>9343</td><td>60</td></tr>
+    <tr><td>46</td><td>2019-09-26</td><td>2025-09-26</td><td>2025-09-26</td><td>2025-10-10</td><td>9343</td><td>60</td></tr>
+    <tr><td>47</td><td>2019-10-10</td><td>2025-10-10</td><td>2025-10-10</td><td>2025-10-24</td><td>9343</td><td>23</td></tr>
+  </tbody>
+</table>
+</div>
+<div class='section'><h2>Rujukan Visual</h2>
+<ul>
+  <li>MAE vs ATR & overlay OHLC per fold: <code>wf72_14d/mae_atr_wf72_14d_foldXX.html</code>.</li>
+  <li>Dot plot OHLC tail: <code>wf72_14d/ohlc_dot_wf72_14d_foldXX.html</code>.</li>
+  <li>Loss curve & Δloss: <code>wf72_14d/loss_wf72_14d_last5.html</code>, <code>wf72_14d/loss_gradient_wf72_14d_last5.html</code>.</li>
+</ul>
+<p>Catatan: Fold #43 memiliki spike harga signifikan; pertimbangkan filtering / penyesuaian data bila ingin dijadikan dasar keputusan trading.</p>
+</div>
+<div class='section'><h2>Flow Chart</h2>
+<pre style="background:#f5f5f5;padding:12px;border:1px solid #ccc;white-space:pre-wrap;">
+Raw Data (OHLC) ──► data_prep_multitask.py (ATR14, RSI14)
+                    │
+                    └── Clean dataset (RisetEU/EU5/results/eurusd_H4_multitask_dataset.csv)
+                               │
+                               └── Tuning Stage 1-6 (eurusd_multitask_pipeline_runner.py)
+                                      │   (validasi holdout: cari hyperparameter terbaik)
+                                      └── Best config (w14, h224, tanh, lr 7e-4, epochs 60, λ=1.1, σ=0.12)
+                                                   │
+                                                   └── Walk-Forward splits (build_wf72_14d_folds.py)
+                                                            │   (train/test window = 72 bulan / 14 hari)
+                                                            └── Train & save model per fold (predict_next_candle.py)
+                                                                   │
+                                                                   ├── model_foldXX/model_foldXX.keras
+                                                                   ├── scaler.json
+                                                                   └── next_prediction_foldXX.json
+                                                                                │
+                                                                                └── Visual reports (MAE-ATR, OHLC, validation summary)
+                                                                                             │
+                                                                                             └── Update data? → cek fold yang relevan:
+                                                                                                   ├─ masih fold sama? ► run predict_next_candle.py --predict-only
+                                                                                                   └─ fold baru? ► buat dataset fold baru + train ulang
+</pre>
+</div>
+</body></html>

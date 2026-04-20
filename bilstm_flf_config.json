@@ -1,0 +1,22 @@
+{
+  "data": "results/EURUSD_H4_clean.csv",
+  "sep": ",",
+  "columns": null,
+  "window": 39,
+  "split": 0.7,
+  "units": 256,
+  "epochs": 75,
+  "batch": 128,
+  "lr": 0.0003,
+  "beta1": 0.9,
+  "beta2": 0.999,
+  "schedule_decay": 0.004,
+  "seed": 42,
+  "activation": "relu",
+  "recurrent_activation": "sigmoid",
+  "output_activation": "",
+  "lambda_coef": 0.9,
+  "sigma_coef": 0.1,
+  "out": "results/bilstm_flf_predictions.csv",
+  "history_out": "results/bilstm_flf_history.csv"
+}

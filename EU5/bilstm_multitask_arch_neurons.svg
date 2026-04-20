@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="620" viewBox="0 0 1400 620">
+  <defs>
+    <style>
+      text { font-family: Helvetica, Arial, sans-serif; font-size: 14px; fill: #0f172a; }
+      .title { font-weight: bold; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#0f172a" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="10" y="10" width="1380" height="600" rx="16" ry="16" fill="#f6f9ff" stroke="#c3d3eb" stroke-width="1.5" />
+  <text x="40" y="45" class="title" font-size="20">BiLSTM Multi-task (5 outputs) — Neuron-style Diagram</text>
+
+  <!-- Input nodes -->
+  <text x="90" y="95" class="title">Input window (12 x 4)</text>
+  <g fill="#4a90e2" stroke="#1b4f8a" stroke-width="1" opacity="0.9">
+    <circle cx="80" cy="150" r="18" />
+    <circle cx="130" cy="150" r="18" />
+    <circle cx="180" cy="150" r="18" />
+    <circle cx="230" cy="150" r="18" />
+  </g>
+  <text x="155" y="185" text-anchor="middle" class="sub">OHLC features per timestep (duplicated for 12 steps)</text>
+
+  <!-- Arrow to BiLSTM -->
+  <line x1="250" y1="150" x2="330" y2="150" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- BiLSTM block -->
+  <rect x="330" y="80" width="270" height="180" rx="16" ry="16" fill="#e8ecff" stroke="#425cbc" stroke-width="1.5" />
+  <text x="465" y="110" class="title">Bidirectional LSTM (shared)</text>
+  <text x="465" y="130" text-anchor="middle">Forward 256 units + Backward 256 units</text>
+
+  <!-- Forward / backward node rows -->
+  <g fill="#87a6ff" stroke="#3a4f9b" stroke-width="1">
+    <circle cx="370" cy="170" r="12" />
+    <circle cx="410" cy="170" r="12" />
+    <circle cx="450" cy="170" r="12" />
+    <circle cx="490" cy="170" r="12" />
+    <circle cx="530" cy="170" r="12" />
+    <circle cx="570" cy="170" r="12" />
+  </g>
+  <text x="465" y="195" text-anchor="middle">Forward hidden state (h<sub>t</sub><sup>→</sup>)</text>
+  <g fill="#87a6ff" stroke="#3a4f9b" stroke-width="1">
+    <circle cx="370" cy="220" r="12" />
+    <circle cx="410" cy="220" r="12" />
+    <circle cx="450" cy="220" r="12" />
+    <circle cx="490" cy="220" r="12" />
+    <circle cx="530" cy="220" r="12" />
+    <circle cx="570" cy="220" r="12" />
+  </g>
+  <text x="465" y="245" text-anchor="middle">Backward hidden state (h<sub>t</sub><sup>←</sup>)</text>
+
+  <!-- Merge arrow to shared dense -->
+  <line x1="600" y1="170" x2="680" y2="200" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+  <line x1="600" y1="220" x2="680" y2="200" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Shared dense nodes -->
+  <rect x="680" y="150" width="200" height="120" rx="16" ry="16" fill="#eef9e5" stroke="#5b8c2a" stroke-width="1.5" />
+  <text x="780" y="180" text-anchor="middle" class="title">Shared Dense</text>
+  <text x="780" y="200" text-anchor="middle">256 neurons, ReLU</text>
+  <g fill="#8bc34a" stroke="#4a6f23">
+    <circle cx="715" cy="230" r="10" />
+    <circle cx="745" cy="230" r="10" />
+    <circle cx="775" cy="230" r="10" />
+    <circle cx="805" cy="230" r="10" />
+    <circle cx="835" cy="230" r="10" />
+    <circle cx="865" cy="230" r="10" />
+  </g>
+  <text x="780" y="260" text-anchor="middle">(Represent 6/256 neurons)</text>
+
+  <!-- Heads -->
+  <line x1="880" y1="210" x2="950" y2="170" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+  <line x1="880" y1="210" x2="950" y2="290" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+
+  <rect x="950" y="120" width="190" height="120" rx="14" ry="14" fill="#fff" stroke="#a06ab4" stroke-width="1.5" />
+  <text x="1045" y="150" text-anchor="middle" class="title">Price head</text>
+  <text x="1045" y="170" text-anchor="middle">Dense(4) linear</text>
+  <g fill="#f06292" stroke="#b83265">
+    <circle cx="1000" cy="205" r="12" />
+    <circle cx="1030" cy="205" r="12" />
+    <circle cx="1060" cy="205" r="12" />
+    <circle cx="1090" cy="205" r="12" />
+  </g>
+  <text x="1045" y="235" text-anchor="middle" class="sub">Outputs: open, high, low, close</text>
+
+  <rect x="950" y="270" width="190" height="120" rx="14" ry="14" fill="#fff" stroke="#a06ab4" stroke-width="1.5" />
+  <text x="1045" y="300" text-anchor="middle" class="title">Direction head</text>
+  <text x="1045" y="320" text-anchor="middle">Dense(1) + sigmoid</text>
+  <circle cx="1045" cy="350" r="14" fill="#80deea" stroke="#1f8a9b" />
+  <text x="1045" y="355" text-anchor="middle">P(bull)</text>
+
+  <!-- Loss blocks -->
+  <line x1="1130" y1="180" x2="1180" y2="180" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+  <line x1="1130" y1="330" x2="1180" y2="330" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+  <rect x="1180" y="135" width="160" height="90" rx="12" ry="12" fill="#fff" stroke="#d32f2f" stroke-width="1.3" />
+  <text x="1260" y="165" text-anchor="middle" class="title">Forex Loss (FLF)</text>
+  <text x="1260" y="185" text-anchor="middle">lambda=1.0, sigma=0.05</text>
+  <rect x="1180" y="285" width="160" height="90" rx="12" ry="12" fill="#fff" stroke="#d32f2f" stroke-width="1.3" />
+  <text x="1260" y="315" text-anchor="middle" class="title">Directional loss</text>
+  <text x="1260" y="335" text-anchor="middle">Binary cross-entropy</text>
+  <line x1="1260" y1="225" x2="1260" y2="285" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)" />
+  <rect x="1180" y="390" width="160" height="100" rx="12" ry="12" fill="#ffecef" stroke="#d32f2f" stroke-width="1.3" />
+  <text x="1260" y="420" text-anchor="middle" class="title">Total Loss</text>
+  <text x="1260" y="440" text-anchor="middle">FLF + alpha*BCE</text>
+
+  <!-- LSTM cell inset -->
+  <rect x="90" y="330" width="540" height="250" rx="16" ry="16" fill="#ffffff" stroke="#97a3c1" stroke-width="1.3" />
+  <text x="110" y="360" class="title">Single LSTM unit (256 units share this structure)</text>
+  <text x="110" y="380">Signals:</text>
+  <text x="150" y="380">x<sub>t</sub></text>
+  <text x="190" y="380">h<sub>t-1</sub></text>
+  <text x="240" y="380">c<sub>t-1</sub></text>
+
+  <circle cx="180" cy="430" r="25" fill="#f3f6ff" stroke="#5b6cb2" stroke-width="1.5" />
+  <text x="180" y="435" text-anchor="middle" class="title">i</text>
+  <text x="180" y="455" text-anchor="middle" class="sub">input gate</text>
+
+  <circle cx="280" cy="430" r="25" fill="#f3f6ff" stroke="#5b6cb2" stroke-width="1.5" />
+  <text x="280" y="435" text-anchor="middle" class="title">f</text>
+  <text x="280" y="455" text-anchor="middle" class="sub">forget gate</text>
+
+  <circle cx="380" cy="430" r="25" fill="#f3f6ff" stroke="#5b6cb2" stroke-width="1.5" />
+  <text x="380" y="435" text-anchor="middle" class="title">g</text>
+  <text x="380" y="455" text-anchor="middle" class="sub">candidate</text>
+
+  <circle cx="480" cy="430" r="25" fill="#f3f6ff" stroke="#5b6cb2" stroke-width="1.5" />
+  <text x="480" y="435" text-anchor="middle" class="title">o</text>
+  <text x="480" y="455" text-anchor="middle" class="sub">output gate</text>
+
+  <rect x="220" y="500" width="320" height="60" rx="12" ry="12" fill="#eef1ff" stroke="#5b6cb2" stroke-width="1" />
+  <text x="245" y="520">c<sub>t</sub> = f ⊙ c<sub>t-1</sub> + i ⊙ g</text>
+  <text x="245" y="540">h<sub>t</sub> = o ⊙ tanh(c<sub>t</sub>)</text>
+  <text x="460" y="520" text-anchor="end" class="sub">Weights per gate: W (input), U (recurrent), b (bias)</text>
+
+  <line x1="180" y1="405" x2="180" y2="385" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="280" y1="405" x2="280" y2="385" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="380" y1="405" x2="380" y2="385" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="480" y1="405" x2="480" y2="385" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="205" y1="430" x2="255" y2="430" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="305" y1="430" x2="355" y2="430" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="405" y1="430" x2="455" y2="430" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="480" y1="455" x2="480" y2="500" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="180" y1="455" x2="180" y2="510" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="280" y1="455" x2="280" y2="510" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="380" y1="455" x2="380" y2="510" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)" />
+
+</svg>

@@ -1,0 +1,627 @@
+AppliedSoftComputingJournal97(2020)106780
+Contents lists available at ScienceDirect
+AppliedSoftComputingJournal
+journal homepage: www.elsevier.com/locate/asoc
+FLF-LSTM:AnovelpredictionsystemusingForexLossFunction
+SalmanAhmeda,Saeed-UlHassana,∗,NaifRadiAljohanib,RaheelNawazc
+aInformation Technology University, 346-B, Ferozepur Road, Lahore, Pakistan
+bFaculty of Computing and Information Technology, King Abdulaziz University, Jeddah, Kingdom of Saudi Arabia
+cDepartment of Operations, Technology, Events and Hospitality Management, Manchester Metropolitan University, Manchester, United Kingdom
+a r t i c l e i n f o
+Article history:
+Received16October2019
+Receivedinrevisedform12June2020
+Accepted2October2020
+Availableonline19October2020
+Keywords:
+Forexpredictionsystem
+LongShort-TermMemory(LSTM)
+Forexforecasting
+ForexLossFunction
+Deeplearninga b s t r a c t
+ForeignExchangeorForexisthesalepurchasemarketpointofforeigncurrencypairs.Duetothe
+high volatility in the forex market, it is difficult to predict the future price of any currency pair.
+Thisstudyshowsthatasignificantenhancementinthepredictionofforexpricecanbeachievedby
+incorporatingdomainknowledgeintheprocessoftrainingmachinelearningmodels.Theproposed
+systemintegratestheForexLossFunction(FLF)intoaLongShort-TermMemorymodelcalledFLF-
+LSTM—thatminimizesthedifferencebetweentheactualandpredictiveaverageofForexcandles.
+Usingthedataof10,078four-hourcandlesofEURUSDpair,itisfoundthatcomparedtotheclassic
+LSTMmodel,theproposedFLF-LSTMsystemshowsadecreaseinoverallmeanabsoluteerrorrate
+by 10.96%. It is also reported that the error in forecasting the high and low prices is reduced by
+10%and9%,respectively.Theproposedmodel,incomparisontotheRecurrentNeuralNetwork-based
+predictionsystem,showsanoverallreductionof73.57%inmeanabsoluteerror,byexhibitingup
+to68.71%and72.31%errorreductioninhighandlowprices,respectively.IncomparisontoAuto-
+RegressiveIntegratedMovingAverage,ourproposedmodelshowsa13%reducederror.Specifically,
+intheopen,high,andlowprices,theerrorisreducedby28.5%,14.2%,9.3%,respectively.Finally,
+wecompareourmodelwithanotherwell-knowntimeseriesforecastingmodel,i.e.,FBProphet—
+whereFLF-LSTMdemonstrates31.8%,47.7%,23.6%,47.7%errorreductioninopen,high,low,andclose
+prices,respectively.ThedataandthecodeusedinthisstudycanbeaccessedatthefollowingURL:
+https://github.com/slab-itu/forex_flf_lstm.
+©2020ElsevierB.V.Allrightsreserved.
+1. Introduction
+ForeignExchange(forex)isadecentralized,global,andhighly
+resilient market where currency pairs are traded [1]. Trade is
+madebasedonbidandaskprice.Thismarketdeterminesthe
+foreign exchange rates based on supply and demand rules. In
+terms of trade, the forex is slightly different from the stock
+exchange[2].Inthestockexchange,sharesofaparticularcom-
+pany are purchased and sold when the prices increase (long
+trade).Whereasinforextrading,ashorttradebecomespossible
+whereprofitismadeevenifthepricesgodown[3].Whenthe
+pricesdepreciate,aquotecurrencyisboughtagainstthebase
+currency,whichleadstoprofit,andwhenthepriceselevate,the
+basecurrencyisboughtagainstthequotecurrency.Onaverage,
+theforexmarkethasa3to5trillion-dollarbusinessexchange,
+whichfascinatestheresearcherstopredictthetrendinorderto
+generatemoreprofit[4,5].
+∗Correspondingauthor.
+E-mail addresses: mscs17052@itu.edu.pk(S.Ahmed),
+saeed-ul-hassan@itu.edu.pk(S.-U.Hassan),nraljohani@kau.edu.sa
+(N.R.Aljohani),r.nawaz@mmu.ac.uk(R.Nawaz).Unlikestocks,theforexmarketisoneoftheutmostintricate
+marketsbecauseofitscharacteristicsofhighvolatility,nonlin-
+earity,andirregularity.Forexmarketisnotcontrolledbyasingle
+instituteoranorganization,whichmakesithighlyvolatileand
+difficult to predict due to which forex prediction becomes an
+incrediblychallengingproblem[6].Thereexistvariousmethods
+toanalyzetheforexmarket,majoronesbeingthefundamental
+andtechnicalanalysis.Thefundamentalanalysisreliesonforex
+newstopredictthetrendofthemarket,suchasinflationrate,
+interestrate,economicgrowth,etc.[7].Jinetal.[8]modeled
+real-timenewsfromdifferentsources,i.e.,GoogleSearchVol-
+umeandTwitter,topredictthetrendsbycorrelatingthenews
+tofluctuationinthefinancialmarket.Yangetal.[9]improved
+attention-basednetworksforsentimentanalysisbydesigningthe
+co-attention mechanism, which modeled both the target level
+andthecontextlevelattentionrepresentation.Theauthorsalso
+proposedlocationweightedfunctionsthatconsiderthelocation
+informationtoenhancetheperformance.Thompsonetal.[10]
+worked on the extraction of event descriptions automatically
+fromanewssourcebydevelopingameta-knowledgeannotation
+scheme for news events. Meta-knowledge could be modality,
+subjectivity,source,polarity,orspecificityoftheevent.Asimilar
+https://doi.org/10.1016/j.asoc.2020.106780
+1568-4946/ ©2020ElsevierB.V.Allrightsreserved.
+S. Ahmed, S.-U. Hassan, N.R. Aljohani et al. Applied Soft Computing Journal 97 (2020) 106780
+fundamentalanalysisbasedonthenewssourcehasbeendoneby
+manyrecentpublications[11–13].
+Forex technical analysis is based on historical data, and it
+forecaststhetrendsofthemarketbasedonthepriordata[14].
+Yazdi&Lashkari[15]demonstratedtheprofitacquiredbyMov-
+ingAverageConvergenceandDivergence(MACD)byusingan
+indicatorknownasMACD.Googletrendscouldbeusedtofind
+thetrendsregardingspecificcurrencytoevaluatesupplyandde-
+mand.Yuetal.[16]showedthatthegrowthrateofpageviewson
+googletrendshasstatisticallysignificanteffectsonBitcoinreturn
+volatility.ElliottWavePattern,ingeneral,hashighaccuracyin
+termsoftrendprediction.Volnaetal.[17]conductedastudy
+todetectElliotWavePatternwith99%accuracy,insinuatingthe
+likelinessofgettingaclearertrend.Nevertheless,thesekindsof
+patternsmaynotbevisibleallthetime.Yongetal.[18]inves-
+tigatedtheforextimeseriesdataandconcludedthatthereexist
+repeatingpatternsinforextimeseriesdata,whichrecommend
+theresearchestousetechnicalanalysisforaccuratepredictionof
+themarket.Althoughbothfundamentalandtechnicalanalysisis
+usefulforthepredictionofthemarket,peopletendtorelymore
+ontechnicalanalysis[19].
+Inthisresearchstudy,LSTMwasusedtoforecasttheprice
+of the next candle based on the H4 timeframe candles input,
+whichcouldbehelpfulforthescalper.Notethatthescalperis
+thetypeoftraderwhotradesforasmallnumberofpipsand
+makesmultipletradesinasingleday.Multipleexperimentswere
+conductedonLSTM.Thefirstexperiment,namedSingle-LSTM,
+predictedtheclosingpriceofthenextcandlebyprovidingthe
+Open,High,Low,Close(OHLC)priceofthecurrentcandleasan
+input.Thesecondexperiment,namedMulti-LSTM,replicatedthe
+LSTMmodelfromthefirstexperimentfourtimestopredictthe
+open,high,low,andtheclosepriceofthenextcandleindivid-
+ually.Thethirdexperiment,namedOHLC-LSTM,wasconducted
+byprovidingtheOHLCpricesofthecurrentvalueandpredicting
+OHLCpricesofthenextcandle.Theresultsofalltheseexperi-
+mentsconcludedthattheMSE(thelossfunction)usedinallthese
+experimentsdoesnothavethedomainknowledgeofthemarket,
+whichledustothedesigningoftheForexLossFunction(FLF)-
+calledasFLF-LSTM.Toprovetheperformanceofourmodel,we
+usedtheFLFlossfunctionwithRecurrentNeuralNetwork(RNN)
+blocksandcompareditwiththeproposedmodel.Theresults
+show that FLF-LSTM has reduced forecasting error by 73.57%.
+Similarly,wecomparedtheproposedmodelwithexistingwell-
+knowntimeseriesforecastingmodelssuchasAuto-Regressive
+IntegratedMovingAverage(ARIMA)andFBProphet.Theresults
+areconfirmingtheimprovementintheforecastingerrorwhen
+predictedbyournewlyproposedFLF-LSTMmodel.
+Therestofthepaperhasbeenorganizedasfollows:Section2
+contains a review of the recent literature in order to analyze
+thecurrentstatusoftheresearchinthisfield.Thedetailsofthe
+dataextractionandprocessingareprovidedinSection3.Note
+thatthedatasethasbeencollectedbywritingourownscript
+inMetaQuoteLanguage4(MQL4)forMetaTrader4(MT4)in
+the form of an OHLC format. Further, Section 4 elaborates on
+theexperimentaldetailsandresults.Here,fourdifferentLSTM
+modelsi.e.,Single-LSTM,Multi-LSTM,OHLC-LSTM,andFLF-LSTM,
+havebeendesignedtoforecastthepriceofthenextcandlein
+relationtoFLF-RNN,ARIMA,andFBProphet.Finally,Section5
+presentstheconclusionandfuturework.
+2. Literature review
+Forex markets can be analyzed by different methods. En-
+gel[20]investigatedmultipleeconometricmodelsthatcanbe
+usedforthepredictionofthemarket;however,thesetypesof
+modelsarenotusefulformakingpredictionsoflessthanayeartrend. Recently, Ali [21] illustrated that the Relative Strength
+Index(RSI)indicatorcouldbeusedtofindtherelativestrength
+ofthemarketbyfindingthereversalandcontinuityofthemar-
+ketinacertaindirection.HansunandKaristanda[22]analyzed
+differenttypesofmovingaverages,i.e.,SimpleMovingAverage
+(SMA),ExponentialMovingAverage(EMA),andWeightedMov-
+ingAverage(WMA).Theydemonstratedthepredictionthrough
+EMAwithanerrorof10–5usingMSEasalossfunction.Han-
+sun[22],extendedtheworkofHansunetal.[22]andshowedthat
+Brown’sWeightedExponentialMovingAverage(B-WEMA)out-
+performedsimpleEMAwithnobigpointdifference.Wilinski[23]
+usedaMarkovmodeltoforecastthepriceofthecurrencypair.
+Granger[24]investigatedARIMA,andYazdietal.[15]conducted
+MovingAverageConvergenceandDivergence(MACD)analysis
+todeterminethereversalofthemarketandtestedtheirmodel
+throughrobotfornineyearsandgeneratedanoverallprofitof
+24,424pipsonEURUSD.
+Insteadofusingtechnicalanalysis,manyoftheresearchers
+haveconductedexperimentsusingmachinelearningtechniques.
+Thuetal.[25]usedSVMtopredictthetrendofthemarket,and
+theirresultsshowedthatSVMwithExpertAdvisor,abotusedfor
+automatictrading,cangeneratemoreprofitthansimpleExpert
+Advisor.Theymaximizedthedistanceinsupportvectorstopre-
+dicttheclassof‘‘up’’and‘‘down’’trends.Leeetal.[26]designed
+thenetworkforstockmarketpredictionforoveralltrendand
+relativeregionaldirection.ResultsprovedthattheSVMshowed
+the best performance in direction prediction. Tang et al. [27]
+usedPCAdataandconcludedabetterperformanceusingKNNby
+reducingredundantandnoisyinformation,whichcanhelpinthe
+predictionofstocksandforexmarket.Apartfromstatisticaland
+machinelearningapproaches,atrendofdeployingdeeplearning
+isalsoobservedinthisdomain.Galeshchuk[28]investigatedthat
+ANNwithasinglehiddenlayersometimesoutperformsthetime
+seriesmodelinforecastingtheprice,provingtobeusefulfor
+short-termpredictionofthemarket.Jinetal.[8]proposedto
+trackmultiplesocialmediaplatformstopredictthetrendofthe
+market.Wengetal.[29]usedasearchtrend,uniquewebpage
+visitors,andnewssentimentdatatopredictthestockmarketby
+incorporatingtechnicalindicatordatatoimprovetheirefficiency.
+Huetal.[1]filteredthenews,whichiseitherfakeorhasnoim-
+pactonthetrendfortheprecisepredictionandproposedHybrid
+AttentionNetworkusingtheLSTMmodel.Abdietal.[30]showed
+theprobleminthecurrentlydesignedsentimentalanalysismodel
+andtriedtoovercomethosesituationssuchaswordswithsimilar
+semanticcontextbutoppositesentimentpolarity,wordcoverage
+limitofanindividuallexiconandwordsensevariationstoobtain
+theexactsentimentfromasentence.
+Galeshchuk and Mukherjee [13] compared deep networks
+withSVMandANNsandobservedANNsperformwellonsuch
+data.Selvinetal.[31]showedthecomparisonofmultipledeep
+learning models and concluded the deep model system to be
+capableofidentifyingsomeinterrelationwiththedata.Chan-
+drinosetal.[32]developedanexpertsystemtoverifytechnical
+signalscomingfrombreakouttradingstrategyusingANNand
+decision tree. Huang et al. [11] modified the LSTM model by
+integratingBayesianoptimizationandhighlightedtheproblemof
+windowsizeselectionandstaticparameterinitialization.Onthe
+otherhand,LinandChen[33]modifiedtheLSTMtoaddGenetic
+Algorithmbehaviorinthemodel.ThesinglelayerofLSTMwith
+150neuronshadpresentedpromisingresultsinLin’sexperiment.
+Fromtheliterature,itcanbeobservedthatLSTMisrecentinthe
+fieldofforecastingforextimeseriesdata,withthemodification
+ofLSTMworkingbetterthanthevanillaLSTM.Thestudyintends
+tomodifyLSTMbyintroducingalossfunctionthatencompasses
+somedomainknowledgeofforex.Theproposedmethodinthis
+paperdemonstratespromisingresults.
+2
+S. Ahmed, S.-U. Hassan, N.R. Aljohani et al. Applied Soft Computing Journal 97 (2020) 106780
+Fig. 1.Single-LSTMmodel;candlesaretheinput;thenextclosingpriceofthetimeframeispredicted.
+3. Data and methods
+Thissectionexplainstheactionablesmartdatasetprocessing
+foreachexperiment,whichisusedforinputandexpectedoutput
+ofthedeeplearningmodel.Methodologyandthehyperparame-
+tersofeachexperimentarealsoexplained.
+3.1. Smart data processing
+TheH4candlesEURUSDdatawascollectedfromJune2015to
+Sep2018usinganMT4tool.ThisdataisprovidedbytheXMbro-
+ker(https://www.xm.com/).Thedatasetwascollectedthrougha
+customscriptwritteninMetaQuoteLanguage4,eachrowina
+datasetrepresentsopen,high,low,andclosepriceinafour-hour
+movement.Thedatacontainstheopen,high,low,andcloseprice
+ofthecurrencypair,whichisreferredtoasacandle,i.e.,typeof
+chart,torepresentprice.Itcomprisessequentialcandlespricein
+OHLCformatfortrainingandtesting;thesecandlesareprocessed
+aspertheneedoftheindividualexperimenttogenerateoutput.
+Thetotaldatasetof10,078candleswasdividedinto60–40ratio,
+6047candlesforthetraining,and4031candlesforthetesting
+foreachexperiment.Forthefirstexperiment,i.e.,Single-LSTM
+model,theclosingpriceofthenextcandlewaspredictedbyusing
+thecurrentcandleasaninput.Theoutputlabelofthemodelwas
+calculatedbyEq.(1)
+Yi=ςi+1,3, (1)
+whereYistheoutput,i.e.,theclosingpriceofthenextcandle
+andςisthecandlefromthedataset.Forthesecondexperiment,
+i.e.,theMulti-LSTMmodel,OHLCpriceswereprognosticatedwith
+thesameinput ςforeverymodelbutadifferentoutput,which
+wascalculatedusingEqs.(2),(3),(4),and(5).Forthisexperiment,
+thesameLSTM,asusedpreviouslyintheSingle-LSTMmodel,was
+replicated.
+Yopeni=ςi+1,0 (2)
+Yclosei=ςi+1,3 (3)
+Yhighi=ςi+1,1 (4)
+Ylowi=ςi+1,2 (5)
+Yi=ςi+1 (6)
+Forthethirdexperiment,i.e.,OHLC-LSTMmodel,Eq.(6)wasused
+wherethecandlewaspassedasaninputandtheexpectedoutput
+wasthenextcandle.Thesameprocesseddataisalsousedforthe
+proposedmethodusingtheFLF-LSTMmodel.Detailsofallthese
+experimentsareprovidedinthenextsection.3.2. Approaches
+Multipleexperimentswereconducted,whichledtothecre-
+ationoftheForexLossFunction.Givenbelowisthedetailofeach
+andeveryexperimentconductedthroughouttheresearchperiod.
+3.2.1. Single-LSTM model
+AnarchitectureusingLSTMcontaining200cellsusingNADAM
+optimizer and a mean squared error (MSE) loss function was
+designed.Theconfigurationwasfinalizedafterintensiveexperi-
+mentation.Thewindowsizeofthecandleoneproducedthemin-
+imumloss.ThisexperimentwasnamedasSingle-LSTMModel
+(SLM).Acandleistheinputofthismodelcontainingfourprice
+values,i.e.,OHLC.Theclosingvalueofthenextcandleispredicted
+fromthismodel(seeFig.1).Thepurposeofthisexperimentwas
+tofindthemagnitudemovementofthenextfour-hourmarket.
+Itwasobservedthatsometimesthemarketmightretraceback
+neartoitsstartingposition.Hence,creatingaDojiorhammer-like
+candlepatterninthesecasesofclosingpricemaynothelp.These
+casesdonotprovideusefulinformationtothescalpertoestimate
+the direction of the market for the next four hours. Another
+experimentwasdonetopredictfullcandlesusingmultiplesame
+models.
+3.2.2. Multi-LSTM model
+Anewarchitecturewasdesignedbyrepeatingthesamemodel
+astestedintheSLM.Themodelwasreplicatedtopredictanopen,
+high,low,andclosepriceofthenextcandle(seeFig.2)from
+anindividualmodel.Thepreviousexperimentwasalsoincluded
+init,andhenceitwasnamedastheMulti-LSTMModel(MLM).
+Configurationsarethesameforeachmodel,asdescribedinthe
+earlierexperiment.Itwasnotedthatthissystemdoesnotlearn
+thecharacteristicsoftheforexcandle,forexample,sometimes
+itpredictsthelowpricehigherthanthe nprice,whichisnot
+possible.Itwasbecauseallmodelsareindependentandtheyhave
+norelation,butcandlehasrelationalcharacteristics,forexample,
+theopenpricecanneitherbehigherthanhighprice,norlower
+thanthelowprice,butmulti-LSTMwasproducingtheseoutof
+rangevaluesthatisitviolatesthestructureofthecandle.Thus,
+weclaimedthatMulti-LSTMisunabletolearnthechart.Itwas
+concludedtoshifttheforecastingtoonemodel,whichledtothe
+nextexperiment.
+3.2.3. OHLC-LSTM model
+Ithadalreadybeenwitnessedthatmultiplemodelscannot
+worktogethertopredictasinglenextcandle.Henceamodelwas
+designed,whichtakesthecurrentcandleasaninputandpredicts
+thenextwholecandleintheformofOHLC(seeFig.3).Thisex-
+perimentwasnamedastheOHLC-LSTM(OHM).Thisarchitecture
+3
+S. Ahmed, S.-U. Hassan, N.R. Aljohani et al. Applied Soft Computing Journal 97 (2020) 106780
+Fig. 2.Multi-LSTMmodel;OHLCpriceofthecurrentcandleistheinputtotheindividualmodels,andopen,high,low,closepricesarepredictedseparately.
+Fig. 3.OHLC-LSTMmodel;candlesaretheinput;thenextcandlepriceofthetimeframeispredicted.ThissamemodelisalsoappliedinFLF-LSTM.
+solvedtheformerproblem.Now,eventhoughthecandleprices
+areinorderbutthebesterrorfunctionsofar,i.e.,meansquared
+errordoesnothavedomainknowledgeoftheforexmarket.If
+thelossfunctioncouldbedesignedspecificallyforthedefined
+problem,greaterprecisioncanbeobtained.Toprovetheabove
+claims,aforexlossfunction(FLF)wasdesigned,whichledtothe
+nextexperiment.
+3.2.4. FLF-LSTM model
+Inalltheexperiments,itwasobservedthatthemeansquared
+error(seeEq.(7))isproducingminimumlossduringthetraining
+andtesting.Thereasonbeingthedata,whichisuptofivedecimal
+points and squaring small difference, produces smaller values,
+leadingtosmoothlearningandminimumloss.Thisfeaturehas
+beenintroducedinFLFandmodifiedmeansquareerrorbysub-
+tractingthedifferenceoftheaverageofthehighandlowpricesof
+actualandpredictedvaluesfromhighandlowvalues.Similarly,
+wesubtractedthedifferenceoftheaverageoftheopenandclose
+priceoftheactualandpredictedvalueinopenandclosevalues
+before taking the square and mean. In order to understand it
+mathematically,pleaserefertoEq.(8).
+Theoutputhasfourvalues;open,high,low,andcloseprice
+ofthecandle,respectively.Theopenandtheclosevalueshave
+beenalteredbyincludingthedifferenceoftheaverageofactual
+andpredictedlengthofthebodyofthecandle,i.e. γi.Notethat
+thelengthofthebodyiscalculatedbydifferentiatingtheopenandclosevalueofthecandle.
+MSE=1
+nn∑
+i=1(Yi−ˆYi)2(7)
+where
+λ=0.9, σ =0.1
+αi=λ∗(
+Yi−ˆYi)
+βi=σ∗(
+Yi,high+Yi,low
+2−ˆYi,high+ˆYi,low
+2)
+γi=σ∗(
+Yi,open+Yi,close
+2−ˆYi,open+ˆYi,close
+2)
+FLF=1
+nn∑
+i=1[
+αi,open−γiαi,high−βiαi,low−βiαi,close−γi]2(8)
+Additionally,thehighandlowvalueswerealteredbysubtracting
+thedifferenceoftheaverageofactualandpredictedlengthofthe
+candle,i.e., βi,where Yi,open,Yi,high,Yi,lowand Y i,closearetheactual
+valuesofopen,high,low,andclosepricerespectivelyofthecan-
+dleatspecificindex‘‘ i’’.Ontheotherhand, ˆYi,open,ˆYi,high,ˆYi,lowand
+ˆYi,closearethepredictedvaluesofthemodel.LSTMarchitecture
+forthisexperimentissimilartotheOHM(asshowninFig.3).
+4
+S. Ahmed, S.-U. Hassan, N.R. Aljohani et al. Applied Soft Computing Journal 97 (2020) 106780
+Fig. 4.System Designed by FLF-LSTM where input is the candles which are passed to the model, iteratively ‘‘last candle removed’’ (LCR), and predicted candle
+appendedatthefrontofinputfornextcandleprediction.
+ThisexperimentwasnamedasFLF-LSTM(FLF).Also,notethat
+thelengthofthecandleiscalculatedbydifferentiatingthehigh
+andlowvalueofthecandle.
+3.2.5. System design and implementation
+AsystemwasdevelopedusingtheproposedFLF-LSTMmodel,
+whichcanbeusedtopredictthetrendoftheforex.Fig.4shows
+asystemdiagramwherethe nnumberofcandlesispassedto
+themodel,whichproducesasinglecandleintheformofOHLC
+that could be either bull or bearish. This forecasted candle is
+appendedininput,andtheLastCandleisRemoved(LCR)from
+it.Thisprocessisrepeatedtoproducenextmcandlestomake
+atrend.Theproblemwiththissystemisthaterrorinforecasted
+candlesisaccumulatedaftereveryiterationbecausethepredicted
+candle, which may have little error is appended in the input,
+henceproducingmoreerror.Tosolvethisproblem,randombias
+epsilonrangefrom[0.00001to −0.00001]wasaddedinallthe
+OHLCvalues,whichdidnotperformwell.Hence,thisproblem
+willbesortedoutinfutureresearch.
+4. Experiments and results
+AlltheexperimentswereimplementedonJupyterNotebook,
+using python Keras Neural Network library. The experiments
+wererunonamachinewiththeCore-i7intelprocess,16GB
+DDR3RandomAccessMemory(RAM)fromtheSamsungbrand,
+havingMicrosoftWindows-10OperatingSystemforLSTMand
+Neuralnetworkmodels,weusedKerasversion2.3.1underthe
+TensorFlowversion2.0.0.
+ThecustomfunctionwasimplementedusingKerasbackend.
+Inalltheexperiments(exceptfortheproposedexperiment)mean
+square error and NADAM were used as an loss function and
+optimizer,respectively,usingparameterssuchaslearningrate
+=0.00001, beta_1 =0.09, beta_2 =0.0999, epsilon =none,
+scheduledecayrate =0.0004,epochsize =150andbatchsize
+=72.Datasetwasrandomlyshuffledwhiletraining.Allthesepa-
+rameterswereselectedbasedonextensiveexperiments.Forthe
+proposedmethod,theoptimizerhasthesameparameters,while
+thelossfunctionistheFLF(seeEq.(8)).Weexecutedmultiple
+experimentstofindasuitableactivationfunctionforeachmodel.
+Table 1 shows that relu is performing better as compared to
+tanhandsigmoid.Whencomparingtoothermodels,FLF-LSTMis
+outperformingMulti-LSTMandOHLC-LSTMby67.06%and10.96%
+respectivelybyreducingmeanabsoluteerror.
+Theseresultsarecomputedbyacomparisonoftheactualand
+predictedopen,high,low,andcloseprice,whicharetakenfromTable 1
+Meanabsoluteerrorofmultiplemodelswithdifferentactivationfunctions.
+Model Activation
+FunctionOpen
+valuesHigh
+valuesLow
+valuesClose
+values
+FLF-LSTMTanh 0.005010 0.004020 0.005188 0.004359
+Sigmoid 0.127865 0.127864 0.117745 0.145468
+Relu 0.001549 0.001885 0.002990 0.002332
+FLF-RNNTanh 0.008731 0.009542 0.017097 0.008723
+Sigmoid 0.123778 0.131410 0.112228 0.133470
+Relu 0.008117 0.006011 0.010818 0.008255
+Multi-LSTMTanh 0.005642 0.007064 0.004682 0.006939
+Sigmoid 0.130249 0.131158 0.121249 0.134488
+Relu 0.007510 0.007889 0.007190 0.006782
+OHLC-LSTMTanh 0.003787 0.004712 0.005929 0.005113
+Sigmoid 0.130249 0.131158 0.121249 0.134488
+Relu 0.001917 0.002028 0.003218 0.002607
+Table 2
+Mean Absolute Error (MAE) reduction by the FLF-LSTM as compared to the
+FLF-RNNinopen,high,low,andclosevalue.
+Price FR MAE FLMAEFRMAE−FLMAE
+FRMAE∗100
+Open 8 .11×10−31.50×10−381.50%
+High 6 .01×10−31.88×10−368.71%
+Low 1 .08×10−22.99×10−372.31%
+Close 8 .25×10−32.33×10−371.75%
+MAEofFLF-RNN =FRMAE;MAEofFLF-LSTM =FLMAE.
+theH4timeframecandleofEURUSD.Thesepricesareselected
+randomlyfrom4031candles.
+InTable2,wecomparedthemeanabsoluteerrorofFLF-RNN
+andFLF-LSTM,andtheresultshowsthattheLSTM-basedmodel
+performsbetterascomparedtotheRNN-basedpredictionmodel.
+Furthermore,wehavecomparedthetrainingtimetakenbyeach
+experimentonaspecifiedsystem.AsshowninFig.5,FLF-RNN
+takesminimumtimetotrainascomparedtoFLF-LSTM.While
+Multi-LSTMhasmultiplemodelsfortraining,hence,takingthe
+maximumtime.
+Furthermore,wecompareopen,high,low,andcloseactual
+prices with respect to predicted Multi-LSTM, OHLC-LSTM, and
+FLF-LSTMprices(seeFig.6).Thesegraphsshowthatthemodel
+haslearnedthetrendofthemarketandispredictingtheprices
+basedontheactualtrend.
+Theproposedmodelwascomparedwiththeexistingwell-
+knownforecastingalgorithms(seeTable3).First,theFLF-LSTM
+resultswerecomparedwiththeFBProphet[34].Thetestset
+lengthperiodwasforecastedbyprovidingthetrainedsettothe
+5
+S. Ahmed, S.-U. Hassan, N.R. Aljohani et al. Applied Soft Computing Journal 97 (2020) 106780
+Fig. 5.Trainingtimeistakenbyeachmodel.
+Fig. 6.Open,high,lowandcloseactualpriceascomparedtoMulti-LSTM,OHLC-LSTMandFLF-LSTMpredictedprice.
+Table 3
+Prediction error by FB Prophet, ARIMA and FLF-LSTM, and error reduced by
+FLF-LSTMascomparedtoARIMAandFBProphet.
+Price AR MAEARMAE−FLMAE
+ARMAE∗100 FP MAEFPMAE−FLMAE
+FPMAE∗100
+Open 2.1e −3 28.5% 2.2e −3 31.8%
+High 2.1e −3 14.2% 3.2e −3 47.7%
+Low 3.2e −3 9.3% 3.8e −3 23.6%
+Close 2.3e −3 0.0% 4.4e −3 47.7%
+MAEofARIMA =ARMAE,MAEofFLF-LSTM =FLMAE,MAEofFBProphet =FPMAE.
+FBProphet,butresultswerereachingthenegativevalues,which
+isnotpossible;henceone-periodpricevalueinasingletimewas
+forecasted.
+Fourdifferentmodelswereusedtoforecastopen,high,low,
+and close prices individually. As shown in Table 3, FLF-LSTM
+based model has a reduced average 37.7% prediction error ascomparedtoFBProphet.Similarly,ourmodelwascomparedwith
+theARIMA(Granger[24]).Fourdifferentmodelsweredesigned
+toforecasttheopen,high,low,andclosepricesindividuallyusing
+thep=5,d=1,andq =0.Thesevalueswereselectedafterthe
+experiments.Overall,Table3showsthattheFLF-LSTMresultsare
+betterthantheARIMAby13%.TheliteratureshowsthatRNN-
+basedmodelsdonotlearnlongpatternsinthedata[35].This
+trendisalsoobservedinourexperiments,asourproposedLSTM-
+basedmodeloutperformstheRNN-basedmodel.WhileARIMA
+performsnexttoFLF-LSTMduetoitsabilitytohandleseasonality
+trendsinthedatabydesign,FBProphetisnotworkingwellon
+thistypeofdatathatfurthermaybeimprovedwiththeinclusion
+ofhuman-interpretableparametersanddomainknowledgeinthe
+futurestudies.
+6
+S. Ahmed, S.-U. Hassan, N.R. Aljohani et al. Applied Soft Computing Journal 97 (2020) 106780
+5. Concluding remarks
+The study has proposed a novel system by integrating the
+ForexLossFunctionwithLSTM,thatoutperformsclassicLSTM-
+basedpredictionsystemsbydecreasingthemeanabsoluteerror
+onEURUSDdatasetasfollows:10.54%intheclosingprice,7.05%
+inhighpriceand7.08%inthelowpricealongwithareduction
+inerrorby19.19%intheopeningpriceofthenextH4candle.
+Theresultsshowanoverall10.96%improvementinprediction
+errorthanclassicLSTM.ComparingwiththeFLF-RNN,FLF-LSTM
+isperformingbetter,andreduces73.57%overallforecastinger-
+ror.AscomparedtotheARIMAandtheFBProphet,benchmark
+resultsoftheproposedFLF-LSTMshow13%and37.7%reduceder-
+ror,respectively.Thisstudyshowsthatbyincorporatingdomain
+knowledgeinthelearningprocessenhancesthepredictability.
+Overall,theproposedsystemimplementationopensanewgate-
+way for the scientific community that seeks to predict forex
+markettrends.Infuturestudies,weproposetobuildknowledge-
+baseddecisionsupportrecommendersystems[36–38]forforex
+trade.Thedataandcodeusedinthisstudycanbeaccessedatthe
+followingURL:https://github.com/slab-itu/forex_flf_lstm.
+Declaration of competing interest
+Theauthorsdeclarethattheyhavenoknowncompetingfinan-
+cialinterestsorpersonalrelationshipsthatcouldhaveappeared
+toinfluencetheworkreportedinthispaper.
+References
+[1] Ziniu Hu, Weiqing Liu, Jiang Bian, Xuanzhe Liu, Tie-Yan Liu, Listen-
+ing to chaotic whispers: A deep learning framework for news-oriented
+stocktrendprediction,in:ProceedingsoftheEleventhACMInternational
+ConferenceonWebSearchandDataMining,ACM,2018,pp.261–269.
+[2] JoãoCarapuço,RuiNeves,NunoHorta,Reinforcementlearningappliedto
+forextrading,Appl.SoftComput.73(2018)783–794.
+[3] Rajashree Dash, Performance analysis of a higher-order neural network
+withanimprovedshuffledfrogleapingalgorithmforcurrencyexchange
+rateprediction,Appl.SoftComput.67(2018)215–231.
+[4] BernardoJubertdeAlmeida,RuiFerreiraNeves,NunoHorta,Combining
+supportvectormachinewithgeneticalgorithmstooptimizeinvestments
+in forex markets with high leverage, Appl. Soft Comput. 64 (2018)
+596–613.
+[5] CarlosMartín,DavidQuintana,PedroIsasi,Grammaticalevolution-based
+ensemblesforalgorithmictrading,Appl.SoftComput.84(2019)105713.
+[6] JonatanHenríquez,WernerKristjanpoller,Acombinedindependentcom-
+ponent analysis–neural network model for forecasting exchange rate
+variation,Appl.SoftComput.83(2019)105654.
+[7] S. Nootyaskool, W. Choengtong, Hidden Markov models predict foreign
+exchangerate,in:201414thInternationalSymposiumonCommunications
+andInformationTechnologies(ISCIT),IEEE,2014,pp.99–101.
+[8] FangJin,WeiWang,PrithwishChakraborty,NathanSelf,FengChen,Naren
+Ramakrishnan, Tracking multiple social media for stock market event
+prediction,in:IndustrialConferenceonDataMining,Springer,Cham,2017,
+pp.16–30.
+[9] Chao Yang, Hefeng Zhang, Bin Jiang, Keqin Li, Aspect-based sentiment
+analysis with alternating coattention networks, Inf. Process. Manage. 56
+(3)(2019)463–478.
+[10] PaulThompson,RaheelNawaz,IoannisKorkontzelos,WilliamBlack,John
+McNaught,SophiaAnaniadou,Newssearchusingdiscourseanalytics,in:
+2013DigitalHeritageInternationalCongress(DigitalHeritage),Vol.1,IEEE,
+2013,pp.597–604.
+[11] Raheel Nawaz, Paul Thompson, John McNaught, Sophia Ananiadou,
+Meta-knowledge annotation of bio-events, in: LREC, Vol. 17, 2010, pp.
+2498–2507.
+[12] Raheel Nawaz, Paul Thompson, Sophia Ananiadou, Negated bio-events:
+analysisandidentification,BMCBioinformatics14(1)(2013)14.
+[13] Svitlana Galeshchuk, Sumitra Mukherjee, Deep networks for predicting
+directionofchangeinforeignexchangerates,Intell.Syst.Account.Finance
+Manage.24(4)(2017)100–110.[14] OmerBeratSezer,AhmetMuratOzbayoglu,Algorithmicfinancialtrading
+withdeepconvolutionalneuralnetworks:Timeseriestoimageconversion
+approach,Appl.SoftComput.70(2018)525–538.
+[15] SeyedHadiMirYazdi,ZibaHabibiLashkari,Technicalanalysisofforexby
+MACDindicator,Int.J.Hum.Manage.Sci.(IJHMS)1(2)(2013)159–165.
+[16] JuHyunYu,JuyoungKang,SangunPark,Informationavailabilityandreturn
+volatilityinthebitcoinmarket:Analyzingdifferencesofuseropinionand
+interest,Inf.Process.Manage.56(3)(2019)721–732.
+[17] EvaVolna,MartinKotyrba,RobertJarušek,PredictionbymeansofElliott
+wavesrecognition,in:Nostradamus:ModernMethodsofPrediction,Mod-
+elingandAnalysisofNonlinearSystems,Springer,Berlin,Heidelberg,2013,
+pp.241–250.
+[18] YokeLengYong,YunliLee,DavidNgo,Aninvestigationintotherecurring
+patternsofforextimeseriesdata,in:2015IEEEInternationalSymposium
+onRoboticsandIntelligentSensors(IRIS),IEEE,2015,pp.313–317.
+[19] Yu-HonLui,DavidMole,Theuseoffundamentalandtechnicalanalyses
+byforeignexchangedealers:HongKongevidence,J.Int.MoneyFinance
+17(3)(1998)535–545.
+[20] Charles Engel, Exchange rates and interest parity, in: Handbook of
+InternationalEconomics,Vol.4,Elsevier,2014,pp.453–522.
+[21] Jauhar Ali, Analyzing the effect of currency strength changes on their
+future price movement, in: Proceedings of the 2018 10th International
+ConferenceonMachineLearningandComputing,ACM,2018,pp.111–115.
+[22] Seng Hansun, Marcel Bonar Kristanda, Performance analysis of conven-
+tionalmovingaveragemethodsinforexforecasting,in:2017International
+ConferenceonSmartCities,Automation&IntelligentComputingSystems
+(ICON-SONICS),IEEE,2017,pp.11–17.
+[23] AntoniWilinski,TimeseriesmodelingandforecastingbasedonaMarkov
+chain with changing transition matrices, Expert Syst. Appl. 133 (2019)
+163–172.
+[24] CliveW.J.Granger,Somepropertiesoftimeseriesdataandtheirusein
+econometricmodelspecification,J.Econometrics16(1)(1981)121–130.
+[25] ThuyNguyenThiThu,VuongDangXuan,Usingsupportvectormachine
+inforexpredicting,in:2018IEEEInternationalConferenceonInnovative
+ResearchandDevelopment(Icird),IEEE,2018,pp.1–5.
+[26] TaeKyunLee,JoonHyungCho,DeukSinKwon,SoYoungSohn,Global
+stockmarketinvestmentstrategiesbasedonfinancialnetworkindicators
+usingmachinelearningtechniques,ExpertSyst.Appl.117(2019)228–242.
+[27] Li Tang, Heping Pan, Yiyong Yao, K-nearest neighbor regression with
+principalcomponentanalysisforfinancialtimeseriesprediction,in:Pro-
+ceedingsofthe2018InternationalConferenceonComputingandArtificial
+Intelligence,ACM,2018,pp.127–131.
+[28] Svitlana Galeshchuk, Neural networks performance in exchange rate
+prediction,Neurocomputing172(2016)446–452.
+[29] Bin Weng, Lin Lu, Xing Wang, Fadel M. Megahed, Waldyn Martinez,
+Predicting short-term stock prices using ensemble methods and online
+datasources,ExpertSyst.Appl.112(2018)258–273.
+[30] Asad Abdi, Siti Mariyam Shamsuddin, Shafaatunnur Hasan, Jalil Piran,
+Deeplearning-basedsentimentclassificationofevaluativetextbasedon
+multi-featurefusion,Inf.Process.Manage.56(4)(2019)1245–1259.
+[31] Sreelekshmy Selvin, R. Vinayakumar, E.A. Gopalakrishnan, Vijay Krishna
+Menon, K.P. Soman, Stock price prediction using LSTM, RNN and CNN-
+sliding window model, in: 2017 International Conference on Advances
+inComputing,CommunicationsandInformatics(ICACCI),IEEE,2017,pp.
+1643–1647.
+[32] Spyros K. Chandrinos, Georgios Sakkas, Nikos D. Lagaros, AIRMS: A risk
+managementtoolusingmachinelearning,ExpertSyst.Appl.105(2018)
+34–48.
+[33] Moule Lin, Changxi Chen, Short-term prediction of stock market price
+basedonGAoptimizationLSTMneurons,in:Proceedingsofthe20182nd
+InternationalConferenceonDeepLearningTechnologies,ACM,2018,pp.
+66–70.
+[34] SeanJ.Taylor,BenjaminLetham,Forecastingatscale,Amer.Statist.72(1)
+(2018)37–45.
+[35] Alex Sherstinsky, Fundamentals of recurrent neural network (rnn) and
+long short-term memory (lstm) network, Physica D 404 (2020) 132306,
+http://dx.doi.org/10.1016/j.physd.2019.132306.
+[36] FahadAnwaar,NaimaIltaf,HammadAfzal,RaheelNawaz,HRS-CE:Ahy-
+bridframeworktointegratecontentembeddingsinrecommendersystems
+forcoldstartitems,J.Comput.Sci.29(2018)9–18.
+[37] Sundus Ayyaz, Usman Qamar, Raheel Nawaz, HCF-CRS: A hybrid
+content based fuzzy conformal recommender system for providing
+recommendationswithconfidence,PLoSOne13(10)(2018)e0204849.
+[38] HajraQadir,OsmanKhalid,MuhammadU.S.Khan,AttaUrRehmanKhan,
+Raheel Nawaz, An optimal ride sharing recommendation framework for
+carpoolingservices,IEEEAccess6(2018)62296–62313.
+7

@@ -1,0 +1,22 @@
+{
+  "data": "/home/hduser/jupyter/gust/RisetEU/EURUSD_H4_25Oct17.csv",
+  "sep": "\t",
+  "columns": null,
+  "window": 12,
+  "split": 0.9860686016,
+  "units": 256,
+  "epochs": 50,
+  "batch": 128,
+  "lr": 0.0007,
+  "beta1": 0.9,
+  "beta2": 0.999,
+  "schedule_decay": 0.004,
+  "seed": 42,
+  "activation": "relu",
+  "recurrent_activation": "sigmoid",
+  "output_activation": "",
+  "lambda_coef": 0.8,
+  "sigma_coef": 0.15,
+  "out": "results/final_preds.csv",
+  "history_out": "results/final_history.csv"
+}

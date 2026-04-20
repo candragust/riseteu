@@ -1,0 +1,38 @@
+﻿<svg xmlns='http://www.w3.org/2000/svg' width='820' height='320' font-family='Arial' font-size='14'>
+  <defs>
+    <marker id='arrow' markerWidth='10' markerHeight='10' refX='5' refY='3' orient='auto' markerUnits='strokeWidth'>
+      <path d='M0,0 L0,6 L9,3 z' fill='#555' />
+    </marker>
+  </defs>
+  <!-- Input -->
+  <rect x='30' y='115' width='140' height='70' rx='8' ry='8' fill='#e6f2ff' stroke='#2b6cb0' stroke-width='2' />
+  <text x='100' y='145' text-anchor='middle' font-weight='bold'>Input</text>
+  <text x='100' y='165' text-anchor='middle'>(window=16, 4 fts)</text>
+
+  <line x1='170' y1='150' x2='220' y2='150' stroke='#555' stroke-width='2' marker-end='url(#arrow)'/>
+
+  <!-- BiLSTM summary -->
+  <rect x='220' y='60' width='220' height='180' rx='10' ry='10' fill='#e8f5e9' stroke='#2f855a' stroke-width='2' />
+  <text x='330' y='90' text-anchor='middle' font-weight='bold'>BiLSTM Layer</text>
+  <text x='330' y='110' text-anchor='middle'>256 forward cells (Node1..Node256)</text>
+  <text x='330' y='130' text-anchor='middle'>256 backward cells (Node1..Node256)</text>
+  <text x='330' y='150' text-anchor='middle'>activation: ReLU</text>
+  <text x='330' y='170' text-anchor='middle'>recurrent: sigmoid</text>
+  <text x='330' y='190' text-anchor='middle'>return_sequences: False</text>
+
+  <line x1='440' y1='150' x2='510' y2='150' stroke='#555' stroke-width='2' marker-end='url(#arrow)'/>
+
+  <!-- Dense -->
+  <rect x='510' y='115' width='140' height='70' rx='8' ry='8' fill='#fff7e6' stroke='#c05621' stroke-width='2' />
+  <text x='580' y='145' text-anchor='middle' font-weight='bold'>Dense</text>
+  <text x='580' y='165' text-anchor='middle'>4 outputs (O,H,L,C)</text>
+
+  <line x1='650' y1='150' x2='730' y2='150' stroke='#555' stroke-width='2' marker-end='url(#arrow)'/>
+
+  <!-- Output -->
+  <rect x='730' y='115' width='70' height='70' rx='8' ry='8' fill='#f3e8ff' stroke='#6b46c1' stroke-width='2' />
+  <text x='765' y='145' text-anchor='middle' font-weight='bold'>Output</text>
+  <text x='765' y='165' text-anchor='middle'>OHLC</text>
+
+  <text x='410' y='270' text-anchor='middle' font-size='12'>Optimizer: Nadam lr=5e-4, batch=128, loss: FLF (λ=0.9, σ=0.1)</text>
+</svg>

@@ -1,0 +1,7 @@
+stage,best_name,window,units,activation,lr,epochs,lambda_coef,sigma_coef,batch
+Stage 1 - Window Sweep,lstm_s1_w12_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b128,12,256,relu,0.0007,50,0.8,0.15,128
+Stage 2 - Units Sweep,lstm_s2_w12_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b128,12,256,relu,0.0007,50,0.8,0.15,128
+Stage 3 - Learning Rate Sweep,lstm_s3_w12_h256_actrelu_lr0.0009_e50_lam0.8_sig0.15_b128,12,256,relu,0.0009,50,0.8,0.15,128
+Stage 4 - Lambda / Sigma Sweep,lstm_s4_w12_h256_actrelu_lr0.0009_e50_lam0.8_sig0.1_b128,12,256,relu,0.0009,50,0.8,0.1,128
+Stage 5 - Batch Size Sweep,lstm_s5_w12_h256_actrelu_lr0.0009_e50_lam0.8_sig0.1_b128,12,256,relu,0.0009,50,0.8,0.1,128
+Stage 6 - Epoch Sweep,lstm_s6_w12_h256_actrelu_lr0.0009_e60_lam0.8_sig0.1_b128,12,256,relu,0.0009,60,0.8,0.1,128

@@ -1,0 +1,231 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Optimasi Hyperparameter FLF-BiLSTM dan FLF-LSTM untuk Prediksi EURUSD H4</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.6; color: #222; }
+    h1, h2, h3 { color: #111; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f0f0f0; }
+    code { background: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    ul, ol { margin-top: 8px; }
+  </style>
+</head>
+<body>
+<h1>Optimasi Hyperparameter FLF-BiLSTM dan FLF-LSTM untuk Prediksi EURUSD H4</h1>
+<h2>Tujuan Dokumen</h2>
+<p>Dokumen ini menjelaskan metodologi optimasi hyperparameter dan regularisasi yang digunakan pada dua model utama penelitian, yaitu <strong>FLF-BiLSTM</strong> dan <strong>FLF-LSTM</strong>, untuk prediksi satu langkah ke depan harga <strong>Open, High, Low, Close (OHLC)</strong> EURUSD timeframe 4 jam.</p>
+<p>Fokus dokumen ini adalah <strong>mekanisme pencarian konfigurasi model terbaik</strong>: bagaimana ruang pencarian dibentuk, bagaimana kandidat dievaluasi, metrik apa yang dipakai, serta bagaimana konfigurasi terbaik diwariskan dari satu tahap ke tahap berikutnya.</p>
+<h2>Posisi Metode dalam Literatur</h2>
+<p>Dalam literatur optimasi hyperparameter untuk prediksi time series keuangan, pendekatan yang umum dapat dibedakan menjadi beberapa keluarga besar, antara lain:</p>
+<ol>
+<li><strong>simple search-based tuning</strong>, seperti grid search dan random search;</li>
+<li><strong>optimization-algorithm-based tuning</strong>, seperti Bayesian optimization atau metaheuristic;</li>
+<li><strong>feature-selection-based optimization</strong>, ketika yang dioptimasi terutama adalah struktur input;</li>
+<li><strong>pipeline or modular tuning</strong>, ketika optimasi dilakukan per-komponen atau per-tahap.</li>
+</ol>
+<p>Berdasarkan klasifikasi tersebut, metode yang digunakan pada penelitian ini <strong>paling tepat</strong> diposisikan sebagai:</p>
+<p><strong>prosedur tuning hyperparameter berbasis grid search bertahap pada model deep learning, dengan evaluasi temporal pada data time series</strong>.</p>
+<p>Formulasi ini sengaja dipilih karena lebih akurat secara ilmiah. Istilah <strong><code>stage-wise sequential grid search</code></strong> dalam dokumen ini digunakan sebagai <strong>label deskriptif internal</strong> untuk menjelaskan prosedur yang dipakai, <strong>bukan</strong> sebagai klaim bahwa ada satu algoritma baku dengan nama kanonik tersebut di literatur.</p>
+<h2>Dasar Teoretis dan Empiris</h2>
+<p>Meskipun tidak ditemukan satu paper pada folder referensi yang memakai frasa persis <strong>“stage-wise sequential grid search”</strong>, komponen metodologis yang menyusun prosedur ini memiliki landasan yang jelas pada paper-paper yang tersedia dalam folder referensi.</p>
+<h3>1. Dasar untuk komponen <code>grid search</code></h3>
+<p>Cohen and Aiche (2023) secara eksplisit menyebut bahwa model dapat dioptimasi melalui <strong>cross-validation dan grid search</strong> untuk memilih hyperparameter terbaik. Paper ini juga menunjukkan penggunaan grid search untuk menentukan konfigurasi optimal, misalnya pada <strong>tree depth</strong>, <strong>learning rate</strong>, dan parameter regularisasi pada model boosting.</p>
+<p>Dengan demikian, <strong>grid search</strong> sendiri memiliki legitimasi yang jelas sebagai pendekatan tuning yang sah, khususnya ketika ruang hyperparameter masih dapat dibatasi secara rasional.</p>
+<h3>2. Dasar untuk komponen <code>tuning bertahap / modular</code></h3>
+<p>Dakalbab et al. (2025) menyatakan bahwa <strong>setiap modality dituning secara independen</strong>. Artinya, optimasi tidak harus dilakukan sekaligus pada seluruh ruang parameter, tetapi dapat dilakukan <strong>per-komponen</strong> atau <strong>bertahap</strong>. Ini memberikan landasan metodologis bahwa optimasi yang dipisahkan per-blok parameter merupakan prosedur yang valid, selama mekanisme evaluasinya jelas.</p>
+<p>Abolmakarem et al. (2024) juga relevan karena menggunakan kerangka <strong>multi-stage approach</strong> pada prediksi harga saham. Walaupun fokus paper tersebut lebih kuat pada engineered and derivative indices, paper itu mendukung gagasan bahwa pipeline prediksi finansial memang dapat dirancang dalam bentuk <strong>beberapa tahap yang berurutan</strong>, bukan sebagai satu langkah tunggal.</p>
+<h3>3. Dasar untuk komponen <code>systematic hyperparameter comparison</code></h3>
+<p>Zhang and Pinsky (2025) mengevaluasi beberapa variasi hyperparameter LSTM secara sistematis, termasuk <strong>window size</strong>, <strong>epoch</strong>, <strong>dropout</strong>, dan penambahan layer. Paper ini penting karena menunjukkan bahwa dalam konteks model recurrent untuk data finansial, evaluasi beberapa kandidat hyperparameter secara <strong>terstruktur dan komparatif</strong> merupakan pendekatan yang wajar dan dapat dipertanggungjawabkan.</p>
+<h3>4. Dasar untuk komponen <code>time-series-aware tuning</code></h3>
+<p>Enkhbayar and Ślepaczuk (2025) menjelaskan bahwa setiap model dioptimasi pada <strong>predefined hyperparameter space</strong> dalam masing-masing <strong>rolling walk-forward window</strong>. Ini mendukung gagasan bahwa proses tuning untuk data finansial harus mempertahankan struktur temporal dan tidak boleh diperlakukan seperti data i.i.d. biasa.</p>
+<p>Dengan kata lain, landasan ilmiah prosedur ini bukan hanya berasal dari sisi “search”, tetapi juga dari sisi <strong>evaluasi yang time-series-safe</strong>.</p>
+<h3>5. Dasar untuk pembedaan dengan metode lain</h3>
+<p>Chen and Huang (2021) menjelaskan <strong>Bayesian optimization</strong> sebagai pendekatan yang dalam beberapa konteks dipahami lebih efisien daripada random atau grid search. Di sisi lain, Abu-Doush (2023), Perla et al. (2023), dan beberapa paper lain pada folder referensi menggunakan <strong>metaheuristic optimization</strong> atau <strong>optimization algorithm</strong> sebagai mesin pencari konfigurasi terbaik.</p>
+<p>Hal ini justru memperjelas posisi metodologis penelitian ini:</p>
+<p>metode yang digunakan <strong>bukan Bayesian optimization</strong> dan <strong>bukan metaheuristic optimization</strong>, melainkan berada pada keluarga <strong>simple search-based tuning</strong>.</p>
+<h2>Rumusan Metodologis yang Paling Tepat</h2>
+<p>Berdasarkan telaah di atas, formulasi yang paling aman dan kuat untuk penulisan tesis adalah:</p>
+<p>Penelitian ini menggunakan <strong>prosedur optimasi hyperparameter berbasis grid search bertahap</strong> pada model deep learning, di mana satu kelompok hyperparameter divariasikan pada setiap tahap, sementara konfigurasi terbaik dari tahap sebelumnya digunakan sebagai baseline tahap berikutnya, dengan evaluasi yang tetap mempertahankan urutan temporal data.</p>
+<p>Jika ingin tetap mempertahankan istilah Inggris, formulasi yang masih aman adalah:</p>
+<p><strong>a stage-wise sequential grid-search procedure for hyperparameter tuning</strong></p>
+<p>Namun secara ilmiah, kalimat itu sebaiknya diperlakukan sebagai <strong>deskripsi prosedur</strong>, bukan nama algoritma baku yang diklaim berasal dari satu paper tertentu.</p>
+<h2>Prinsip Optimasi yang Digunakan dalam Penelitian Ini</h2>
+<p>Pada penelitian ini, optimasi hyperparameter dilakukan dengan prinsip berikut:</p>
+<ol>
+<li>Menetapkan <strong>baseline configuration</strong> awal.</li>
+<li>Menentukan satu <strong>kelompok hyperparameter</strong> yang akan diuji pada satu tahap tertentu.</li>
+<li>Menjalankan seluruh kandidat dalam grid tahap tersebut.</li>
+<li>Menghitung performa out-of-sample setiap kandidat.</li>
+<li>Memilih kandidat terbaik berdasarkan metrik evaluasi.</li>
+<li>Menjadikan konfigurasi terbaik itu sebagai baseline untuk tahap selanjutnya.</li>
+</ol>
+<p>Dengan demikian, ruang pencarian tidak dieksplorasi secara penuh sebagai <strong>full Cartesian exhaustive search</strong>, tetapi direduksi menjadi pencarian bertahap yang lebih efisien dan lebih mudah diinterpretasikan.</p>
+<p>Secara formal, jika <code>theta_prev_best</code> adalah konfigurasi terbaik dari tahap sebelumnya, dan <code>S_k</code> adalah himpunan hyperparameter yang diuji pada tahap ke-<code>k</code>, maka pencarian pada tahap itu dapat dinyatakan sebagai:</p>
+<p><code>theta_k_best = argmin(theta in Grid(S_k | theta_prev_best)) J(theta)</code></p>
+<p>dengan <code>J(theta)</code> adalah metrik objektif yang digunakan untuk seleksi kandidat.</p>
+<h2>Mengapa Metode Ini Layak untuk Tesis</h2>
+<p>Pendekatan ini layak digunakan dalam tesis karena memiliki beberapa keunggulan metodologis:</p>
+<ol>
+<li><strong>Transparan</strong></li>
+</ol>
+<p>Efek setiap kelompok hyperparameter dapat diamati secara langsung dari perubahan metrik error.</p>
+<ol>
+<li><strong>Terstruktur</strong></li>
+</ol>
+<p>Prosedur tuning mudah dijelaskan dan mudah direplikasi.</p>
+<ol>
+<li><strong>Relevan untuk data finansial</strong></li>
+</ol>
+<p>Evaluasi dilakukan dengan menjaga urutan waktu, sehingga tidak menimbulkan kebocoran informasi.</p>
+<ol>
+<li><strong>Efisien secara komputasi</strong></li>
+</ol>
+<p>Biaya komputasi jauh lebih rendah dibanding pencarian penuh atas seluruh kombinasi hyperparameter.</p>
+<ol>
+<li><strong>Cukup kuat untuk studi terapan</strong></li>
+</ol>
+<p>Dalam konteks penelitian prediksi finansial terapan, pendekatan ini sudah memadai untuk menghasilkan model yang kompetitif sambil tetap dapat dipertanggungjawabkan secara ilmiah.</p>
+<h2>Keterbatasan Metode</h2>
+<p>Meski layak dan kuat untuk penelitian terapan, metode ini tetap memiliki batasan:</p>
+<ul>
+<li>tidak menjamin optimum global;</li>
+<li>sensitif terhadap pemilihan baseline awal;</li>
+<li>sensitif terhadap urutan stage;</li>
+<li>interaksi antarkelompok hyperparameter tidak dieksplorasi secara menyeluruh;</li>
+<li>kualitas hasil sangat bergantung pada rancangan grid yang dipilih peneliti.</li>
+</ul>
+<p>Karena itu, secara metodologis prosedur ini lebih tepat disebut sebagai:</p>
+<p><strong>heuristic but structured hyperparameter tuning procedure</strong></p>
+<p>daripada algoritma optimasi global.</p>
+<h2>Implementasi pada FLF-BiLSTM</h2>
+<h3>Skema Tuning</h3>
+<p>Pipeline FLF-BiLSTM utama menggunakan:</p>
+<ul>
+<li>dataset: <code>results/EURUSD_H4_clean.csv</code></li>
+<li>split tuning: <code>0.7</code></li>
+<li>interpretasi split: sekitar <strong>70% train</strong> dan <strong>30% test</strong></li>
+<li>pembagian data: <strong>kronologis</strong></li>
+</ul>
+<p>Jadi, tuning FLF-BiLSTM dilakukan dengan <strong>temporal holdout 70:30</strong>.</p>
+<h3>Baseline Awal</h3>
+<p>Baseline awal pada <code>final_config.json</code>:</p>
+<ul>
+<li><code>window = 12</code></li>
+<li><code>units = 256</code></li>
+<li><code>activation = relu</code></li>
+<li><code>lr = 0.0005</code></li>
+<li><code>epochs = 50</code></li>
+<li><code>lambda_coef = 1.0</code></li>
+<li><code>sigma_coef = 0.05</code></li>
+<li><code>batch = 128</code></li>
+<li><code>seed = 42</code></li>
+</ul>
+<h3>Tahap Tuning</h3>
+<table>
+<thead><tr><th>Stage</th><th>Fokus</th><th>Grid yang diuji</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Window sweep</td><td><code>window ∈ {12, 16, 20}</code></td></tr>
+<tr><td>2</td><td>Units sweep</td><td><code>units ∈ {128, 200, 256}</code></td></tr>
+<tr><td>3</td><td>Activation + LR</td><td><code>(tanh,1e-4)</code>, <code>(tanh,3e-4)</code>, <code>(relu,3e-4)</code>, <code>(relu,5e-4)</code>, <code>(relu,7e-4)</code></td></tr>
+<tr><td>4</td><td>Lambda / Sigma</td><td><code>(0.8,0.15)</code>, <code>(0.9,0.1)</code>, <code>(1.0,0.05)</code></td></tr>
+<tr><td>5</td><td>Batch size</td><td><code>batch ∈ {64, 128}</code></td></tr>
+<tr><td>6</td><td>Epoch sweep</td><td><code>epochs ∈ {30, 39, 50}</code></td></tr>
+</tbody>
+</table>
+<h3>Hasil Progres FLF-BiLSTM</h3>
+<table>
+<thead><tr><th>Stage</th><th>Best config</th><th>MAE_avg_pips</th><th>MAE_open_pips</th><th>MAE_high_pips</th><th>MAE_low_pips</th><th>MAE_close_pips</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>w12 h256 relu lr5e-4 e50 lam1.0 sig0.05 b128</code></td><td>9.3712</td><td>2.7112</td><td>9.9461</td><td>10.5209</td><td>14.3065</td></tr>
+<tr><td>2</td><td><code>w12 h256 relu lr5e-4 e50 lam1.0 sig0.05 b128</code></td><td>9.3378</td><td>2.6964</td><td>10.0403</td><td>10.3747</td><td>14.2399</td></tr>
+<tr><td>3</td><td><code>w12 h256 relu lr7e-4 e50 lam1.0 sig0.05 b128</code></td><td>9.2032</td><td>2.6013</td><td>9.7416</td><td>10.2836</td><td>14.1863</td></tr>
+<tr><td>4</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.0975</td><td>2.3853</td><td>9.7353</td><td>10.1396</td><td>14.1296</td></tr>
+<tr><td>5</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.0889</td><td>2.3843</td><td>9.7352</td><td>10.1144</td><td>14.1217</td></tr>
+<tr><td>6</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.1196</td><td>2.4512</td><td>9.7274</td><td>10.1843</td><td>14.1154</td></tr>
+</tbody>
+</table>
+<p>Konfigurasi praktis terbaik BiLSTM adalah:</p>
+<ul>
+<li><code>window=12, units=256, activation=relu, lr=0.0007, lambda_coef=0.8, sigma_coef=0.15, batch=128, epochs=50</code></li>
+</ul>
+<h2>Implementasi pada FLF-LSTM</h2>
+<h3>Skema Tuning</h3>
+<p>Pipeline FLF-LSTM disusun lebih dekat ke skenario operasional terbaru, menggunakan:</p>
+<ul>
+<li>dataset: <code>results/rolling_train72_test1/fold21_data.csv</code></li>
+<li>split tuning: <code>0.9860686016</code></li>
+<li>interpretasi split: sekitar <strong>72 bulan train</strong> dan <strong>1 bulan test</strong></li>
+<li>pembagian data: <strong>kronologis</strong></li>
+</ul>
+<p>Jadi, tuning FLF-LSTM dilakukan pada <strong>latest-fold temporal holdout 72m/1m</strong>.</p>
+<h3>Baseline Awal</h3>
+<p>Baseline awal pada <code>lstm_flf_config_wf72_test1_latest.json</code>:</p>
+<ul>
+<li><code>window = 12</code></li>
+<li><code>units = 256</code></li>
+<li><code>activation = relu</code></li>
+<li><code>lr = 0.0009</code></li>
+<li><code>epochs = 60</code></li>
+<li><code>lambda_coef = 0.8</code></li>
+<li><code>sigma_coef = 0.1</code></li>
+<li><code>batch = 128</code></li>
+<li><code>seed = 42</code></li>
+</ul>
+<h3>Tahap Tuning</h3>
+<table>
+<thead><tr><th>Stage</th><th>Fokus</th><th>Grid yang diuji</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Window sweep</td><td><code>window ∈ {10, 12, 14}</code></td></tr>
+<tr><td>2</td><td>Units sweep</td><td><code>units ∈ {224, 256}</code></td></tr>
+<tr><td>3</td><td>Learning rate sweep</td><td><code>lr ∈ {5e-4, 7e-4, 9e-4}</code></td></tr>
+<tr><td>4</td><td>Lambda / Sigma</td><td><code>(0.8,0.15)</code>, <code>(0.9,0.1)</code>, <code>(0.8,0.1)</code></td></tr>
+<tr><td>5</td><td>Batch size</td><td><code>batch ∈ {96, 128}</code></td></tr>
+<tr><td>6</td><td>Epoch sweep</td><td><code>epochs ∈ {40, 50, 60}</code></td></tr>
+</tbody>
+</table>
+<p>Catatan: pada implementasi aktif LSTM, fungsi aktivasi tidak lagi disweep; activation dikunci pada <code>relu</code>.</p>
+<h3>Hasil Progres FLF-LSTM</h3>
+<table>
+<thead><tr><th>Stage</th><th>Best config</th><th>MAE_avg_pips</th><th>MAE_open_pips</th><th>MAE_high_pips</th><th>MAE_low_pips</th><th>MAE_close_pips</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.1917</td><td>2.6513</td><td>10.7861</td><td>9.2136</td><td>14.1158</td></tr>
+<tr><td>2</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.1917</td><td>2.6513</td><td>10.7861</td><td>9.2136</td><td>14.1158</td></tr>
+<tr><td>3</td><td><code>w12 h256 relu lr9e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.0669</td><td>2.6755</td><td>10.6368</td><td>8.9672</td><td>13.9881</td></tr>
+<tr><td>4</td><td><code>w12 h256 relu lr9e-4 e50 lam0.8 sig0.1 b128</code></td><td>9.0514</td><td>2.5804</td><td>10.6121</td><td>8.9588</td><td>13.9544</td></tr>
+<tr><td>5</td><td><code>w12 h256 relu lr9e-4 e50 lam0.8 sig0.1 b128</code></td><td>9.0514</td><td>2.5804</td><td>10.6121</td><td>8.9588</td><td>13.9544</td></tr>
+<tr><td>6</td><td><code>w12 h256 relu lr9e-4 e60 lam0.8 sig0.1 b128</code></td><td>8.9525</td><td>2.5921</td><td>10.4303</td><td>8.7972</td><td>13.9904</td></tr>
+</tbody>
+</table>
+<p>Konfigurasi akhir terbaik LSTM adalah:</p>
+<ul>
+<li><code>window=12, units=256, activation=relu, lr=0.0009, lambda_coef=0.8, sigma_coef=0.1, batch=128, epochs=60</code></li>
+</ul>
+<h2>Perbandingan Ringkas Kedua Implementasi</h2>
+<table>
+<thead><tr><th>Aspek</th><th>FLF-BiLSTM</th><th>FLF-LSTM</th></tr></thead>
+<tbody>
+<tr><td>Keluarga metode tuning</td><td>Prosedur grid search bertahap</td><td>Prosedur grid search bertahap</td></tr>
+<tr><td>Objek optimasi</td><td>Arsitektur + pelatihan deep learning</td><td>Arsitektur + pelatihan deep learning</td></tr>
+<tr><td>Skema tuning</td><td>Holdout temporal 70:30</td><td>Latest-fold temporal holdout 72m/1m</td></tr>
+<tr><td>Jumlah stage</td><td>6</td><td>6</td></tr>
+<tr><td>Best MAE pipeline</td><td>9.0889 pips</td><td>8.9525 pips</td></tr>
+</tbody>
+</table>
+<h2>Kontribusi Optimasi Hyperparameter terhadap Kinerja Prediksi</h2>
+<p>Pada penelitian ini, optimasi hyperparameter memiliki kontribusi yang substantif terhadap kinerja prediksi karena berperan dalam mengendalikan panjang konteks temporal input, kapasitas representasi jaringan, dinamika pembelajaran, serta kekuatan regularisasi pada fungsi loss. Secara empiris, prosedur tuning bertahap menghasilkan penurunan <code>MAE_avg_pips</code> pada FLF-BiLSTM dari <code>9.3712</code> pada stage awal menjadi <code>9.0889</code> pada konfigurasi praktis terbaik, yang setara dengan perbaikan sebesar <code>0.2823</code> pips atau sekitar <code>3.01%</code>. Pada FLF-LSTM, <code>MAE_avg_pips</code> menurun dari <code>9.1917</code> menjadi <code>8.9525</code>, atau membaik sebesar <code>0.2392</code> pips setara sekitar <code>2.60%</code>. Besaran tersebut menunjukkan bahwa optimasi hyperparameter tidak hanya berfungsi sebagai penyesuaian teknis minor, tetapi sebagai komponen yang berkontribusi nyata terhadap peningkatan akurasi out-of-sample model.</p>
+<p>Selain menurunkan error agregat, hasil per stage juga menunjukkan bahwa kontribusi terbesar berasal dari hyperparameter yang langsung memengaruhi dinamika optimisasi dan bentuk fungsi objektif. Pada FLF-BiLSTM, perbaikan paling nyata muncul pada tahap <code>activation + learning rate</code> serta <code>lambda / sigma</code>, sedangkan pada FLF-LSTM pengaruh paling kuat muncul pada <code>learning rate</code> dan <code>epochs</code>. Temuan ini menunjukkan bahwa kualitas prediksi tidak hanya ditentukan oleh pemilihan arsitektur dasar, tetapi juga oleh ketepatan konfigurasi proses pembelajaran dan regularisasi. Dengan demikian, dalam konteks prediksi EURUSD H4, optimasi hyperparameter berperan penting untuk menekan error prediksi, menstabilkan generalisasi, mengurangi risiko overfitting, dan mengarahkan model menuju konfigurasi yang lebih andal untuk memprediksi candle berikutnya.</p>
+<h2>Kesimpulan</h2>
+<p>Secara metodologis, prosedur optimasi hyperparameter yang digunakan pada penelitian ini <strong>bukan</strong> metaheuristic optimization, <strong>bukan</strong> Bayesian optimization, dan <strong>bukan</strong> full exhaustive grid search. Prosedur yang dipakai lebih tepat disebut:</p>
+<p><strong>prosedur tuning hyperparameter berbasis grid search bertahap pada model deep learning dengan evaluasi temporal pada data time series</strong>.</p>
+<p>Formulasi tersebut kuat secara ilmiah karena:</p>
+<ul>
+<li>selaras dengan literatur yang mengakui grid search sebagai baseline tuning yang sah;</li>
+<li>konsisten dengan studi yang melakukan tuning per-komponen atau per-modul;</li>
+<li>sesuai dengan kebutuhan evaluasi kronologis pada data finansial;</li>
+<li>dan tidak mengandung klaim berlebihan bahwa metode ini adalah satu algoritma baku dengan nama yang sudah mapan.</li>
+</ul>
+<p>Dengan kata lain, istilah <code>stage-wise sequential grid search</code> dapat tetap digunakan di dalam tesis <strong>sebagai label prosedural deskriptif</strong>, tetapi penjelasan formalnya harus ditegaskan sebagai <strong>grid-search-based staged tuning procedure</strong>, bukan algoritma kanonik tunggal.</p>
+</body>
+</html>

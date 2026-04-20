@@ -1,0 +1,76 @@
+<html><head><meta charset='UTF-8'><title>Pipeline Summary</title><style>body { font-family: Arial, sans-serif; margin: 20px; } table { border-collapse: collapse; } th, td { border:1px solid #ccc; padding:6px 10px; text-align:left; } th { background:#f0f0f0; }</style></head><body><h1>Pipeline Summary (Staged HP Sweep)</h1><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Tahap</th>
+      <th>Input Window</th>
+      <th>Input H</th>
+      <th>Input Activation</th>
+      <th>Input LR</th>
+      <th>Input Epoch</th>
+      <th>Window*</th>
+      <th>H*</th>
+      <th>Activation*</th>
+      <th>LR*</th>
+      <th>Epoch*</th>
+      <th>MAE_avg_pips_best</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Window Sweep</td>
+      <td>[16, 24]</td>
+      <td>256</td>
+      <td>relu</td>
+      <td>0.0003</td>
+      <td>39</td>
+      <td>16</td>
+      <td>256</td>
+      <td>relu</td>
+      <td>0.0003</td>
+      <td>39</td>
+      <td>11.048267</td>
+    </tr>
+    <tr>
+      <td>Hidden Units Sweep</td>
+      <td>16</td>
+      <td>[200, 256]</td>
+      <td>relu</td>
+      <td>0.0003</td>
+      <td>39</td>
+      <td>16</td>
+      <td>256</td>
+      <td>relu</td>
+      <td>0.0003</td>
+      <td>39</td>
+      <td>11.048267</td>
+    </tr>
+    <tr>
+      <td>Activation + LR Sweep</td>
+      <td>16</td>
+      <td>256</td>
+      <td>[tanh, tanh, relu, relu, relu]</td>
+      <td>[0.0001, 0.0003, 0.0001, 0.0003, 0.0005]</td>
+      <td>39</td>
+      <td>16</td>
+      <td>256</td>
+      <td>relu</td>
+      <td>0.0005</td>
+      <td>39</td>
+      <td>10.796861</td>
+    </tr>
+    <tr>
+      <td>Epoch Tuning</td>
+      <td>16</td>
+      <td>256</td>
+      <td>relu</td>
+      <td>0.0003</td>
+      <td>[39, 45, 50]</td>
+      <td>16</td>
+      <td>256</td>
+      <td>relu</td>
+      <td>0.0003</td>
+      <td>39</td>
+      <td>11.048267</td>
+    </tr>
+  </tbody>
+</table></body></html>

@@ -1,0 +1,22 @@
+{
+  "data": "results/EURUSD_H4_clean.csv",
+  "sep": ",",
+  "columns": null,
+  "window": 12,
+  "split": 0.7,
+  "units": 256,
+  "epochs": 50,
+  "batch": 128,
+  "lr": 0.0005,
+  "beta1": 0.9,
+  "beta2": 0.999,
+  "schedule_decay": 0.004,
+  "seed": 42,
+  "activation": "relu",
+  "recurrent_activation": "sigmoid",
+  "output_activation": "",
+  "lambda_coef": 1.0,
+  "sigma_coef": 0.05,
+  "out": "results/final_preds.csv",
+  "history_out": "results/final_history.csv"
+}

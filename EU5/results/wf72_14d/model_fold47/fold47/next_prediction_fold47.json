@@ -1,0 +1,10 @@
+{
+  "dataset": "RisetEU/EU5/results/wf72_14d_fold47_dataset.csv",
+  "fold": "fold47",
+  "window": 14,
+  "pred_open": 1.1645127534866333,
+  "pred_high": 1.165435791015625,
+  "pred_low": 1.164078950881958,
+  "pred_close": 1.164182186126709,
+  "last_datetime": "2025-10-16T00:00:00"
+}

@@ -1,0 +1,8 @@
+bidirectional	kernel	shape=(4, 1024)
+bidirectional	recurrent_kernel	shape=(256, 1024)
+bidirectional	bias	shape=(1024,)
+bidirectional	kernel	shape=(4, 1024)
+bidirectional	recurrent_kernel	shape=(256, 1024)
+bidirectional	bias	shape=(1024,)
+dense	kernel	shape=(512, 4)
+dense	bias	shape=(4,)

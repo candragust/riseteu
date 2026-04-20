@@ -1,0 +1,51 @@
+{
+  "base_config": "bilstm_flf_config.json",
+  "stage1_window": {
+    "windows": [16, 24],
+    "fixed": {
+      "units": 256,
+      "activation": "relu",
+      "lr": 0.0003,
+      "epochs": 39,
+      "batch": 128
+    }
+  },
+  "stage2_units": {
+    "windows": [16],
+    "units": [200, 256],
+    "fixed": {
+      "activation": "relu",
+      "lr": 0.0003,
+      "epochs": 39,
+      "batch": 128
+    }
+  },
+  "stage3_activation_lr": {
+    "windows": [16],
+    "units": [256],
+    "combos": [
+      { "activation": "tanh", "lr": 0.0001 },
+      { "activation": "tanh", "lr": 0.0003 },
+      { "activation": "relu", "lr": 0.0001 },
+      { "activation": "relu", "lr": 0.0003 },
+      { "activation": "relu", "lr": 0.0005 }
+    ],
+    "fixed": {
+      "epochs": 39,
+      "batch": 128
+    }
+  },
+  "stage4_epochs": {
+    "windows": [16],
+    "units": [256],
+    "activation": "relu",
+    "lr": 0.0003,
+    "epochs": [ 39, 45, 50],
+    "batch": 128
+  },
+  "runtime": {
+    "out_dir": "results",
+    "name_template": "hp_w{w}_h{h}_{act}_lr{lr}_e{e}_preds.csv"
+  }
+}
+

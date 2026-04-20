@@ -1,0 +1,45 @@
+digraph bilstm_multitask {
+  rankdir=LR;
+  graph [splines=true, nodesep=0.7, ranksep=0.9];
+  node [shape=record, fontsize=12, fontname="Helvetica"];
+
+  input [label="{Input Window|12 candles x 4 OHLC features|Tensor: (batch, 12, 4)}"];
+  prep [label="{Windowing + Scaling|MinMax/ATR normalization\\nseeded @ windowing stage}"];
+
+  subgraph cluster_bilstm {
+    label="Shared Representation (BiLSTM)";
+    style="rounded";
+    color="#5a7ea4";
+    node [shape=record];
+
+    lstm_f [label="{Forward LSTM|256 units|activation = relu|4 gates: input/forget/output/candidate}"];
+    lstm_b [label="{Backward LSTM|256 units|activation = relu|4 gates: input/forget/output/candidate}"];
+    merge [label="{Concatenate + Dropout|512 features|dropout = 0.0, l2 = 0.0}"];
+
+    lstm_f -> merge;
+    lstm_b -> merge;
+  }
+
+  shared_dense [label="{Shared Dense Projection|Dense(256) + relu|captures joint price+direction factors}"];
+
+  subgraph cluster_heads {
+    label="Multi-task Heads";
+    style="rounded";
+    color="#8c6bb1";
+    node [shape=record];
+
+    price_head [label="{Price Head|Dense(4) linear|pred_open, pred_high, pred_low, pred_close}"];
+    dir_head [label="{Direction Head|Dense(1) + sigmoid|P(bullish)}"];
+  }
+
+  flf_loss [shape=note, label="Forex Loss Function (FLF)\\nlambda=1.0, sigma=0.05 (MAE weighted by ATR)"];
+  dir_loss [shape=note, label="Directional Loss\\nBinary cross-entropy"];
+  total_loss [shape=folder, label="Total Loss = FLF + alpha*BCE\\n(Joint backprop)"];
+
+  input -> prep -> lstm_f;
+  prep -> lstm_b;
+  merge -> shared_dense -> price_head;
+  shared_dense -> dir_head;
+  price_head -> flf_loss -> total_loss;
+  dir_head -> dir_loss -> total_loss;
+}

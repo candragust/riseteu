@@ -1,0 +1,110 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OPTIMASI HYPERPARAMETER</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.6; color: #222; }
+    h1, h2, h3 { color: #111; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f0f0f0; }
+    code { background: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    ul, ol { margin-top: 8px; }
+  </style>
+</head>
+<body>
+<h1>OPTIMASI HYPERPARAMETER</h1>
+<h2>Subbab: Optimasi Hyperparameter pada Model Prediksi Time Series Keuangan</h2>
+<p>Optimasi hyperparameter merupakan tahap yang sangat penting dalam pengembangan model prediksi time series keuangan karena performa model sangat sensitif terhadap konfigurasi arsitektur, skema pelatihan, struktur input, dan strategi evaluasi. Hal ini menjadi semakin penting pada data finansial yang bersifat nonstasioner, ber-noise tinggi, dan kerap mengalami perubahan rezim pasar. Dalam konteks ini, hyperparameter tidak dipelajari secara langsung selama training, melainkan ditentukan sebelum pelatihan dimulai. Hyperparameter tersebut dapat mencakup panjang jendela input (<em>lookback window</em>), jumlah layer dan unit, learning rate, batch size, epoch, dropout, regularisasi, horizon prediksi, dan strategi prapemrosesan seperti dekomposisi sinyal atau seleksi fitur.</p>
+<p>Pada prediksi finansial, optimasi hyperparameter tidak semata-mata bertujuan menurunkan error seperti MAE atau RMSE, tetapi juga meningkatkan stabilitas generalisasi, menjaga robustitas model terhadap noise, dan mengurangi overfitting. Karena itu, metode optimasi hyperparameter harus dibahas secara eksplisit sebagai bagian dari metodologi penelitian, bukan dianggap sekadar detail implementasi teknis.</p>
+<h2>1. Pola Pendekatan Optimasi pada Literatur</h2>
+<p>Berdasarkan telaah literatur pada kumpulan paper yang tersedia dalam folder referensi, strategi optimasi hyperparameter dapat dipetakan ke dalam empat pola utama.</p>
+<h3>(a) Metaheuristic atau optimization algorithm sebagai mesin pencari konfigurasi terbaik</h3>
+<p>Sejumlah studi menggunakan algoritma optimasi eksplisit untuk mencari konfigurasi terbaik pada ruang pencarian yang luas dan nonlinier. Abu-Doush (2023) menggunakan <strong>archive-based Harris Hawks Optimizer</strong> untuk meningkatkan kinerja MLP. Perla et al. (2023) juga menunjukkan pola serupa melalui pendekatan <strong>hybrid neural network + optimization algorithm</strong> untuk forecasting dan trend detection pada pasar forex. Pada kelompok ini, algoritma optimasi menjadi komponen utama yang mengarahkan pencarian konfigurasi.</p>
+<h3>(b) Tuning hyperparameter pada model ML klasik setelah feature extraction</h3>
+<p>Beberapa studi menempatkan optimasi hyperparameter pada model prediktor downstream setelah tahap ekstraksi fitur oleh model deep learning. Simsek et al. (2024), misalnya, menggunakan LSTM sebagai ekstraktor fitur dan kemudian mengoptimasi model XGBoost melalui <strong>random search</strong>. Pola ini menunjukkan bahwa optimasi hyperparameter dapat muncul di lebih dari satu tingkat pipeline.</p>
+<h3>(c) Seleksi variabel dan struktur input sebagai bentuk optimasi</h3>
+<p>Pada sebagian penelitian, yang dioptimasi bukan hanya arsitektur model, tetapi juga komposisi input. Xu et al. (2025) menekankan <strong>multivariate selection + nonlinear combination</strong>, sedangkan Abolmakarem et al. (2024) menunjukkan kerangka <strong>multi-stage</strong> yang memanfaatkan engineered and derivative indices. Dalam kelompok ini, optimasi diarahkan pada kualitas representasi input dan pengurangan noise.</p>
+<h3>(d) Optimasi konfigurasi arsitektur dan pelatihan pada deep learning</h3>
+<p>Mayoritas studi deep learning pada domain finansial sangat bergantung pada keputusan hyperparameter arsitektur dan pelatihan. Harbaoui and Elhadjamor (2024) menekankan pentingnya pengaturan unit, layer, dan parameter pelatihan pada model LSTM-RNN fusion. Liang et al. (2022) menunjukkan bahwa model hybrid berbasis ICEEMDAN dan LSTM-CNN-CBAM menambah ruang hyperparameter melalui parameter dekomposisi, jaringan, dan attention. Koo and Kim (2024) juga memperlihatkan bahwa strategi dekomposisi pada LSTM memperkenalkan hyperparameter tambahan di luar konfigurasi LSTM standar. Dakalbab et al. (2025) memperluas isu ini pada model multimodal forex dengan attention, sehingga metodologi tuning perlu dijelaskan dengan jelas agar hasil replikatif.</p>
+<h2>2. Metode Optimasi yang Relevan untuk Penelitian Tesis</h2>
+<p>Literatur pada folder referensi juga menunjukkan bahwa metode optimasi hyperparameter dapat dikelompokkan menurut <strong>mesin pencarinya</strong>.</p>
+<h3>(a) Simple search-based tuning</h3>
+<p>Kelompok ini mencakup <strong>grid search</strong> dan <strong>random search</strong>. Cohen and Aiche (2023) secara eksplisit menyebut penggunaan <strong>cross-validation dan grid search</strong> untuk memilih hyperparameter terbaik. Chen and Huang (2021) menjelaskan Bayesian optimization dengan cara membandingkannya terhadap random dan grid search, yang secara tidak langsung menegaskan bahwa grid search merupakan baseline tuning yang sah dan lazim digunakan.</p>
+<h3>(b) Bayesian optimization</h3>
+<p>Chen and Huang (2021) serta Pagnottoni and Spelta (2024) menunjukkan pemakaian <strong>Bayesian optimization</strong> sebagai strategi yang lebih efisien dalam beberapa kasus, terutama ketika biaya evaluasi model mahal dan ruang hyperparameter cukup besar.</p>
+<h3>(c) Metaheuristic optimization</h3>
+<p>Kelompok ini mencakup Harris Hawks Optimizer, Grey Wolf Optimization, NSGA-II, Genetic Algorithm, dan algoritma optimasi sejenis. Paper seperti Abu-Doush (2023), Xu et al. (2024), dan Sadeghi et al. (2021) menempatkan algoritma optimasi sebagai komponen sentral dalam pencarian konfigurasi terbaik.</p>
+<h3>(d) Modular atau staged tuning</h3>
+<p>Dakalbab et al. (2025) menyatakan bahwa <strong>setiap modality dituning secara independen</strong>, sedangkan Abolmakarem et al. (2024) bekerja dengan kerangka <strong>multi-stage approach</strong>. Kedua paper ini penting karena memberikan justifikasi bahwa proses tuning dapat dilakukan secara <strong>bertahap</strong> atau <strong>per-komponen</strong>, bukan harus sekaligus pada semua parameter.</p>
+<h2>3. Posisi Metode yang Digunakan dalam Penelitian Ini</h2>
+<p>Berdasarkan klasifikasi di atas, metode yang digunakan pada penelitian tesis ini <strong>tidak</strong> termasuk:</p>
+<ul>
+<li>Bayesian optimization,</li>
+<li>metaheuristic optimization,</li>
+<li>atau feature selection sebagai mesin optimasi utama.</li>
+</ul>
+<p>Metode yang digunakan paling tepat diposisikan sebagai:</p>
+<p><strong>prosedur tuning hyperparameter berbasis grid search bertahap pada model deep learning dengan evaluasi temporal pada data time series</strong></p>
+<p>Secara substantif, metode penelitian ini berada pada kategori:</p>
+<ul>
+<li><strong>optimasi hyperparameter arsitektur dan pelatihan deep learning</strong></li>
+</ul>
+<p>Secara prosedural, metode penelitian ini berada pada kategori:</p>
+<ul>
+<li><strong>simple search-based tuning</strong>, khususnya <strong>grid search bertahap</strong></li>
+</ul>
+<p>Penting ditekankan bahwa istilah <strong><code>stage-wise sequential grid search</code></strong> yang digunakan dalam dokumen penelitian <strong>bukan nama algoritma baku yang dapat ditelusuri ke satu paper pencetus tunggal</strong>, melainkan <strong>label deskriptif</strong> untuk prosedur yang dipakai.</p>
+<p>Dengan demikian, formulasi yang paling aman dan tepat untuk penulisan tesis adalah:</p>
+<p>penelitian ini menggunakan <strong>prosedur optimasi hyperparameter berbasis grid search bertahap</strong>, di mana satu kelompok hyperparameter divariasikan pada setiap tahap, sedangkan konfigurasi terbaik dari tahap sebelumnya digunakan sebagai baseline untuk tahap berikutnya, dengan evaluasi yang tetap mempertahankan urutan temporal data.</p>
+<h2>4. Mengapa Pendekatan Ini Layak Digunakan</h2>
+<p>Pendekatan ini layak dipakai dalam tesis karena beberapa alasan.</p>
+<ol>
+<li><strong>Transparan secara metodologis</strong></li>
+</ol>
+<p>Efek setiap kelompok hyperparameter terhadap performa model dapat diamati secara jelas.</p>
+<ol>
+<li><strong>Mudah direplikasi</strong></li>
+</ol>
+<p>Prosedur staged tuning lebih mudah diikuti, diuji ulang, dan diaudit dibanding strategi pencarian yang terlalu kompleks.</p>
+<ol>
+<li><strong>Sesuai dengan karakter data time series finansial</strong></li>
+</ol>
+<p>Evaluasi dilakukan secara kronologis sehingga tidak mencampurkan masa lalu dan masa depan.</p>
+<ol>
+<li><strong>Efisien secara komputasi</strong></li>
+</ol>
+<p>Pencarian penuh atas seluruh kombinasi hyperparameter akan sangat mahal dan tidak efisien untuk konteks penelitian terapan.</p>
+<ol>
+<li><strong>Cukup kuat sebagai metodologi tesis</strong></li>
+</ol>
+<p>Meskipun tidak menjamin optimum global, pendekatan ini sudah memadai untuk menghasilkan model yang kuat dan dapat dipertanggungjawabkan.</p>
+<h2>5. Keterbatasan yang Perlu Diakui</h2>
+<p>Sebagaimana metode tuning heuristik lainnya, pendekatan ini memiliki beberapa keterbatasan:</p>
+<ul>
+<li>tidak menjamin solusi global terbaik;</li>
+<li>sensitif terhadap baseline awal;</li>
+<li>sensitif terhadap urutan stage;</li>
+<li>tidak mengeksplorasi seluruh interaksi lintas-parameter secara penuh;</li>
+<li>sangat dipengaruhi oleh rancangan grid yang dipilih peneliti.</li>
+</ul>
+<p>Oleh sebab itu, secara metodologis pendekatan ini lebih tepat disebut:</p>
+<p><strong>structured heuristic tuning procedure</strong></p>
+<p>daripada algoritma optimasi global.</p>
+<h2>6. Implikasi untuk Penulisan Tesis</h2>
+<p>Untuk naskah tesis, istilah yang direkomendasikan adalah:</p>
+<p><strong>optimasi hyperparameter arsitektur dan pelatihan deep learning dengan pendekatan grid search bertahap pada data time series yang dipisah secara temporal</strong></p>
+<p>Jika ingin memakai istilah Inggris, versi yang masih aman adalah:</p>
+<p><strong>a stage-wise sequential grid-search procedure</strong></p>
+<p>Namun istilah Inggris tersebut harus dijelaskan sebagai <strong>deskripsi prosedur penelitian</strong>, bukan sebagai nama algoritma baku yang sudah mapan di literatur.</p>
+<h2>Kesimpulan</h2>
+<p>Literatur pada folder referensi ini memberikan dasar yang cukup kuat bahwa prosedur tuning yang dipakai dalam penelitian ini mempunyai legitimasi metodologis. Landasan itu tidak berasal dari satu paper yang menyebut frasa persis <strong>“stage-wise sequential grid search”</strong>, melainkan dari kombinasi beberapa garis bukti:</p>
+<ul>
+<li>penggunaan <strong>grid search</strong> sebagai baseline tuning yang sah;</li>
+<li>praktik <strong>modular atau independent tuning</strong> pada model atau modality tertentu;</li>
+<li>evaluasi hyperparameter yang dilakukan secara sistematis;</li>
+<li>dan penggunaan <strong>time-series-aware validation</strong> pada lingkungan data finansial.</li>
+</ul>
+<p>Dengan demikian, metode penelitian ini dapat dipertanggungjawabkan secara akademik sebagai <strong>prosedur optimasi hyperparameter berbasis grid search bertahap pada model deep learning untuk data time series keuangan</strong>.</p>
+</body>
+</html>

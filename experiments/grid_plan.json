@@ -1,0 +1,45 @@
+{
+  "base_config": "bilstm_flf_config.json",
+  "runs": [
+    {
+      "name": "tanh_lr1e4",
+      "window": 32,
+      "units": 200,
+      "activation": "tanh",
+      "lr": 0.0001,
+      "epochs": 75
+    },
+    {
+      "name": "tanh_lr3e4",
+      "window": 32,
+      "units": 200,
+      "activation": "tanh",
+      "lr": 0.0003,
+      "epochs": 75
+    },
+    {
+      "name": "relu_lr1e4",
+      "window": 32,
+      "units": 200,
+      "activation": "relu",
+      "lr": 0.0001,
+      "epochs": 75
+    },
+    {
+      "name": "relu_lr3e4",
+      "window": 32,
+      "units": 200,
+      "activation": "relu",
+      "lr": 0.0003,
+      "epochs": 75
+    },
+    {
+      "name": "relu_lr5e4",
+      "window": 32,
+      "units": 200,
+      "activation": "relu",
+      "lr": 0.0005,
+      "epochs": 75
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+name,job,mae_avg_pips,mae_open_pips,mae_high_pips,mae_low_pips,mae_close_pips,preds,train_seconds,window,units,activation,lr,epochs,lambda_coef,sigma_coef,batch
+eur_s5_w12_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b64,eur_s5_batch64,9.924400715071505,3.94482343234322,9.564432618261824,11.927467546754672,14.260879262926304,results/eurusd_pipeline/eur_s5_batch64_preds.csv,38.87324701203033,12,256,relu,0.0007,50,0.8,0.15,64
+eur_s5_w12_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b128,eur_s5_batch128,9.088899064906482,2.3843187568756554,9.735203520352039,10.114418591859176,14.121655390539056,results/eurusd_pipeline/eur_s5_batch128_preds.csv,28.908819760079496,12,256,relu,0.0007,50,0.8,0.15,128

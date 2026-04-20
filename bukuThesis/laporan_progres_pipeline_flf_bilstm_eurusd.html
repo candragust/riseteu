@@ -1,0 +1,353 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Laporan Progres Implementasi Pipeline FLF-BiLSTM untuk EURUSD H4</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.6; color: #222; }
+    h1, h2, h3 { color: #111; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f0f0f0; }
+    code { background: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    ul, ol { margin-top: 8px; }
+  </style>
+</head>
+<body>
+<h1>Laporan Progres Implementasi Pipeline FLF-BiLSTM untuk EURUSD H4</h1>
+<p>Tanggal: 17 April 2026</p>
+<h2>1. Tujuan dokumen</h2>
+<p>Dokumen ini menyajikan uraian teknis dan hasil sementara dari pipeline <strong>FLF-BiLSTM</strong> yang telah diimplementasikan untuk peramalan satu langkah ke depan (<code>1-step ahead</code>) pada data <strong>EURUSD timeframe 4H</strong>. Dokumen ini disusun sebagai bahan laporan progres tesis dan difokuskan pada komponen yang telah tervalidasi secara eksperimental di dalam folder kerja <code>RisetEU</code>.</p>
+<p>Secara khusus, dokumen ini membahas:</p>
+<ul>
+<li>rancangan pipeline data-to-model untuk prediksi OHLC,</li>
+<li>implementasi <code>Bidirectional LSTM</code> dengan <code>Forex Loss Function (FLF)</code>,</li>
+<li>prosedur tuning hyperparameter bertahap,</li>
+<li>evaluasi berbasis holdout dan walk-forward,</li>
+<li>ringkasan kinerja model untuk horizon uji pendek,</li>
+<li>artefak eksperimen yang telah dihasilkan.</li>
+</ul>
+<p>Dokumen ini belum membahas baseline <code>ARIMA</code> dan <code>FLF-LSTM</code> murni secara lengkap karena kedua jalur tersebut belum memiliki runner, validasi, dan report yang setara dengan jalur BiLSTM utama.</p>
+<h2>2. Ringkasan status implementasi</h2>
+<p>Pada tahap ini, implementasi yang paling matang di folder <code>RisetEU</code> adalah jalur <strong>FLF-BiLSTM untuk EURUSD H4</strong>. Kematangan tersebut ditunjukkan oleh ketersediaan komponen-komponen berikut:</p>
+<ul>
+<li>model BiLSTM utama yang dapat dikonfigurasi,</li>
+<li>loss khusus berbasis struktur candlestick (FLF),</li>
+<li>pipeline tuning hyperparameter 6 tahap,</li>
+<li>validasi temporal pada beberapa skema walk-forward,</li>
+<li>artefak visual untuk analisis error dan perilaku prediksi,</li>
+<li>model terlatih, file prediksi, dan riwayat training.</li>
+</ul>
+<p>Dari sudut pandang progres tesis, cabang ini sudah layak diposisikan sebagai <strong>hasil implementasi utama</strong> yang dapat dipresentasikan, karena tidak lagi berhenti pada tahap desain metodologi, tetapi sudah menghasilkan keluaran numerik dan visual yang dapat dianalisis secara ilmiah.</p>
+<h2>3. Peta file utama implementasi</h2>
+<p>File inti yang membentuk pipeline ini adalah:</p>
+<ul>
+<li><code>data_prep_eurusd.py</code></li>
+<li><code>bilstm_flf_experiment.py</code></li>
+<li><code>eurusd_pipeline_runner.py</code></li>
+<li><code>rolling_fixed_runner.py</code></li>
+<li><code>rolling_fixed_runner_days.py</code></li>
+<li><code>pipeline_summary_generator.py</code></li>
+<li><code>mae_atr_report.py</code></li>
+<li><code>ohlc_dot_report.py</code></li>
+<li><code>plot_loss_curves.py</code></li>
+</ul>
+<p>Artefak hasil eksperimen utama berada di:</p>
+<ul>
+<li><code>results/eurusd_pipeline/</code></li>
+<li><code>results/validation_report.html</code></li>
+<li><code>results/rolling_fixed/</code></li>
+<li><code>results/rolling_train24_test3/</code></li>
+<li><code>results/rolling_train48_test3/</code></li>
+<li><code>results/rolling_train60_test3/</code></li>
+<li><code>results/rolling_train72_test3/</code></li>
+<li><code>results/rolling_train72_test1/</code></li>
+<li><code>results/rolling_train72_test14d_days/</code></li>
+</ul>
+<p>Artefak final model dan prediksi juga tersedia di:</p>
+<ul>
+<li><code>results/finalweightmodel.h5</code></li>
+<li><code>results/final_preds.csv</code></li>
+<li><code>results/final_history.csv</code></li>
+</ul>
+<h2>4. Alur pipeline FLF-BiLSTM</h2>
+<h3>4.1. Definisi masalah dan data masukan</h3>
+<p>Masalah yang diselesaikan dalam pipeline ini adalah <strong>multivariate sequence forecasting</strong> untuk memprediksi <code>Open</code>, <code>High</code>, <code>Low</code>, dan <code>Close</code> candle berikutnya berdasarkan sejumlah candle historis sebelumnya. Dataset utama yang dipakai adalah:</p>
+<ul>
+<li><code>EURUSD_H4_25Oct17.csv</code></li>
+<li>hasil pembersihan: <code>results/EURUSD_H4_clean.csv</code></li>
+</ul>
+<p>Dengan demikian, setiap observasi diperlakukan sebagai vektor empat dimensi <code>[open, high, low, close]</code>, dan target model adalah vektor OHLC satu langkah ke depan.</p>
+<h3>4.2. Akuisisi, pembersihan, dan standardisasi data</h3>
+<p>Tahap prapemrosesan dilakukan melalui <code>data_prep_eurusd.py</code> dan alur pembacaan data di <code>bilstm_flf_experiment.py</code>. Secara teknis, tahapan ini mencakup:</p>
+<ul>
+<li>deteksi dan pemetaan kolom OHLC,</li>
+<li>pemaksaan tipe data numerik,</li>
+<li>penghapusan observasi tidak valid (<code>dropna</code>),</li>
+<li>penataan urutan kronologis data,</li>
+<li>pembentukan subset train dan test berbasis waktu.</li>
+</ul>
+<p>Setelah pemisahan temporal dilakukan, fitur dan target distandardisasi menggunakan <strong>mean</strong> dan <strong>standard deviation</strong> yang diestimasi hanya dari subset train. Strategi ini penting untuk menjaga disiplin evaluasi time-series dan menghindari kebocoran informasi (<code>data leakage</code>) dari periode uji ke periode latih.</p>
+<h3>4.3. Konstruksi dataset supervised dengan sliding window</h3>
+<p>Pipeline membentuk pasangan input-target menggunakan mekanisme <code>sliding window</code>. Jika panjang jendela adalah <code>W</code>, maka satu sampel input terdiri atas <code>W</code> candle historis berturut-turut, sedangkan targetnya adalah candle ke-<code>W+1</code>.</p>
+<p>Sebagai contoh, pada konfigurasi terbaik dengan <code>window = 12</code>, model menerima dua belas candle historis EURUSD H4 untuk memprediksi satu candle OHLC berikutnya. Pendekatan ini konsisten dengan literatur FLF-LSTM dan sesuai dengan rancangan eksperimen yang dijelaskan dalam proposal tesis.</p>
+<h3>4.4. Arsitektur FLF-BiLSTM</h3>
+<p>Model utama didefinisikan pada <code>bilstm_flf_experiment.py</code> dengan struktur konseptual sebagai berikut:</p>
+<ol>
+<li><code>InputLayer</code> untuk tensor berukuran <code>(window, feature_dim)</code>,</li>
+<li>satu layer <code>Bidirectional(LSTM)</code> dengan jumlah unit per arah yang dapat dikonfigurasi,</li>
+<li>satu layer <code>Dense(4)</code> untuk menghasilkan prediksi <code>open</code>, <code>high</code>, <code>low</code>, dan <code>close</code>.</li>
+</ol>
+<p>Secara metodologis, penggunaan BiLSTM dipilih untuk menangkap representasi temporal yang lebih kaya dibanding LSTM satu arah, terutama ketika pola harga jangka pendek dan menengah saling mempengaruhi dalam satu jendela observasi.</p>
+<h3>4.5. Mekanisme optimisasi dan regularisasi</h3>
+<p>Training model dilakukan menggunakan optimizer <code>Nadam</code>. Pipeline juga sudah mendukung komponen regularisasi berikut:</p>
+<ul>
+<li><code>dropout</code>,</li>
+<li><code>recurrent_dropout</code>,</li>
+<li><code>L2 regularization</code> (<code>l2_reg</code>),</li>
+<li><code>EarlyStopping</code> berbasis <code>val_loss</code> dengan <code>restore_best_weights=True</code>.</li>
+</ul>
+<p>Poin ini penting secara ilmiah karena menunjukkan bahwa pipeline tidak hanya mengejar error minimum, tetapi juga mengontrol kestabilan training dan risiko overfitting.</p>
+<h3>4.6. Forex Loss Function (FLF)</h3>
+<p>Komponen pembeda utama penelitian ini adalah penggunaan <strong>Forex Loss Function (FLF)</strong> yang diimplementasikan pada fungsi <code>make_flf_loss(...)</code>. Berbeda dari loss generik seperti <code>MSE</code>, FLF dirancang agar penalti tidak hanya didasarkan pada selisih titik harga, tetapi juga mempertimbangkan struktur candlestick secara lebih eksplisit.</p>
+<p>Dua parameter utama pada FLF adalah:</p>
+<ul>
+<li><code>lambda_coef</code>, yang mengontrol bobot kesalahan harga langsung,</li>
+<li><code>sigma_coef</code>, yang mengontrol penalti terhadap deviasi rata-rata struktur candle.</li>
+</ul>
+<p>Secara praktis, FLF diarahkan untuk menekan kesalahan prediksi sambil tetap menjaga konsistensi bentuk candlestick yang dihasilkan model. Dengan demikian, model tidak hanya dinilai “dekat” secara numerik, tetapi juga “masuk akal” secara struktural untuk konteks data forex.</p>
+<h3>4.7. Reproducibility</h3>
+<p>Pipeline juga telah mengakomodasi <code>seed</code> tetap untuk <code>Python</code>, <code>NumPy</code>, dan <code>TensorFlow</code>, sehingga eksperimen dapat diulang dengan konsistensi yang lebih baik. Fitur ini penting untuk kebutuhan tesis karena hasil yang dilaporkan harus dapat direproduksi secara teknis.</p>
+<h2>5. Pipeline tuning hyperparameter</h2>
+<h3>5.1. Rasionalitas tuning bertahap</h3>
+<p>Tuning dilakukan oleh <code>eurusd_pipeline_runner.py</code> menggunakan <strong>prosedur tuning hyperparameter berbasis grid search bertahap dengan evaluasi temporal pada data time series</strong>. Strategi ini dipilih karena ruang pencarian parameter cukup besar; oleh sebab itu, pencarian dilakukan secara bertahap agar biaya eksperimen tetap terkontrol dan interpretasi hasil per tahap tetap jelas.</p>
+<p>Dalam konteks dokumentasi internal, istilah <code>stage-wise sequential tuning</code> dapat tetap dipakai sebagai label deskriptif untuk alur eksperimen. Namun, secara metodologis istilah tersebut tidak diperlakukan sebagai nama algoritma baku tunggal. Posisi metode yang lebih tepat adalah <strong>simple search-based tuning</strong>, khususnya <strong>grid search bertahap</strong>, sehingga berbeda dari <strong>Bayesian optimization</strong>, <strong>metaheuristic optimization</strong>, maupun <strong>full exhaustive grid search</strong>.</p>
+<p>Enam stage yang telah diimplementasikan adalah:</p>
+<ol>
+<li><code>window sweep</code>,</li>
+<li><code>units sweep</code>,</li>
+<li><code>activation + learning rate</code>,</li>
+<li><code>lambda / sigma sweep</code>,</li>
+<li><code>batch size sweep</code>,</li>
+<li><code>epoch sweep</code>.</li>
+</ol>
+<p>Konfigurasi terbaik dari satu stage digunakan sebagai baseline pada stage berikutnya. Dengan pendekatan ini, pengaruh masing-masing kelompok parameter dapat diamati secara lebih terstruktur.</p>
+<h3>5.2. Hasil numerik tuning per stage</h3>
+<p>Berikut adalah ringkasan hasil terbaik per stage berdasarkan file <code>results/eurusd_pipeline/stage*_summary.csv</code>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Best config</th><th>MAE avg (pips)</th><th>MAE Open</th><th>MAE High</th><th>MAE Low</th><th>MAE Close</th></tr></thead>
+<tbody>
+<tr><td>Stage 1</td><td><code>w12 h256 relu lr5e-4 e50 lam1.0 sig0.05 b128</code></td><td>9.3712</td><td>2.7112</td><td>9.9461</td><td>10.5209</td><td>14.3065</td></tr>
+<tr><td>Stage 2</td><td><code>w12 h256 relu lr5e-4 e50 lam1.0 sig0.05 b128</code></td><td>9.3378</td><td>2.6964</td><td>10.0403</td><td>10.3747</td><td>14.2399</td></tr>
+<tr><td>Stage 3</td><td><code>w12 h256 relu lr7e-4 e50 lam1.0 sig0.05 b128</code></td><td>9.2032</td><td>2.6013</td><td>9.7416</td><td>10.2836</td><td>14.1863</td></tr>
+<tr><td>Stage 4</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.0975</td><td>2.3853</td><td>9.7353</td><td>10.1396</td><td>14.1296</td></tr>
+<tr><td>Stage 5</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.0889</td><td>2.3843</td><td>9.7352</td><td>10.1144</td><td>14.1217</td></tr>
+<tr><td>Stage 6</td><td><code>w12 h256 relu lr7e-4 e50 lam0.8 sig0.15 b128</code></td><td>9.1196</td><td>2.4512</td><td>9.7274</td><td>10.1843</td><td>14.1154</td></tr>
+</tbody>
+</table>
+<h3>5.3. Interpretasi hasil tuning</h3>
+<p>Beberapa temuan penting dari proses tuning adalah sebagai berikut:</p>
+<ul>
+<li><code>window = 12</code> memberikan keseimbangan terbaik antara konteks historis dan stabilitas generalisasi; window yang terlalu panjang (<code>16</code> dan <code>20</code>) justru menaikkan error.</li>
+<li><code>units = 256</code> konsisten lebih baik daripada <code>128</code> dan <code>200</code>, menunjukkan bahwa kapasitas representasi yang lebih besar masih bermanfaat pada data EURUSD H4.</li>
+<li>kombinasi <code>activation = relu</code> dan <code>learning rate = 0.0007</code> memberikan perbaikan dibanding konfigurasi <code>tanh</code> dan learning rate yang lebih rendah.</li>
+<li>optimasi parameter FLF menunjukkan bahwa <code>lambda = 0.8</code> dan <code>sigma = 0.15</code> lebih efektif daripada kombinasi yang lebih dekat ke baseline awal.</li>
+<li><code>batch = 128</code> lebih stabil dibanding <code>batch = 64</code>.</li>
+<li>pada stage akhir, <code>epoch = 50</code> tetap menjadi pilihan terbaik dibanding <code>30</code> dan <code>39</code>.</li>
+</ul>
+<h3>5.4. Konfigurasi akhir hasil pipeline</h3>
+<p>Konfigurasi terbaik hasil tuning holdout dapat dirangkum sebagai berikut:</p>
+<ul>
+<li><code>window = 12</code></li>
+<li><code>units = 256</code></li>
+<li><code>activation = relu</code></li>
+<li><code>lr = 0.0007</code></li>
+<li><code>epochs = 50</code></li>
+<li><code>lambda_coef = 0.8</code></li>
+<li><code>sigma_coef = 0.15</code></li>
+<li><code>batch = 128</code></li>
+</ul>
+<p>Konfigurasi ini tercatat sebagai:</p>
+<ul>
+<li><code>eur_s6_w12_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b128</code></li>
+</ul>
+<h2>6. Validasi model</h2>
+<h3>6.1. Holdout sebagai tahap optimasi awal</h3>
+<p>Tahap tuning awal dijalankan menggunakan holdout berbasis waktu, yaitu 70% data awal untuk train dan 30% data akhir untuk validasi. Pada skema ini, best run menghasilkan:</p>
+<ul>
+<li><code>MAE rata-rata = 9.1196 pips</code></li>
+<li><code>MAE open = 2.4512 pips</code></li>
+<li><code>MAE high = 9.7274 pips</code></li>
+<li><code>MAE low = 10.1843 pips</code></li>
+<li><code>MAE close = 14.1154 pips</code></li>
+</ul>
+<p>Secara metodologis, hasil holdout digunakan terutama sebagai <strong>tahap optimasi hyperparameter</strong>, bukan sebagai dasar tunggal untuk klaim performa final.</p>
+<h3>6.2. Walk-forward validation sebagai evaluasi utama</h3>
+<p>Setelah konfigurasi terbaik diperoleh, model dievaluasi kembali menggunakan validasi time-series yang lebih ketat melalui:</p>
+<ul>
+<li><code>rolling_fixed_runner.py</code></li>
+<li><code>rolling_fixed_runner_days.py</code></li>
+</ul>
+<p>Skema validasi yang sudah dijalankan meliputi:</p>
+<ul>
+<li>Walk-Forward Fixed (Train 12 bulan, Test 6 bulan, Step 6 bulan)</li>
+<li>Walk-Forward Fixed (Train 24 bulan, Test 3 bulan, Step 3 bulan)</li>
+<li>Walk-Forward Fixed (Train 48 bulan, Test 3 bulan, Step 3 bulan)</li>
+<li>Walk-Forward Fixed (Train 60 bulan, Test 3 bulan, Step 3 bulan)</li>
+<li>Walk-Forward Fixed (Train 72 bulan, Test 3 bulan, Step 3 bulan)</li>
+<li>Walk-Forward Fixed (Train 72 bulan, Test 1 bulan, Step 1 bulan)</li>
+<li>Walk-Forward Fixed (Train 72 bulan, Test 14 hari, Step 14 hari)</li>
+<li>Rolling-Origin Expanding pada beberapa variasi train awal dan step</li>
+</ul>
+<p>Ragam skema ini penting karena menunjukkan bahwa model telah diuji dalam konteks evaluasi temporal yang lebih realistis daripada holdout tunggal.</p>
+<h3>6.3. Fokus pada horizon uji pendek</h3>
+<p>Untuk kebutuhan operasional prediksi forex, horizon uji yang lebih pendek lebih relevan karena model diharapkan akurat pada data terbaru, bukan semata-mata pada akumulasi performa rata-rata jangka panjang. Dalam repo saat ini, terdapat tiga horizon uji pendek yang paling penting:</p>
+<ul>
+<li><code>14 hari</code></li>
+<li><code>1 bulan</code></li>
+<li><code>3 bulan</code></li>
+</ul>
+<p>Semua eksperimen berikut menggunakan panjang train <code>72 bulan</code>, sehingga perbandingan antarskenario tetap berada pada basis historis yang sama.</p>
+<h3>6.4. Ringkasan error untuk 72 bulan train dengan horizon uji pendek</h3>
+<table>
+<thead><tr><th>Skema validasi</th><th>Fold yang dianalisis</th><th>Test samples per fold</th><th>MAE avg (pips)</th><th>Median (pips)</th><th>Best fold</th><th>Worst fold</th><th>Tail-20 MAE avg</th></tr></thead>
+<tbody>
+<tr><td>Train 72 bln, Test 3 bln, Step 3 bln</td><td>1-7</td><td>384-396</td><td>10.15</td><td>10.34</td><td>#01 = 6.84</td><td>#06 = 14.12</td><td>9.81</td></tr>
+<tr><td>Train 72 bln, Test 1 bln, Step 1 bln</td><td>19-21</td><td>126-138</td><td>12.68</td><td>12.52</td><td>#21 = 10.70</td><td>#19 = 14.81</td><td>13.56</td></tr>
+<tr><td>Train 72 bln, Test 14 hari, Step 14 hari</td><td>42-46</td><td>60-61</td><td>14.01</td><td>10.15</td><td>#43 = 9.77</td><td>#46 = 20.87</td><td>13.64</td></tr>
+</tbody>
+</table>
+<h3>6.5. Interpretasi ilmiah terhadap horizon uji pendek</h3>
+<p>Terdapat tiga temuan penting dari perbandingan ini.</p>
+<p>Pertama, <strong>secara rata-rata agregat</strong>, horizon uji <code>3 bulan</code> memberikan error terendah (<code>MAE avg = 10.15 pips</code>). Ini menunjukkan bahwa konfigurasi FLF-BiLSTM yang telah dituning masih mampu menjaga kestabilan generalisasi ketika dievaluasi pada blok data yang relatif lebih panjang.</p>
+<p>Kedua, ketika horizon uji dipersingkat menjadi <code>1 bulan</code>, error rata-rata meningkat menjadi <code>12.68 pips</code>. Kenaikan ini mengindikasikan bahwa model menjadi lebih sensitif terhadap dinamika lokal yang lebih baru, walaupun performanya masih berada pada rentang yang kompetitif untuk prediksi OHLC.</p>
+<p>Ketiga, pada horizon uji <code>14 hari</code>, error rata-rata agregat meningkat lagi menjadi <code>14.01 pips</code>, dan dispersi antarfold juga lebih besar, terlihat dari selisih antara fold terbaik (<code>9.77 pips</code>) dan fold terburuk (<code>20.87 pips</code>). Hal ini konsisten dengan karakter evaluasi jangka sangat pendek, di mana perubahan rezim mikro, volatilitas sesaat, dan noise lokal lebih dominan.</p>
+<h3>6.6. Implikasi untuk arah eksperimen tesis</h3>
+<p>Jika orientasi tesis diarahkan pada <strong>relevansi operasional jangka pendek</strong>, maka skema <code>72 bulan train</code> dengan <code>test 14 hari</code> atau <code>test 1 bulan</code> lebih tepat dijadikan fokus utama pembahasan, walaupun nilainya sedikit lebih buruk dibanding skema <code>3 bulan</code>.</p>
+<p>Secara metodologis, pilihan ini dapat dibenarkan karena:</p>
+<ul>
+<li>data uji lebih dekat dengan penggunaan riil model,</li>
+<li>evaluasi lebih sensitif terhadap stabilitas model pada periode terbaru,</li>
+<li>hasil prediksi menjadi lebih relevan untuk konteks trading dan analisis teknikal jangka pendek.</li>
+</ul>
+<p>Dengan demikian, untuk narasi tesis, horizon <code>3 bulan</code> dapat dipakai sebagai <strong>benchmark stabilitas</strong>, sedangkan horizon <code>14 hari</code> dan <code>1 bulan</code> dapat diposisikan sebagai <strong>benchmark operasional</strong>.</p>
+<h2>7. Artefak visual yang sudah tersedia</h2>
+<p>Pipeline ini sudah menghasilkan berbagai jenis visual report yang bisa langsung dipakai sebagai bahan pembahasan di laporan tesis.</p>
+<h3>7.1. Ringkasan tuning pipeline</h3>
+<p>File:</p>
+<ul>
+<li><code>results/eurusd_pipeline/eurusd_pipeline_summary.html</code></li>
+</ul>
+<p>Isi:</p>
+<ul>
+<li>tabel hasil tiap stage,</li>
+<li>konfigurasi terbaik pada setiap tahap,</li>
+<li>MAE per komponen OHLC,</li>
+<li>durasi training.</li>
+</ul>
+<h3>7.2. Validation report</h3>
+<p>File:</p>
+<ul>
+<li><code>results/validation_report.html</code></li>
+</ul>
+<p>Isi:</p>
+<ul>
+<li>ringkasan holdout,</li>
+<li>ringkasan berbagai skema walk-forward dan rolling-origin,</li>
+<li>fold schedule,</li>
+<li>MAE rata-rata, median, best fold, dan worst fold.</li>
+</ul>
+<h3>7.3. MAE vs ATR report</h3>
+<p>Contoh file:</p>
+<ul>
+<li><code>results/mae_atr_report.html</code></li>
+<li><code>results/mae_atr_holdout_tail30.html</code></li>
+<li><code>results/mae_atr_wf72_test14d_fold46_tail30.html</code></li>
+</ul>
+<p>Isi:</p>
+<ul>
+<li>perbandingan error prediksi dengan volatilitas candle,</li>
+<li>analisis apakah error model masih proporsional terhadap range pasar.</li>
+</ul>
+<h3>7.4. OHLC plots dan dot plots</h3>
+<p>Contoh file:</p>
+<ul>
+<li><code>results/ohlc_plots.html</code></li>
+<li><code>results/ohlc_dot_holdout_full.html</code></li>
+<li><code>results/ohlc_dot_wf72_test14d_all_folds.html</code></li>
+</ul>
+<p>Isi:</p>
+<ul>
+<li>visualisasi actual vs predicted untuk OHLC,</li>
+<li>inspeksi detail perilaku model pada seluruh candle test maupun tail candle.</li>
+</ul>
+<h3>7.5. Loss curve</h3>
+<p>File:</p>
+<ul>
+<li><code>results/loss_curves.html</code></li>
+</ul>
+<p>Isi:</p>
+<ul>
+<li>kurva training loss,</li>
+<li>bahan analisis stabilitas training dan indikasi overfitting/underfitting.</li>
+</ul>
+<h2>8. Penyimpanan model dan hasil prediksi</h2>
+<p>Pipeline ini juga sudah menghasilkan artefak model yang dapat dipakai kembali.</p>
+<p>File penting:</p>
+<ul>
+<li><code>results/finalweightmodel.h5</code></li>
+<li><code>results/final_preds.csv</code></li>
+<li><code>results/final_history.csv</code></li>
+</ul>
+<p>Makna artefak:</p>
+<ul>
+<li>model tersimpan dapat digunakan kembali untuk inferensi,</li>
+<li>file prediksi dapat dipakai untuk analisis lanjutan,</li>
+<li>file history dapat dipakai untuk evaluasi proses training.</li>
+</ul>
+<p>Dengan adanya artefak ini, alur menuju inferensi candle berikutnya secara teknis sudah terbuka, karena model terlatih dan window historis terakhir dapat dipakai untuk menghasilkan prediksi 1-step berikutnya.</p>
+<h2>9. Keterkaitan dengan proposal tesis</h2>
+<p>Pipeline yang sudah ada ini sudah memenuhi sebagian besar porsi implementasi utama pada proposal, khususnya untuk jalur:</p>
+<ul>
+<li><code>FLF-BiLSTM</code></li>
+<li><code>FLF-LSTM</code> pembanding untuk skema validasi horizon pendek tertentu</li>
+<li><code>EURUSD</code></li>
+<li><code>timeframe 4H</code></li>
+<li><code>prediksi 1 candle OHLC ahead</code></li>
+<li><code>tuning hyperparameter</code></li>
+<li><code>walk-forward validation</code></li>
+<li><code>evaluasi berbasis MAE, MAE(pips), serta awal integrasi Squared Correlation dan Directional Accuracy</code></li>
+</ul>
+<p>Secara substansi, bagian tesis yang sudah dapat dilaporkan berdasarkan implementasi ini adalah:</p>
+<ol>
+<li>desain pipeline forecasting OHLC berbasis BiLSTM,</li>
+<li>implementasi custom Forex Loss Function,</li>
+<li>mekanisme tuning hyperparameter bertahap,</li>
+<li>evaluasi pada skema holdout dan walk-forward,</li>
+<li>penyusunan visual report untuk pembahasan hasil.</li>
+</ol>
+<h2>10. Batasan implementasi saat ini</h2>
+<p>Walaupun jalur FLF-BiLSTM sudah kuat, ada beberapa bagian proposal yang belum sepenuhnya selesai dalam cabang implementasi ini:</p>
+<ul>
+<li>baseline <code>ARIMA</code> belum menjadi pipeline operasional utama,</li>
+<li><code>FLF-LSTM</code> sudah tersedia untuk pembanding pada skema tertentu, tetapi belum seluruhnya diparalelkan untuk semua horizon, timeframe, dan report seperti jalur BiLSTM utama,</li>
+<li>metrik <code>Squared Correlation (Pearson corr²)</code> dan <code>Directional Accuracy</code> sudah mulai diintegrasikan pada report komparatif, tetapi belum menjadi evaluator utama yang konsisten di seluruh report,</li>
+<li>komparasi akhir <code>4H vs 1D</code> belum tersusun sebagai bab hasil yang final,</li>
+<li>fitur teknikal tambahan (<code>RSI</code>, <code>MACD</code>, <code>ATR</code>) belum menjadi cabang final utama pada pipeline EURUSD inti.</li>
+</ul>
+<p>Poin ini penting untuk disampaikan dalam laporan progres agar posisi capaian penelitian tetap jujur dan sistematis.</p>
+<h2>11. Kesimpulan progres</h2>
+<p>Berdasarkan implementasi di folder <code>RisetEU</code>, dapat disimpulkan bahwa penelitian sudah berhasil membangun <strong>pipeline FLF-BiLSTM untuk EURUSD H4</strong> yang lengkap dari sisi engineering eksperimen. Pipeline ini sudah mencakup persiapan data, sequence construction, pelatihan model BiLSTM dengan Forex Loss Function, tuning hyperparameter bertahap, validasi walk-forward, penyimpanan artefak model, serta pelaporan visual hasil eksperimen.</p>
+<p>Dengan demikian, untuk kebutuhan laporan progres tesis, cabang ini sudah cukup kuat untuk dipresentasikan sebagai <strong>hasil implementasi utama yang telah berjalan</strong>. Tahap penelitian berikutnya secara logis adalah melengkapi baseline pembanding dan evaluator tambahan agar keseluruhan desain eksperimen dalam proposal dapat terpenuhi sepenuhnya.</p>
+<h2>12. Rekomendasi tahap berikutnya</h2>
+<p>Urutan kerja yang paling rasional setelah capaian ini adalah:</p>
+<ol>
+<li>merapikan satu baseline eksperimen final FLF-BiLSTM yang dijadikan acuan,</li>
+<li>memperluas baseline <code>FLF-LSTM</code> agar setara pada lebih banyak skema validasi dan report,</li>
+<li>menambahkan baseline <code>ARIMA</code>,</li>
+<li>menyebarkan evaluator <code>Directional Accuracy</code> dan <code>Squared Correlation (Pearson corr²)</code> ke seluruh report utama,</li>
+<li>menutup komparasi <code>4H vs 1D</code>,</li>
+<li>baru setelah itu memperluas eksperimen dengan indikator teknikal tambahan.</li>
+</ol>
+<p>Urutan ini akan membuat implementasi repo semakin selaras dengan struktur bab metodologi dan hasil dalam tesis.</p>
+</body>
+</html>
