@@ -30,7 +30,7 @@ def parse_args():
     )
     parser.add_argument(
         "--out",
-        default="/home/hduser/jupyter/gust/RisetEU/results/model_comparison_wf72_test1_last5.html",
+        default="/home/hduser/jupyter/gust/RisetEU/results/comparison/comparison_models_wf72_test1_last5.html",
         help="Output HTML report path.",
     )
     parser.add_argument(
@@ -301,6 +301,7 @@ def main():
     ]
 
     out_path = Path(args.out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("".join(html), encoding="utf-8")
     print(f"Wrote comparison report to {out_path.resolve()}")
 

@@ -86,7 +86,11 @@ def sync_bab_i() -> None:
 
     replacements = {
         "hasil perbandingan FLF-LSTM dan FLF-BiLSTM pada results/lstm_vs_bilstm_wf72_test1_last5_comparison.html,":
-            "1. hasil perbandingan tiga model pada results/model_comparison_wf72_test1_last5.html,",
+            "1. hasil perbandingan tiga model pada results/comparison/comparison_models_wf72_test1_last5.html,",
+        "1. hasil perbandingan tiga model pada results/model_comparison_wf72_test1_last5.html,":
+            "1. hasil perbandingan tiga model pada results/comparison/comparison_models_wf72_test1_last5.html,",
+        "1. hasil perbandingan tiga model pada results/comparison/model_comparison_wf72_test1_last5.html,":
+            "1. hasil perbandingan tiga model pada results/comparison/comparison_models_wf72_test1_last5.html,",
         "hasil tuning FLF-LSTM dan FLF-BiLSTM pada bukuThesis/optimasi_hyperparameter_flf_bilstm_lstm_eurusd.md, dan":
             "2. hasil tuning FLF-LSTM dan FLF-BiLSTM pada bukuThesis/optimasi_hyperparameter_flf_bilstm_lstm_eurusd.md,",
         "baseline ARIMA pada Arima/result/arima_wf72_test1_last5/.":
@@ -110,6 +114,19 @@ def sync_bab_i() -> None:
 
 def sync_metodologi() -> None:
     doc = Document(METODOLOGI)
+    if not contains(doc, "Dalam penelitian ini, horizon testing ditetapkan tetap selama 1 bulan"):
+        anchor = find_first(doc, "Untuk menjaga fairness antar model, skenario evaluasi komparatif utama menggunakan walk-forward fixed dengan 72 bulan data latih dan 1 bulan data uji.")
+        p1 = insert_paragraph_after(
+            anchor,
+            "Dalam penelitian ini, horizon testing ditetapkan tetap selama 1 bulan. Pemilihan horizon ini didasarkan pada kebutuhan untuk menjaga konsistensi protokol evaluasi antar model, mempertahankan relevansi operasional pada pasar forex, serta menyediakan jumlah sampel uji yang cukup representatif pada timeframe 4H. Dengan horizon 1 bulan, evaluasi masih berfokus pada kondisi pasar terbaru tanpa membuat ukuran sampel uji terlalu pendek seperti 14 hari atau terlalu panjang seperti 3 bulan. Oleh karena itu, horizon 1 bulan diperlakukan sebagai skenario evaluasi utama, sedangkan horizon lain yang pernah dicoba hanya diposisikan sebagai konteks eksploratif dan bukan basis utama penarikan kesimpulan penelitian.",
+            "Normal",
+        )
+        insert_paragraph_after(
+            p1,
+            "Sementara itu, panjang jendela training ditetapkan sebesar 72 bulan dan diperlakukan sebagai keputusan desain evaluasi yang rasional, bukan sebagai hasil optimasi yang mengklaim nilai terbaik secara absolut. Pemilihan 72 bulan dimaksudkan untuk menyediakan konteks historis yang cukup panjang bagi model, menjaga kecukupan sampel latih, dan memastikan protokol evaluasi yang seragam pada seluruh model yang dibandingkan. Dengan demikian, penggunaan walk-forward fixed 72 bulan training dan 1 bulan testing diposisikan sebagai kerangka evaluasi utama yang defensif secara metodologis, meskipun penelitian ini tidak mengklaim bahwa 72 bulan telah dibuktikan lebih unggul daripada seluruh alternatif panjang jendela train lainnya.",
+            "Normal",
+        )
+
     if not contains(doc, "Sebagai analisis pendukung, model FLF dievaluasi pula melalui kurva loss dan val_loss"):
         anchor = find_first(doc, "Pada P5 – Output & Evaluation")
         insert_paragraph_after(
@@ -136,6 +153,19 @@ def sync_progress_skenario() -> None:
         insert_paragraph_after(
             anchor,
             "Selain metrik agregat tersebut, skenario pengujian pada tahap progress ini juga dilengkapi analisis pendukung berupa analisis konvergensi dan overfitting untuk FLF-LSTM dan FLF-BiLSTM, serta diagnostik residual forecast untuk baseline ARIMA. Analisis tambahan ini tidak menggantikan MAE(pips) sebagai metrik utama, tetapi membantu memastikan bahwa perbedaan error antar model konsisten dengan perilaku pelatihan dan kualitas residual masing-masing model.",
+            "Normal",
+        )
+
+    if not contains(doc, "Horizon uji 1 bulan dipilih sebagai fokus utama"):
+        anchor = find_first(doc, "Ringkasan hasil komparatif utama menggunakan lima fold terakhir, yaitu fold 17 sampai fold 21.")
+        p1 = insert_paragraph_after(
+            anchor,
+            "Horizon uji 1 bulan dipilih sebagai fokus utama karena memberikan keseimbangan yang lebih baik antara relevansi operasional pasar forex dan kecukupan sampel evaluasi pada timeframe 4H. Dengan horizon ini, model tetap diuji pada kondisi pasar terbaru, tetapi jumlah observasi uji masih cukup untuk menghasilkan perbandingan yang bermakna antar model.",
+            "Normal",
+        )
+        insert_paragraph_after(
+            p1,
+            "Jendela training 72 bulan dipilih sebagai keputusan desain evaluasi untuk menyediakan konteks historis yang cukup panjang dan menjaga fairness protokol antar model. Pilihan ini tidak dimaknai sebagai klaim bahwa 72 bulan adalah nilai train window terbaik secara absolut, melainkan sebagai konfigurasi evaluasi utama yang rasional dan konsisten untuk ARIMA, FLF-LSTM, dan FLF-BiLSTM.",
             "Normal",
         )
 

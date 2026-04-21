@@ -45,7 +45,6 @@
 <li><code>bilstm_flf_experiment.py</code></li>
 <li><code>eurusd_pipeline_runner.py</code></li>
 <li><code>rolling_fixed_runner.py</code></li>
-<li><code>rolling_fixed_runner_days.py</code></li>
 <li><code>pipeline_summary_generator.py</code></li>
 <li><code>mae_atr_report.py</code></li>
 <li><code>ohlc_dot_report.py</code></li>
@@ -54,14 +53,13 @@
 <p>Artefak hasil eksperimen utama berada di:</p>
 <ul>
 <li><code>results/eurusd_pipeline/</code></li>
-<li><code>results/validation_report.html</code></li>
-<li><code>results/rolling_fixed/</code></li>
-<li><code>results/rolling_train24_test3/</code></li>
-<li><code>results/rolling_train48_test3/</code></li>
-<li><code>results/rolling_train60_test3/</code></li>
-<li><code>results/rolling_train72_test3/</code></li>
-<li><code>results/rolling_train72_test1/</code></li>
-<li><code>results/rolling_train72_test14d_days/</code></li>
+<li><code>results/validation_report_wf72_test1_last5_bilstm.html</code></li>
+<li><code>results/rolling_train72_test1_last5/</code></li>
+<li><code>results/comparison/comparison_models_wf72_test1_last5.html</code></li>
+<li><code>results/mae_atr_wf72_test1_fold21_full.html</code></li>
+<li><code>results/ohlc_dot_wf72_test1_last5_all_folds.html</code></li>
+<li><code>results/loss_wf72_test1_last5_bilstm.html</code></li>
+<li><code>results/loss_gradient_wf72_test1_last5_bilstm.html</code></li>
 </ul>
 <p>Artefak final model dan prediksi juga tersedia di:</p>
 <ul>
@@ -185,51 +183,30 @@
 <p>Setelah konfigurasi terbaik diperoleh, model dievaluasi kembali menggunakan validasi time-series yang lebih ketat melalui:</p>
 <ul>
 <li><code>rolling_fixed_runner.py</code></li>
-<li><code>rolling_fixed_runner_days.py</code></li>
 </ul>
-<p>Skema validasi yang sudah dijalankan meliputi:</p>
-<ul>
-<li>Walk-Forward Fixed (Train 12 bulan, Test 6 bulan, Step 6 bulan)</li>
-<li>Walk-Forward Fixed (Train 24 bulan, Test 3 bulan, Step 3 bulan)</li>
-<li>Walk-Forward Fixed (Train 48 bulan, Test 3 bulan, Step 3 bulan)</li>
-<li>Walk-Forward Fixed (Train 60 bulan, Test 3 bulan, Step 3 bulan)</li>
-<li>Walk-Forward Fixed (Train 72 bulan, Test 3 bulan, Step 3 bulan)</li>
-<li>Walk-Forward Fixed (Train 72 bulan, Test 1 bulan, Step 1 bulan)</li>
-<li>Walk-Forward Fixed (Train 72 bulan, Test 14 hari, Step 14 hari)</li>
-<li>Rolling-Origin Expanding pada beberapa variasi train awal dan step</li>
-</ul>
-<p>Ragam skema ini penting karena menunjukkan bahwa model telah diuji dalam konteks evaluasi temporal yang lebih realistis daripada holdout tunggal.</p>
+<p>Pada tahap akhir penelitian, skema evaluasi yang dijadikan acuan utama adalah <strong>walk-forward fixed 72 bulan data latih dan 1 bulan data uji</strong>. Fokus ini dipilih agar narasi tesis tetap konsisten dengan protokol komparatif utama yang juga dipakai untuk <code>FLF-LSTM</code> dan baseline <code>ARIMA</code>.</p>
 <h3>6.3. Fokus pada horizon uji pendek</h3>
-<p>Untuk kebutuhan operasional prediksi forex, horizon uji yang lebih pendek lebih relevan karena model diharapkan akurat pada data terbaru, bukan semata-mata pada akumulasi performa rata-rata jangka panjang. Dalam repo saat ini, terdapat tiga horizon uji pendek yang paling penting:</p>
-<ul>
-<li><code>14 hari</code></li>
-<li><code>1 bulan</code></li>
-<li><code>3 bulan</code></li>
-</ul>
-<p>Semua eksperimen berikut menggunakan panjang train <code>72 bulan</code>, sehingga perbandingan antarskenario tetap berada pada basis historis yang sama.</p>
+<p>Untuk kebutuhan operasional prediksi forex, horizon uji yang lebih pendek lebih relevan karena model diharapkan akurat pada data terbaru, bukan semata-mata pada akumulasi performa rata-rata jangka panjang. Dalam dokumen progres ini, horizon uji yang digunakan sebagai fokus utama adalah <strong>1 bulan</strong>, karena horizon tersebut memberikan keseimbangan yang lebih baik antara relevansi operasional dan kecukupan jumlah sampel evaluasi pada timeframe <code>4H</code>.</p>
 <h3>6.4. Ringkasan error untuk 72 bulan train dengan horizon uji pendek</h3>
 <table>
 <thead><tr><th>Skema validasi</th><th>Fold yang dianalisis</th><th>Test samples per fold</th><th>MAE avg (pips)</th><th>Median (pips)</th><th>Best fold</th><th>Worst fold</th><th>Tail-20 MAE avg</th></tr></thead>
 <tbody>
-<tr><td>Train 72 bln, Test 3 bln, Step 3 bln</td><td>1-7</td><td>384-396</td><td>10.15</td><td>10.34</td><td>#01 = 6.84</td><td>#06 = 14.12</td><td>9.81</td></tr>
-<tr><td>Train 72 bln, Test 1 bln, Step 1 bln</td><td>19-21</td><td>126-138</td><td>12.68</td><td>12.52</td><td>#21 = 10.70</td><td>#19 = 14.81</td><td>13.56</td></tr>
-<tr><td>Train 72 bln, Test 14 hari, Step 14 hari</td><td>42-46</td><td>60-61</td><td>14.01</td><td>10.15</td><td>#43 = 9.77</td><td>#46 = 20.87</td><td>13.64</td></tr>
+<tr><td>Train 72 bln, Test 1 bln, Step 1 bln</td><td>17-21</td><td>127-138</td><td>12.40</td><td>12.04</td><td>#21 = 10.70</td><td>#20 = 15.21</td><td>13.50</td></tr>
 </tbody>
 </table>
 <h3>6.5. Interpretasi ilmiah terhadap horizon uji pendek</h3>
-<p>Terdapat tiga temuan penting dari perbandingan ini.</p>
-<p>Pertama, <strong>secara rata-rata agregat</strong>, horizon uji <code>3 bulan</code> memberikan error terendah (<code>MAE avg = 10.15 pips</code>). Ini menunjukkan bahwa konfigurasi FLF-BiLSTM yang telah dituning masih mampu menjaga kestabilan generalisasi ketika dievaluasi pada blok data yang relatif lebih panjang.</p>
-<p>Kedua, ketika horizon uji dipersingkat menjadi <code>1 bulan</code>, error rata-rata meningkat menjadi <code>12.68 pips</code>. Kenaikan ini mengindikasikan bahwa model menjadi lebih sensitif terhadap dinamika lokal yang lebih baru, walaupun performanya masih berada pada rentang yang kompetitif untuk prediksi OHLC.</p>
-<p>Ketiga, pada horizon uji <code>14 hari</code>, error rata-rata agregat meningkat lagi menjadi <code>14.01 pips</code>, dan dispersi antarfold juga lebih besar, terlihat dari selisih antara fold terbaik (<code>9.77 pips</code>) dan fold terburuk (<code>20.87 pips</code>). Hal ini konsisten dengan karakter evaluasi jangka sangat pendek, di mana perubahan rezim mikro, volatilitas sesaat, dan noise lokal lebih dominan.</p>
+<p>Pada lima fold terakhir skema <code>72 bulan/1 bulan</code>, <code>FLF-BiLSTM</code> menghasilkan rata-rata <code>MAE(pips) = 12.3993</code> dengan median <code>12.0381</code> pips. Fold terbaik adalah fold <code>21</code> dengan <code>10.6951</code> pips, sedangkan fold terburuk adalah fold <code>20</code> dengan <code>15.2108</code> pips. Variasi ini menunjukkan bahwa model masih cukup sensitif terhadap perubahan kondisi pasar terbaru, tetapi tetap mempertahankan performa yang kompetitif untuk tugas prediksi OHLC satu langkah ke depan.</p>
+<p>Nilai <code>tail-20 MAE avg</code> gabungan sebesar sekitar <code>13.50</code> pips menunjukkan bahwa pada bagian akhir tiap segmen uji, error tidak mengalami degradasi ekstrem secara sistematis. Dengan kata lain, walaupun terdapat perbedaan performa antar fold, model masih mempertahankan kestabilan relatif pada bagian akhir horizon evaluasi 1 bulan.</p>
 <h3>6.6. Implikasi untuk arah eksperimen tesis</h3>
-<p>Jika orientasi tesis diarahkan pada <strong>relevansi operasional jangka pendek</strong>, maka skema <code>72 bulan train</code> dengan <code>test 14 hari</code> atau <code>test 1 bulan</code> lebih tepat dijadikan fokus utama pembahasan, walaupun nilainya sedikit lebih buruk dibanding skema <code>3 bulan</code>.</p>
+<p>Jika orientasi tesis diarahkan pada <strong>relevansi operasional jangka pendek</strong>, maka skema <code>72 bulan train</code> dengan <code>test 1 bulan</code> paling tepat dijadikan fokus utama pembahasan.</p>
 <p>Secara metodologis, pilihan ini dapat dibenarkan karena:</p>
 <ul>
 <li>data uji lebih dekat dengan penggunaan riil model,</li>
 <li>evaluasi lebih sensitif terhadap stabilitas model pada periode terbaru,</li>
+<li>jumlah sampel uji masih cukup untuk membangun perbandingan yang fair,</li>
 <li>hasil prediksi menjadi lebih relevan untuk konteks trading dan analisis teknikal jangka pendek.</li>
 </ul>
-<p>Dengan demikian, untuk narasi tesis, horizon <code>3 bulan</code> dapat dipakai sebagai <strong>benchmark stabilitas</strong>, sedangkan horizon <code>14 hari</code> dan <code>1 bulan</code> dapat diposisikan sebagai <strong>benchmark operasional</strong>.</p>
+<p>Dengan demikian, untuk narasi tesis, horizon <code>1 bulan</code> diposisikan sebagai <strong>skenario evaluasi utama</strong>, sedangkan eksperimen horizon lain yang pernah dijalankan tidak lagi dijadikan pusat pembahasan hasil.</p>
 <h2>7. Artefak visual yang sudah tersedia</h2>
 <p>Pipeline ini sudah menghasilkan berbagai jenis visual report yang bisa langsung dipakai sebagai bahan pembahasan di laporan tesis.</p>
 <h3>7.1. Ringkasan tuning pipeline</h3>
@@ -247,48 +224,46 @@
 <h3>7.2. Validation report</h3>
 <p>File:</p>
 <ul>
-<li><code>results/validation_report.html</code></li>
+<li><code>results/validation_report_wf72_test1_last5_bilstm.html</code></li>
 </ul>
 <p>Isi:</p>
 <ul>
-<li>ringkasan holdout,</li>
-<li>ringkasan berbagai skema walk-forward dan rolling-origin,</li>
-<li>fold schedule,</li>
+<li>ringkasan evaluasi <code>walk-forward 72 bulan / 1 bulan</code>,</li>
+<li>fold schedule <code>17-21</code>,</li>
 <li>MAE rata-rata, median, best fold, dan worst fold.</li>
 </ul>
 <h3>7.3. MAE vs ATR report</h3>
 <p>Contoh file:</p>
 <ul>
-<li><code>results/mae_atr_report.html</code></li>
-<li><code>results/mae_atr_holdout_tail30.html</code></li>
-<li><code>results/mae_atr_wf72_test14d_fold46_tail30.html</code></li>
+<li><code>results/mae_atr_wf72_test1_fold21_full.html</code></li>
 </ul>
 <p>Isi:</p>
 <ul>
 <li>perbandingan error prediksi dengan volatilitas candle,</li>
-<li>analisis apakah error model masih proporsional terhadap range pasar.</li>
+<li>analisis apakah error model masih proporsional terhadap range pasar pada fold evaluasi utama.</li>
 </ul>
 <h3>7.4. OHLC plots dan dot plots</h3>
 <p>Contoh file:</p>
 <ul>
-<li><code>results/ohlc_plots.html</code></li>
-<li><code>results/ohlc_dot_holdout_full.html</code></li>
-<li><code>results/ohlc_dot_wf72_test14d_all_folds.html</code></li>
+<li><code>results/ohlc_dot_wf72_test1_last5_all_folds.html</code></li>
+<li><code>results/ohlc_dot_wf72_test1_fold21_full.html</code></li>
 </ul>
 <p>Isi:</p>
 <ul>
-<li>visualisasi actual vs predicted untuk OHLC,</li>
-<li>inspeksi detail perilaku model pada seluruh candle test maupun tail candle.</li>
+<li>visualisasi actual vs predicted untuk OHLC pada skenario <code>72 bulan/1 bulan</code>,</li>
+<li>inspeksi detail perilaku model pada seluruh candle test dan gabungan lima fold utama.</li>
 </ul>
 <h3>7.5. Loss curve</h3>
 <p>File:</p>
 <ul>
-<li><code>results/loss_curves.html</code></li>
+<li><code>results/loss_wf72_test1_last5_bilstm.html</code></li>
+<li><code>results/loss_gradient_wf72_test1_last5_bilstm.html</code></li>
 </ul>
 <p>Isi:</p>
 <ul>
 <li>kurva training loss,</li>
-<li>bahan analisis stabilitas training dan indikasi overfitting/underfitting.</li>
+<li>kurva validation loss,</li>
+<li>bahan analisis stabilitas training dan indikasi overfitting/underfitting pada skenario evaluasi utama.</li>
 </ul>
 <h2>8. Penyimpanan model dan hasil prediksi</h2>
 <p>Pipeline ini juga sudah menghasilkan artefak model yang dapat dipakai kembali.</p>
@@ -309,7 +284,7 @@
 <p>Pipeline yang sudah ada ini sudah memenuhi sebagian besar porsi implementasi utama pada proposal, khususnya untuk jalur:</p>
 <ul>
 <li><code>FLF-BiLSTM</code></li>
-<li><code>FLF-LSTM</code> pembanding untuk skema validasi horizon pendek tertentu</li>
+<li><code>FLF-LSTM</code> pembanding pada skema komparatif utama <code>72 bulan/1 bulan</code></li>
 <li><code>EURUSD</code></li>
 <li><code>timeframe 4H</code></li>
 <li><code>prediksi 1 candle OHLC ahead</code></li>

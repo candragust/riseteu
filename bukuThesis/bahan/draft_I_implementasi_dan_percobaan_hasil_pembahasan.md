@@ -81,7 +81,7 @@ Secara keseluruhan, hasil implementasi dan pengujian pada bagian ini mendukung k
 
 Draft ini disusun berdasarkan artefak implementasi yang tersedia pada saat penulisan, khususnya:
 
-1. hasil perbandingan tiga model pada `results/model_comparison_wf72_test1_last5.html`,
+1. hasil perbandingan tiga model pada `results/comparison/comparison_models_wf72_test1_last5.html`,
 2. hasil tuning `FLF-LSTM` dan `FLF-BiLSTM` pada `bukuThesis/optimasi_hyperparameter_flf_bilstm_lstm_eurusd.md`,
 3. baseline `ARIMA` pada `Arima/result/arima_wf72_test1_last5/`, dan
 4. analisis konvergensi dan diagnostik model pada `bukuThesis/bahan/analisis_konvergensi_dan_diagnostik_model_wf72_test1_last5.md`.
