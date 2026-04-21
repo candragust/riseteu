@@ -1,0 +1,145 @@
+{
+  "model": "ARIMA",
+  "input_mode": "OHLC_only",
+  "split": 0.9866934206,
+  "mae": {
+    "open": 0.001894087252430692,
+    "high": 0.0017747626835777261,
+    "low": 0.0017290717705359018,
+    "close": 0.0018446553521831392,
+    "avg": 0.001810644264681865
+  },
+  "mae_pips": {
+    "open": 18.940872524306922,
+    "high": 17.74762683577726,
+    "low": 17.290717705359018,
+    "close": 18.44655352183139,
+    "avg": 18.106442646818646
+  },
+  "targets": {
+    "open": {
+      "requested_order": [
+        1,
+        1,
+        0
+      ],
+      "order_search": true,
+      "selected_order": [
+        1,
+        0,
+        0
+      ],
+      "used_order": [
+        1,
+        0,
+        0
+      ],
+      "train_samples": 9342,
+      "test_samples": 127,
+      "aic": -88452.48077534538,
+      "bic": -88438.19643816163,
+      "search": {
+        "selection_mode": "grid_search",
+        "selection_metric": "aic",
+        "selection_score": -88452.48077534538,
+        "candidate_count": 18,
+        "successful_candidates": 18,
+        "failed_candidates": 0,
+        "failed_details": []
+      }
+    },
+    "high": {
+      "requested_order": [
+        1,
+        1,
+        0
+      ],
+      "order_search": true,
+      "selected_order": [
+        2,
+        1,
+        2
+      ],
+      "used_order": [
+        2,
+        1,
+        2
+      ],
+      "train_samples": 9342,
+      "test_samples": 127,
+      "aic": -89986.86157857318,
+      "bic": -89951.15234169553,
+      "search": {
+        "selection_mode": "grid_search",
+        "selection_metric": "aic",
+        "selection_score": -89986.86157857318,
+        "candidate_count": 18,
+        "successful_candidates": 18,
+        "failed_candidates": 0,
+        "failed_details": []
+      }
+    },
+    "low": {
+      "requested_order": [
+        1,
+        1,
+        0
+      ],
+      "order_search": true,
+      "selected_order": [
+        2,
+        1,
+        2
+      ],
+      "used_order": [
+        2,
+        1,
+        2
+      ],
+      "train_samples": 9342,
+      "test_samples": 127,
+      "aic": -90031.050233844,
+      "bic": -89995.34099696635,
+      "search": {
+        "selection_mode": "grid_search",
+        "selection_metric": "aic",
+        "selection_score": -90031.050233844,
+        "candidate_count": 18,
+        "successful_candidates": 18,
+        "failed_candidates": 0,
+        "failed_details": []
+      }
+    },
+    "close": {
+      "requested_order": [
+        1,
+        1,
+        0
+      ],
+      "order_search": true,
+      "selected_order": [
+        1,
+        0,
+        0
+      ],
+      "used_order": [
+        1,
+        0,
+        0
+      ],
+      "train_samples": 9342,
+      "test_samples": 127,
+      "aic": -88522.38065220203,
+      "bic": -88508.09631501828,
+      "search": {
+        "selection_mode": "grid_search",
+        "selection_metric": "aic",
+        "selection_score": -88522.38065220203,
+        "candidate_count": 18,
+        "successful_candidates": 18,
+        "failed_candidates": 0,
+        "failed_details": []
+      }
+    }
+  }
+}

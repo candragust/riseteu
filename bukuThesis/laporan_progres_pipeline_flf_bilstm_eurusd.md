@@ -15,7 +15,7 @@ Secara khusus, dokumen ini membahas:
 - ringkasan kinerja model untuk horizon uji pendek,
 - artefak eksperimen yang telah dihasilkan.
 
-Dokumen ini belum membahas baseline `ARIMA` dan `FLF-LSTM` murni secara lengkap karena kedua jalur tersebut belum memiliki runner, validasi, dan report yang setara dengan jalur BiLSTM utama.
+Catatan pembaruan: pada tahap terbaru penelitian, baseline `ARIMA` dan jalur `FLF-LSTM` sudah berhasil dioperasionalkan pada skema komparatif `walk-forward 72 bulan train / 1 bulan test` untuk lima fold terakhir (`17-21`). Namun, dokumen ini tetap difokuskan pada jalur implementasi **FLF-BiLSTM** sebagai cabang eksperimen yang paling matang dari sisi pipeline dan artefak visual.
 
 ## 2. Ringkasan status implementasi
 
@@ -369,13 +369,13 @@ Secara substansi, bagian tesis yang sudah dapat dilaporkan berdasarkan implement
 
 ## 10. Batasan implementasi saat ini
 
-Walaupun jalur FLF-BiLSTM sudah kuat, ada beberapa bagian proposal yang belum sepenuhnya selesai dalam cabang implementasi ini:
+Walaupun jalur FLF-BiLSTM sudah kuat, masih ada beberapa bagian proposal yang belum sepenuhnya selesai sebagai paket penelitian final:
 
-- baseline `ARIMA` belum menjadi pipeline operasional utama,
-- `FLF-LSTM` sudah tersedia untuk pembanding pada skema tertentu, tetapi belum seluruhnya diparalelkan untuk semua horizon, timeframe, dan report seperti jalur BiLSTM utama,
-- metrik `Squared Correlation (Pearson corr²)` dan `Directional Accuracy` sudah mulai diintegrasikan pada report komparatif, tetapi belum menjadi evaluator utama yang konsisten di seluruh report,
+- baseline `ARIMA` dan `FLF-LSTM` sudah operasional pada skema komparatif utama `72 bulan/1 bulan`, tetapi belum seluruhnya diperluas ke semua horizon, timeframe, dan variasi report seperti jalur BiLSTM,
+- metrik `Squared Correlation (Pearson corr²)` dan `Directional Accuracy` sudah diintegrasikan pada report komparatif utama, tetapi belum menjadi evaluator yang sepenuhnya seragam di seluruh report lama,
 - komparasi akhir `4H vs 1D` belum tersusun sebagai bab hasil yang final,
-- fitur teknikal tambahan (`RSI`, `MACD`, `ATR`) belum menjadi cabang final utama pada pipeline EURUSD inti.
+- fitur teknikal tambahan (`RSI`, `MACD`, `ATR`) belum menjadi cabang final utama pada pipeline EURUSD inti,
+- sinkronisasi seluruh dokumen laporan/proposal terhadap hasil komparatif tiga model masih perlu dijaga agar narasinya tidak tertinggal dari implementasi terbaru.
 
 Poin ini penting untuk disampaikan dalam laporan progres agar posisi capaian penelitian tetap jujur dan sistematis.
 
@@ -383,17 +383,16 @@ Poin ini penting untuk disampaikan dalam laporan progres agar posisi capaian pen
 
 Berdasarkan implementasi di folder `RisetEU`, dapat disimpulkan bahwa penelitian sudah berhasil membangun **pipeline FLF-BiLSTM untuk EURUSD H4** yang lengkap dari sisi engineering eksperimen. Pipeline ini sudah mencakup persiapan data, sequence construction, pelatihan model BiLSTM dengan Forex Loss Function, tuning hyperparameter bertahap, validasi walk-forward, penyimpanan artefak model, serta pelaporan visual hasil eksperimen.
 
-Dengan demikian, untuk kebutuhan laporan progres tesis, cabang ini sudah cukup kuat untuk dipresentasikan sebagai **hasil implementasi utama yang telah berjalan**. Tahap penelitian berikutnya secara logis adalah melengkapi baseline pembanding dan evaluator tambahan agar keseluruhan desain eksperimen dalam proposal dapat terpenuhi sepenuhnya.
+Pada tahap terbaru, pipeline tersebut juga sudah berhasil ditempatkan dalam pembandingan yang fair terhadap `FLF-LSTM` dan baseline statistik `ARIMA` pada skenario utama `walk-forward 72 bulan train / 1 bulan test` untuk lima fold terakhir. Hasil komparatif menunjukkan bahwa `FLF-BiLSTM` tetap lebih baik daripada `ARIMA`, walaupun pada skenario tersebut `FLF-LSTM` memberikan performa agregat terbaik. Dengan demikian, posisi `FLF-BiLSTM` dalam penelitian ini tetap kuat sebagai model pembanding arsitektural yang matang dan sahih secara eksperimental.
 
 ## 12. Rekomendasi tahap berikutnya
 
 Urutan kerja yang paling rasional setelah capaian ini adalah:
 
-1. merapikan satu baseline eksperimen final FLF-BiLSTM yang dijadikan acuan,
-2. memperluas baseline `FLF-LSTM` agar setara pada lebih banyak skema validasi dan report,
-3. menambahkan baseline `ARIMA`,
-4. menyebarkan evaluator `Directional Accuracy` dan `Squared Correlation (Pearson corr²)` ke seluruh report utama,
-5. menutup komparasi `4H vs 1D`,
-6. baru setelah itu memperluas eksperimen dengan indikator teknikal tambahan.
+1. merapikan satu baseline eksperimen final tiga model yang dijadikan acuan laporan tesis,
+2. memperluas evaluasi ke timeframe `1D` dengan protokol yang setara,
+3. menyeragamkan evaluator `Directional Accuracy` dan `Squared Correlation (Pearson corr²)` pada seluruh report utama,
+4. menutup komparasi `4H vs 1D`,
+5. baru setelah itu memperluas eksperimen dengan indikator teknikal tambahan.
 
 Urutan ini akan membuat implementasi repo semakin selaras dengan struktur bab metodologi dan hasil dalam tesis.

@@ -117,6 +117,62 @@ def build_fold_metrics(rolling_dir: Path):
     return pd.DataFrame(rows).sort_values("fold").reset_index(drop=True)
 
 
+def infer_method_and_hyperparams(rolling_dir: Path, title: str):
+    path_text = str(rolling_dir)
+    title_lower = title.lower()
+    if "bilstm" in title_lower or "bilstm" in path_text.lower():
+        method = "FLF-BiLSTM"
+        best_progression = Path("/home/hduser/jupyter/gust/RisetEU/results/eurusd_pipeline/best_progression.csv")
+    else:
+        method = "FLF-LSTM"
+        best_progression = Path(
+            "/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/results/lstm_pipeline_wf72_test1/best_progression.csv"
+        )
+
+    if not best_progression.exists():
+        return method, "-"
+
+    best_df = pd.read_csv(best_progression)
+    best = best_df.iloc[-1].to_dict()
+    hyperparams = (
+        f"window={int(best['window'])}, "
+        f"units={int(best['units'])}, "
+        f"activation={best['activation']}, "
+        f"lr={best['lr']}, "
+        f"epochs={int(best['epochs'])}, "
+        f"lambda={best['lambda_coef']}, "
+        f"sigma={best['sigma_coef']}, "
+        f"batch={int(best['batch'])}"
+    )
+    return method, hyperparams
+
+
+def build_ohlc_header_html(rolling_dir: Path, folds: pd.DataFrame, title: str):
+    method, hyperparams = infer_method_and_hyperparams(rolling_dir, title)
+    first_train = folds.iloc[0]
+    last_train = folds.iloc[-1]
+    training_period = (
+        "Fixed 72 bulan per fold; "
+        f"{first_train['train_start']} s.d. {first_train['train_end']} "
+        f"sampai {last_train['train_start']} s.d. {last_train['train_end']}"
+    )
+    testing_period = (
+        f"Fold {int(folds['fold'].min())}-{int(folds['fold'].max())}, 1 bulan per fold; "
+        f"{folds['test_start'].min()} s.d. {folds['test_end'].max()}"
+    )
+    return f"""
+<section class="report-header">
+  <h1>{title}</h1>
+  <div class="meta-grid">
+    <div class="meta-item"><span class="meta-label">Periode Training</span><span class="meta-value">{training_period}</span></div>
+    <div class="meta-item"><span class="meta-label">Periode Testing</span><span class="meta-value">{testing_period}</span></div>
+    <div class="meta-item"><span class="meta-label">Metode</span><span class="meta-value">{method}</span></div>
+    <div class="meta-item"><span class="meta-label">Hyperparameter</span><span class="meta-value">{hyperparams}</span></div>
+  </div>
+</section>
+"""
+
+
 def build_ohlc_all(rolling_dir: Path, folds: pd.DataFrame, out_path: Path, title: str):
     frames = []
     for _, row in folds.iterrows():
@@ -131,23 +187,22 @@ def build_ohlc_all(rolling_dir: Path, folds: pd.DataFrame, out_path: Path, title
 
     cols = ["open", "high", "low", "close"]
     fig = make_subplots(
-        rows=2,
-        cols=2,
+        rows=4,
+        cols=1,
         subplot_titles=[f"{c.upper()} Actual vs Pred" for c in cols],
-        horizontal_spacing=0.08,
-        vertical_spacing=0.12,
+        vertical_spacing=0.06,
     )
 
     for i, col in enumerate(cols):
-        r = i // 2 + 1
-        c = i % 2 + 1
+        r = i + 1
+        c = 1
         fig.add_trace(
             go.Scatter(
                 x=all_df["global_idx"],
                 y=all_df[f"true_{col}"],
-                mode="markers",
+                mode="lines",
                 name=f"Actual {col.upper()}",
-                marker=dict(size=3, color="#d62728"),
+                line=dict(color="#d62728", width=1.2),
                 showlegend=(i == 0),
             ),
             row=r,
@@ -159,7 +214,7 @@ def build_ohlc_all(rolling_dir: Path, folds: pd.DataFrame, out_path: Path, title
                 y=all_df[f"pred_{col}"],
                 mode="markers",
                 name=f"Pred {col.upper()}",
-                marker=dict(size=3, color="#1f77b4"),
+                marker=dict(size=2.6, color="#1f77b4", symbol="circle", opacity=0.9),
                 showlegend=(i == 0),
             ),
             row=r,
@@ -169,12 +224,84 @@ def build_ohlc_all(rolling_dir: Path, folds: pd.DataFrame, out_path: Path, title
         fig.update_yaxes(title_text="Price", tickformat=".5f", row=r, col=c)
 
     fig.update_layout(
-        title=title,
         template="plotly_white",
-        height=980,
-        legend=dict(orientation="h", y=1.05, x=0),
+        height=1500,
+        margin=dict(t=70, r=150, b=60, l=85),
+        legend=dict(orientation="v", y=1.0, x=1.02, xanchor="left", yanchor="top"),
     )
-    out_path.write_text(fig.to_html(include_plotlyjs="cdn"), encoding="utf-8")
+    header_html = build_ohlc_header_html(rolling_dir, folds, title)
+    plot_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
+    html = f"""
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{title}</title>
+  <style>
+    body {{
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #183a6b;
+    }}
+    .report-header {{
+      max-width: 1440px;
+      margin: 0 auto 16px auto;
+    }}
+    .report-header h1 {{
+      margin: 0 0 14px 0;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 600;
+    }}
+    .meta-grid {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 18px;
+    }}
+    .meta-item {{
+      border: 1px solid #d9e2f0;
+      border-radius: 6px;
+      padding: 10px 12px;
+      background: #fafcff;
+    }}
+    .meta-label {{
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #4f6690;
+      text-transform: uppercase;
+    }}
+    .meta-value {{
+      display: block;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #183a6b;
+      word-break: break-word;
+    }}
+    .plot-wrap {{
+      max-width: 1440px;
+      margin: 0 auto;
+    }}
+    @media (max-width: 900px) {{
+      .meta-grid {{
+        grid-template-columns: 1fr;
+      }}
+      body {{
+        padding: 14px;
+      }}
+    }}
+  </style>
+</head>
+<body>
+  {header_html}
+  <div class="plot-wrap">{plot_html}</div>
+</body>
+</html>
+"""
+    out_path.write_text(html, encoding="utf-8")
 
 
 def build_loss_report(rolling_dir: Path, folds: pd.DataFrame, out_path: Path, title: str):

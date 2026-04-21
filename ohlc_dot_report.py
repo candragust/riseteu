@@ -35,7 +35,7 @@ def build_chart(df: pd.DataFrame, col: str, actual_size: int, pred_size: int):
         title=f"{col.capitalize()} Price (tail segment)",
         xaxis_title="Index (tail)",
         yaxis_title="Price",
-        yaxis=dict(tickformat=".4f"),
+        yaxis=dict(tickformat=".5f"),
         template="plotly_white",
         height=360,
         legend=dict(orientation="h", y=-0.15),

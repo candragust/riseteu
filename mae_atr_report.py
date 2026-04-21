@@ -30,42 +30,45 @@ def load_atr(clean_path: Path, split_ratio: float, tail_len: int):
     val_df = df.iloc[start_val:]
     atr6_mean = val_df["atr6"].mean()
     atr12_mean = val_df["atr12"].mean()
-    tail = val_df.tail(tail_len).reset_index(drop=True)
-    return atr6_mean, atr12_mean, tail
+    if tail_len <= 0 or tail_len >= len(val_df):
+        sample = val_df.reset_index(drop=True)
+        label = "all test candles"
+    else:
+        sample = val_df.tail(tail_len).reset_index(drop=True)
+        label = f"tail {len(sample)}"
+    return atr6_mean, atr12_mean, sample, label
 
 
-def build_visual(tail_ohlc: pd.DataFrame, preds_tail: pd.DataFrame, tail_len: int):
+def build_visual(tail_ohlc: pd.DataFrame, preds_tail: pd.DataFrame, sample_label: str):
     return go.Figure(
         data=[
-            go.Candlestick(
+            go.Scatter(
                 x=list(range(len(tail_ohlc))),
-                open=tail_ohlc["open"],
-                high=tail_ohlc["high"],
-                low=tail_ohlc["low"],
-                close=tail_ohlc["close"],
-                name="True OHLC",
+                y=tail_ohlc["close"],
+                mode="lines",
+                name="True Close",
+                line=dict(color="#0f172a", width=2),
             ),
             go.Scatter(
                 x=list(range(len(preds_tail))),
                 y=preds_tail["pred_close"],
-                mode="lines+markers",
+                mode="lines",
                 name="Pred Close",
-                line=dict(color="blue"),
+                line=dict(color="#2563eb", width=2),
             ),
         ],
         layout=go.Layout(
-            title=f"{tail_len} Candles Terakhir: True OHLC + Pred Close",
-            xaxis_title="Index (tail)",
+            title=f"True vs Predicted Close ({sample_label})",
+            xaxis_title="Index (test sample)",
             yaxis_title="Price",
-            yaxis=dict(tickformat=".4f"),
+            yaxis=dict(tickformat=".5f"),
             template="plotly_white",
-            height=500,
-            xaxis=dict(rangeslider=dict(visible=False)),
+            height=420,
         ),
     )
 
 
-def build_overlay_visual(tail_ohlc: pd.DataFrame, preds_tail: pd.DataFrame, tail_len: int):
+def build_overlay_visual(tail_ohlc: pd.DataFrame, preds_tail: pd.DataFrame, sample_label: str):
     return go.Figure(
         data=[
             go.Candlestick(
@@ -75,86 +78,94 @@ def build_overlay_visual(tail_ohlc: pd.DataFrame, preds_tail: pd.DataFrame, tail
                 low=tail_ohlc["low"],
                 close=tail_ohlc["close"],
                 name="True OHLC",
+                increasing_line=dict(color="rgba(22,163,74,0.42)", width=0.8),
+                decreasing_line=dict(color="rgba(220,38,38,0.42)", width=0.8),
+                increasing_fillcolor="rgba(34,197,94,0.10)",
+                decreasing_fillcolor="rgba(239,68,68,0.10)",
+                whiskerwidth=0.16,
+                opacity=0.9,
             ),
-            go.Candlestick(
+            go.Ohlc(
                 x=list(range(len(preds_tail))),
                 open=preds_tail["pred_open"],
                 high=preds_tail["pred_high"],
                 low=preds_tail["pred_low"],
                 close=preds_tail["pred_close"],
-                name="Predicted OHLC",
-                increasing_line=dict(color="rgba(144,238,144,0.8)", width=1),
-                decreasing_line=dict(color="rgba(255,182,193,0.8)", width=1),
-                increasing_fillcolor="rgba(144,238,144,0.35)",
-                decreasing_fillcolor="rgba(255,182,193,0.35)",
-                opacity=0.35,
+                name="Predicted OHLC Bar",
+                increasing_line_color="rgba(22,163,74,0.98)",
+                decreasing_line_color="rgba(185,28,28,0.98)",
+                opacity=1.0,
             ),
         ],
         layout=go.Layout(
-            title=f"{tail_len} Candles Terakhir: Overlay True & Predicted OHLC",
-            xaxis_title="Index (tail)",
+            title=f"Overlay True vs Predicted OHLC ({sample_label})",
+            xaxis_title="Index (test sample)",
             yaxis_title="Price",
-            yaxis=dict(tickformat=".4f"),
+            yaxis=dict(tickformat=".5f"),
             template="plotly_white",
-            height=500,
+            height=520,
             xaxis=dict(rangeslider=dict(visible=False)),
         ),
     )
 
 
-def build_error_bar(preds_tail: pd.DataFrame, tail_ohlc: pd.DataFrame, atr6_mean, atr12_mean, tail_len: int):
+def build_error_bar(preds_tail: pd.DataFrame, tail_ohlc: pd.DataFrame, atr6_mean, atr12_mean, sample_label: str):
     errs_pips = np.abs(preds_tail["pred_close"] - tail_ohlc["close"]) * PIP_FACTOR
     atr6_tail = tail_ohlc["atr6"] * PIP_FACTOR
     atr12_tail = tail_ohlc["atr12"] * PIP_FACTOR
-    atr6_mean_pips = atr6_mean * PIP_FACTOR
-    atr12_mean_pips = atr12_mean * PIP_FACTOR
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=list(range(len(errs_pips))), y=errs_pips, name="|Error Close| (pips)"))
+    fig.add_trace(go.Scatter(
+        x=list(range(len(errs_pips))),
+        y=errs_pips,
+        mode="lines+markers",
+        name="|Error Close| (pips)",
+        line=dict(color="#2563eb", width=2),
+        marker=dict(color="#2563eb", size=5),
+    ))
     # ATR per candle (tail) untuk melihat variasi, plus rata-rata sebagai referensi
     fig.add_trace(go.Scatter(x=list(range(len(errs_pips))), y=atr6_tail,
-                             mode="lines+markers", name="ATR6 (tail)", line=dict(color="red")))
+                             mode="lines", name="ATR6 (tail)", line=dict(color="red", width=2)))
     fig.add_trace(go.Scatter(x=list(range(len(errs_pips))), y=atr12_tail,
-                             mode="lines+markers", name="ATR12 (tail)", line=dict(color="green", dash="dot")))
-    fig.add_trace(go.Scatter(x=list(range(len(errs_pips))), y=[atr6_mean_pips]*len(errs_pips),
-                             mode="lines", name="ATR6 mean", line=dict(color="red", dash="dash")))
-    fig.add_trace(go.Scatter(x=list(range(len(errs_pips))), y=[atr12_mean_pips]*len(errs_pips),
-                             mode="lines", name="ATR12 mean", line=dict(color="green", dash="dash")))
+                             mode="lines", name="ATR12 (tail)", line=dict(color="green", width=2, dash="dash")))
     fig.update_layout(
-        title=f"Error Close per Candle (tail {tail_len}) vs ATR (tail & mean) [pips]",
-        xaxis_title="Index (tail)",
+        title=f"Error Close per Candle ({sample_label}) vs ATR (sample) [pips]",
+        xaxis_title="Index (test sample)",
         yaxis_title="Absolute Error (pips)",
         yaxis=dict(tickformat=".1f"),
         template="plotly_white",
+        height=420,
     )
     return fig
 
 
-def build_error_bar_avg(preds_tail: pd.DataFrame, tail_ohlc: pd.DataFrame, atr6_mean, atr12_mean, tail_len: int):
+def build_error_bar_avg(preds_tail: pd.DataFrame, tail_ohlc: pd.DataFrame, atr6_mean, atr12_mean, sample_label: str):
     # MAE_avg per candle = rata-rata abs error 4 komponen per baris
     errs = np.abs(preds_tail[["pred_open", "pred_high", "pred_low", "pred_close"]].values -
                   tail_ohlc[["open", "high", "low", "close"]].values)
     errs_avg_pips = errs.mean(axis=1) * PIP_FACTOR
     atr6_tail = tail_ohlc["atr6"] * PIP_FACTOR
     atr12_tail = tail_ohlc["atr12"] * PIP_FACTOR
-    atr6_mean_pips = atr6_mean * PIP_FACTOR
-    atr12_mean_pips = atr12_mean * PIP_FACTOR
 
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=list(range(len(errs_avg_pips))), y=errs_avg_pips, name="|Error avg| (pips)"))
+    fig.add_trace(go.Scatter(
+        x=list(range(len(errs_avg_pips))),
+        y=errs_avg_pips,
+        mode="lines+markers",
+        name="|Error avg| (pips)",
+        line=dict(color="#2563eb", width=2),
+        marker=dict(color="#2563eb", size=5),
+    ))
     fig.add_trace(go.Scatter(x=list(range(len(errs_avg_pips))), y=atr6_tail,
-                             mode="lines+markers", name="ATR6 (tail)", line=dict(color="red")))
+                             mode="lines", name="ATR6 (tail)", line=dict(color="red", width=2)))
     fig.add_trace(go.Scatter(x=list(range(len(errs_avg_pips))), y=atr12_tail,
-                             mode="lines+markers", name="ATR12 (tail)", line=dict(color="green", dash="dot")))
-    fig.add_trace(go.Scatter(x=list(range(len(errs_avg_pips))), y=[atr6_mean_pips]*len(errs_avg_pips),
-                             mode="lines", name="ATR6 mean", line=dict(color="red", dash="dash")))
-    fig.add_trace(go.Scatter(x=list(range(len(errs_avg_pips))), y=[atr12_mean_pips]*len(errs_avg_pips),
-                             mode="lines", name="ATR12 mean", line=dict(color="green", dash="dash")))
+                             mode="lines", name="ATR12 (tail)", line=dict(color="green", width=2, dash="dash")))
     fig.update_layout(
-        title=f"Error AVG per Candle (tail {tail_len}) vs ATR (tail & mean) [pips]",
-        xaxis_title="Index (tail)",
+        title=f"Error AVG per Candle ({sample_label}) vs ATR (sample) [pips]",
+        xaxis_title="Index (test sample)",
         yaxis_title="Absolute Error (pips)",
         yaxis=dict(tickformat=".1f"),
         template="plotly_white",
+        height=420,
     )
     return fig
 
@@ -173,13 +184,13 @@ def main():
     preds_df = pd.read_csv(args.preds)
     metrics = compute_mae(preds_df)
 
-    atr6_mean, atr12_mean, tail_clean = load_atr(Path(args.clean), args.split, args.tail)
+    atr6_mean, atr12_mean, tail_clean, sample_label = load_atr(Path(args.clean), args.split, args.tail)
     tail_preds = preds_df.tail(len(tail_clean)).reset_index(drop=True)
 
-    fig_price = build_visual(tail_clean, tail_preds, args.tail)
-    fig_overlay = build_overlay_visual(tail_clean, tail_preds, args.tail)
-    fig_err = build_error_bar(tail_preds, tail_clean, atr6_mean, atr12_mean, args.tail)
-    fig_err_avg = build_error_bar_avg(tail_preds, tail_clean, atr6_mean, atr12_mean, args.tail)
+    fig_price = build_visual(tail_clean, tail_preds, sample_label)
+    fig_overlay = build_overlay_visual(tail_clean, tail_preds, sample_label)
+    fig_err = build_error_bar(tail_preds, tail_clean, atr6_mean, atr12_mean, sample_label)
+    fig_err_avg = build_error_bar_avg(tail_preds, tail_clean, atr6_mean, atr12_mean, sample_label)
 
     # Build HTML
     summary_tbl = pd.DataFrame([{
@@ -188,8 +199,8 @@ def main():
         "mae_low_pips": metrics["mae_low"] * PIP_FACTOR,
         "mae_close_pips": metrics["mae_close"] * PIP_FACTOR,
         "mae_avg_pips": metrics["mae_avg"] * PIP_FACTOR,
-        "atr6_mean_pips": atr6_mean * PIP_FACTOR,
-        "atr12_mean_pips": atr12_mean * PIP_FACTOR,
+        "visualized_samples": len(tail_clean),
+        "test_samples_total": len(preds_df),
     }])
 
     style = (
@@ -205,9 +216,13 @@ def main():
     html_parts.extend([
         summary_tbl.to_html(index=False, float_format="%.6f"),
         "<h2>Charts</h2>",
-        fig_price.to_html(full_html=False, include_plotlyjs="cdn"),
-        fig_overlay.to_html(full_html=False, include_plotlyjs=False),
+        "<h3>Overlay True vs Predicted OHLC</h3>",
+        fig_overlay.to_html(full_html=False, include_plotlyjs="cdn"),
+        "<h3>True vs Predicted Close</h3>",
+        fig_price.to_html(full_html=False, include_plotlyjs=False),
+        "<h3>Error Close vs ATR</h3>",
         fig_err.to_html(full_html=False, include_plotlyjs=False),
+        "<h3>Error AVG vs ATR</h3>",
         fig_err_avg.to_html(full_html=False, include_plotlyjs=False),
     ])
     html = (

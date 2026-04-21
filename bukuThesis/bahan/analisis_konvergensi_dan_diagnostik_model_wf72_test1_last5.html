@@ -1,0 +1,137 @@
+<html><head><meta charset='UTF-8'><title>Analisis Konvergensi, Overfitting, dan Diagnostik Residual Model</title>
+<style>body{font-family:Arial,sans-serif;max-width:1100px;margin:24px auto;padding:0 16px;line-height:1.6;color:#222;} h1,h2{color:#163a6b;} code{background:#f5f5f5;padding:1px 4px;border-radius:4px;} ul,ol{line-height:1.6;} strong{color:#111;}</style>
+</head><body>
+<h1>Analisis Konvergensi, Overfitting, dan Diagnostik Residual Model</h1>
+
+<h2>Saran Judul</h2>
+
+<p>Judul yang paling saya sarankan untuk analisis ini adalah:</p>
+
+<p>**Analisis Konvergensi, Overfitting, dan Diagnostik Residual Model**</p>
+
+<p>Alternatif yang masih aman:</p>
+<ul>
+<li>Analisis Dinamika Pelatihan dan Diagnostik Error/Residual Model</li>
+<ul>
+<li>Analisis Generalisasi Model pada Skenario Walk-Forward 72 Bulan/1 Bulan</li>
+
+<h2>Ruang Lingkup Analisis</h2>
+
+<p>Analisis ini mencakup tiga hal yang berbeda secara metodologis:</p>
+
+<ol>
+<li>**FLF-LSTM dan FLF-BiLSTM** dianalisis melalui kurva `loss` dan `val_loss` untuk melihat konvergensi, indikasi overfitting, dan stabilitas generalisasi.</li>
+<li>**Gradient loss** pada report repo ini diperlakukan sebagai **proxy perubahan loss per epoch (`dLoss`)**, sehingga fungsinya adalah membaca kecepatan konvergensi dan plateau, bukan gradient parameter model.</li>
+<li>**ARIMA** tidak memiliki kurva loss epoch seperti neural network, sehingga analisis yang setara dilakukan melalui **diagnostik residual forecast**, AIC/BIC, dan uji autokorelasi residual.</li>
+
+<p>Skenario evaluasi yang dipakai sama untuk semua model, yaitu **walk-forward fixed 72 bulan training, 1 bulan testing, fold 17-21**.</p>
+
+<h2>Hasil FLF-LSTM</h2>
+
+<ul>
+<li>Rata-rata epoch berjalan: **53.8**</li>
+<ul>
+<li>Rata-rata `loss_end`: **0.000485**</li>
+<ul>
+<li>Rata-rata `val_end`: **0.000547**</li>
+<ul>
+<li>Rata-rata gap akhir `val_loss - loss`: **0.000062**</li>
+<ul>
+<li>Fold yang menunjukkan pola overfitting setelah epoch terbaik: **3 dari 5 fold**</li>
+<ul>
+<li>Rata-rata posisi epoch terbaik validation terhadap total epoch: **95.89%**</li>
+
+<p>Interpretasi:</p>
+
+<p>**FLF-LSTM konvergen dengan overfitting ringan.**</p>
+
+<p>Secara umum training loss dan validation loss sama-sama turun hingga sangat kecil. Tidak ada indikasi underfitting dan tidak ada tanda divergensi training. Overfitting yang muncul bersifat ringan, karena validation loss pada beberapa fold hanya memburuk tipis setelah mencapai titik minimum. Plateau di akhir training juga jelas, ditunjukkan oleh rata-rata perubahan loss 5 epoch terakhir yang sangat kecil.</p>
+
+<h2>Hasil FLF-BiLSTM</h2>
+
+<ul>
+<li>Rata-rata epoch berjalan: **37.6**</li>
+<ul>
+<li>Rata-rata `loss_end`: **0.000498**</li>
+<ul>
+<li>Rata-rata `val_end`: **0.000597**</li>
+<ul>
+<li>Rata-rata gap akhir `val_loss - loss`: **0.000099**</li>
+<ul>
+<li>Fold yang menunjukkan pola overfitting setelah epoch terbaik: **3 dari 5 fold**</li>
+<ul>
+<li>Rata-rata posisi epoch terbaik validation terhadap total epoch: **89.30%**</li>
+
+<p>Interpretasi:</p>
+
+<p>**FLF-BiLSTM konvergen dengan overfitting ringan hingga moderat.**</p>
+
+<p>Model ini juga tidak underfit dan berhasil konvergen. Namun, dibanding FLF-LSTM, titik minimum validation loss lebih sering tercapai lebih awal, lalu validation loss bergerak naik ketika training loss masih turun. Itu menunjukkan kecenderungan overfitting yang lebih nyata daripada FLF-LSTM. Dengan kata lain, BiLSTM masih belajar, tetapi generalisasi mulai jenuh lebih cepat.</p>
+
+<h2>Perbandingan LSTM vs BiLSTM</h2>
+
+<ul>
+<li>Kedua model **tidak underfit**</li>
+<ul>
+<li>Kedua model **tidak menunjukkan training yang gagal atau divergen**</li>
+<ul>
+<li>Keduanya berada pada rezim **konvergen**</li>
+<ul>
+<li>Perbedaannya ada pada **stabilitas generalisasi**</li>
+
+<p>Kesimpulan komparatif:</p>
+
+<p>**FLF-LSTM memperlihatkan dinamika pelatihan yang lebih sehat dan generalisasi yang lebih stabil daripada FLF-BiLSTM pada skenario WF72m/1m fold 17-21.**</p>
+
+<h2>Hasil ARIMA</h2>
+
+<ul>
+<li>Mean MAE avg: **15.3941 pips**</li>
+<ul>
+<li>Mean close bias per fold: **0.7396 pips**</li>
+<ul>
+<li>Combined close bias: **0.7157 pips**</li>
+<ul>
+<li>Combined close residual std: **22.3251 pips**</li>
+<ul>
+<li>Combined lag-1 autocorrelation residual close: **-0.0018**</li>
+<ul>
+<li>Combined Ljung-Box p-value lag 10: **0.0566**</li>
+<ul>
+<li>Combined Ljung-Box p-value lag 20: **0.0500**</li>
+
+<p>Interpretasi:</p>
+
+<p>**ARIMA forecast residual relatif stabil tanpa bukti kuat autokorelasi serial pada lag 10.**</p>
+
+<p>Karena ARIMA bukan model berbasis epoch, maka ia tidak dianalisis dengan kurva `loss`/`val_loss`. Diagnostik yang relevan adalah apakah residual forecast masih menyimpan pola serial. Pada hasil ini, p-value Ljung-Box per fold masih berada di atas 0.05, sehingga tidak ada bukti kuat autokorelasi residual close pada masing-masing fold. Namun ketika residual digabung lintas fold, nilai lag 20 berada sangat dekat dengan batas 0.05, sehingga masih ada indikasi lemah bahwa struktur temporal belum sepenuhnya hilang.</p>
+
+<h2>Makna Metodologis</h2>
+
+<ol>
+<li>**Analisis LSTM/BiLSTM** sebaiknya disebut:</li>
+<p>   - analisis konvergensi dan overfitting</p>
+<p>   - atau analisis dinamika pelatihan dan generalisasi</p>
+<li>**Analisis ARIMA** sebaiknya disebut:</li>
+<p>   - analisis diagnostik residual</p>
+<p>   - atau analisis error/residual forecast</p>
+<li>Jika ingin semua digabung dalam satu subbagian, istilah paling aman adalah:</li>
+<p>   - **analisis konvergensi, overfitting, dan diagnostik residual model**</p>
+
+<h2>Kesimpulan Akhir</h2>
+
+<ul>
+<li>**FLF-LSTM**: konvergen, tidak underfit, dengan overfitting ringan</li>
+<ul>
+<li>**FLF-BiLSTM**: konvergen, tidak underfit, tetapi lebih rentan overfitting</li>
+<ul>
+<li>**ARIMA**: tidak memakai analisis loss curve; evaluasi yang tepat adalah diagnostik residual, AIC/BIC, dan autokorelasi residual</li>
+
+<p>Dokumen ini paling tepat ditempatkan sebagai bahan untuk:</p>
+<ul>
+<li>pembahasan hasil eksperimen</li>
+<ul>
+<li>jawaban sidang/penguji</li>
+<ul>
+<li>atau lampiran analisis teknis model</li>
+</body></html>

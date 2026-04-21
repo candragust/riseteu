@@ -1,0 +1,18 @@
+{
+  "data": "results/EURUSD_H4_clean.csv",
+  "sep": ",",
+  "columns": null,
+  "split": 0.7,
+  "order": [1, 1, 0],
+  "order_by_column": null,
+  "order_search": true,
+  "p_values": [0, 1, 2],
+  "d_values": [0, 1],
+  "q_values": [0, 1, 2],
+  "selection_metric": "aic",
+  "trend": "n",
+  "enforce_stationarity": false,
+  "enforce_invertibility": false,
+  "out": "Arima/result/arima_ohlc_preds.csv",
+  "summary_out": "Arima/result/arima_ohlc_summary.json"
+}

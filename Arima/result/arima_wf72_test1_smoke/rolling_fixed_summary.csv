@@ -1,0 +1,2 @@
+fold,train_start,train_end,test_start,test_end,train_samples,test_samples,split_ratio,mode
+21,2019-09-02,2025-09-01,2025-09-02,2025-10-01,9343,132,0.9860686015831135,fixed
