@@ -1,0 +1,225 @@
+# Agent Activity
+
+Catatan status otomatis untuk eksperimen detached. File ini di-append oleh launcher/runner agar progres tetap bisa dipantau walaupun sesi chat tidak aktif.
+
+Perintah monitoring:
+
+```bash
+tail -f agentactivity.md
+scripts/status_tvt_v02.sh
+```
+- 2026-04-25 08:30:59 | [LAUNCH] D1 TVT v02 detached session=tvt_d1_v02_e2e_full_20260425_083059 mode=full stages=1-7 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_d1_v02_e2e_full_20260425_083059.log
+- 2026-04-25 08:30:59 | [SCREEN START] session=tvt_d1_v02_e2e_full_20260425_083059 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_d1_v02_e2e_full_20260425_083059.log
+- 2026-04-25 08:30:59 | [START] D1 TVT v02 end-to-end mode=full stages=1-7
+- 2026-04-25 08:30:59 | [1/6] FLF-LSTM D1 TVT v02 tuning mode=full stages=1-7
+- 2026-04-25 08:46:10 | [1/6 DONE] FLF-LSTM D1 TVT v02 tuning
+- 2026-04-25 08:46:10 | [2/6] FLF-LSTM audit/freeze/evaluation
+- 2026-04-25 08:46:30 | [2/6 DONE] FLF-LSTM audit/freeze/evaluation
+- 2026-04-25 08:46:30 | [3/6] FLF-BiLSTM D1 TVT v02 tuning mode=full stages=1-7
+- 2026-04-25 09:05:12 | [3/6 DONE] FLF-BiLSTM D1 TVT v02 tuning
+- 2026-04-25 09:05:12 | [4/6] FLF-BiLSTM audit/freeze/evaluation
+- 2026-04-25 09:05:40 | [4/6 DONE] FLF-BiLSTM audit/freeze/evaluation
+- 2026-04-25 09:05:40 | [5/6] ARIMA D1 TVT v02 evaluation
+- 2026-04-25 09:05:58 | [5/6 DONE] ARIMA D1 TVT v02 evaluation
+- 2026-04-25 09:05:58 | [6/6] D1 TVT v02 reports
+- 2026-04-25 09:06:00 | [6/6 DONE] D1 TVT v02 reports
+- 2026-04-25 09:06:00 | [DONE] D1 TVT v02 end-to-end workflow completed
+- 2026-04-25 09:06:00 | [SCREEN END] session=tvt_d1_v02_e2e_full_20260425_083059 exit=0 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_d1_v02_e2e_full_20260425_083059.log
+- 2026-04-25 10:13:38 | [POSTCHECK] D1 TVT v02 outputs verified after path correction. FLF-LSTM and FLF-BiLSTM evaluation/tuning artifacts are under `FLF_LSTM/results/tvt_v02/d1_ohlc/` and `FLF_BILSTM/results/tvt_v02/d1_ohlc/`; old `FLF_*/results/d1_ohlc/tvt_v02/...` evaluation/tuning paths are absent. Readiness=True, Results complete=True.
+- 2026-04-25 10:32:27 | [START] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02 args=--dry-run
+- 2026-04-25 10:32:27 | [DRY-RUN] TVT v02 HTML to PDF files=36 output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 10:32:27 | [DONE] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 10:32:31 | [START] TVT v02 HTML to PDF files=1 output=/tmp/tvt_v02_pdf_smoke
+- 2026-04-25 10:32:31 | [PDF 1/1] START Arima/result/tvt_v02/d1_evaluation_last3/index.html
+- 2026-04-25 10:32:32 | [PDF 1/1] OK Arima/result/tvt_v02/d1_evaluation_last3/index.html pages=7 bytes=404850
+- 2026-04-25 10:32:32 | [DONE] TVT v02 HTML to PDF ok_or_skipped=1 failed=0 manifest=/tmp/tvt_v02_pdf_smoke/pdf_manifest.csv
+- 2026-04-25 10:32:36 | [START] TVT v02 HTML to PDF files=1 output=/tmp/tvt_v02_pdf_smoke_plotly
+- 2026-04-25 10:32:36 | [PDF 1/1] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 10:32:39 | [PDF 1/1] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=235989
+- 2026-04-25 10:32:39 | [DONE] TVT v02 HTML to PDF ok_or_skipped=1 failed=0 manifest=/tmp/tvt_v02_pdf_smoke_plotly/pdf_manifest.csv
+- 2026-04-25 10:33:10 | [LAUNCH] TVT v02 HTML PDF detached session=tvt_v02_html_pdf_20260425_103310 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_v02_html_pdf_20260425_103310.log output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02 args=--dry-run
+- 2026-04-25 10:33:10 | [SCREEN START] session=tvt_v02_html_pdf_20260425_103310 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_v02_html_pdf_20260425_103310.log
+- 2026-04-25 10:33:10 | [START] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02 args=--dry-run
+- 2026-04-25 10:33:10 | [DRY-RUN] TVT v02 HTML to PDF files=36 output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 10:33:10 | [DONE] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 10:33:10 | [SCREEN END] session=tvt_v02_html_pdf_20260425_103310 exit=0 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_v02_html_pdf_20260425_103310.log
+- 2026-04-25 10:33:34 | [DRY-RUN] TVT v02 HTML to PDF files=2 output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 13:02:12 | [LAUNCH] TVT v02 HTML PDF detached session=tvt_v02_html_pdf_20260425_130212 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_v02_html_pdf_20260425_130212.log output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02 args=--overwrite
+- 2026-04-25 13:02:12 | [SCREEN START] session=tvt_v02_html_pdf_20260425_130212 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_v02_html_pdf_20260425_130212.log
+- 2026-04-25 13:02:12 | [START] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02 args=--overwrite
+- 2026-04-25 13:02:12 | [START] TVT v02 HTML to PDF files=38 output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 13:02:12 | [PDF 1/38] START Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html
+- 2026-04-25 13:02:14 | [PDF 1/38] OK Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html pages=4 bytes=157720
+- 2026-04-25 13:02:14 | [PDF 2/38] START Arima/result/tvt_v02/d1_evaluation_last3/index.html
+- 2026-04-25 13:02:15 | [PDF 2/38] OK Arima/result/tvt_v02/d1_evaluation_last3/index.html pages=7 bytes=404857
+- 2026-04-25 13:02:15 | [PDF 3/38] START Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:02:17 | [PDF 3/38] OK Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=143144
+- 2026-04-25 13:02:17 | [PDF 4/38] START Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html
+- 2026-04-25 13:02:18 | [PDF 4/38] OK Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html pages=4 bytes=160085
+- 2026-04-25 13:02:18 | [PDF 5/38] START Arima/result/tvt_v02/h4_evaluation_last3/index.html
+- 2026-04-25 13:02:20 | [PDF 5/38] OK Arima/result/tvt_v02/h4_evaluation_last3/index.html pages=7 bytes=1324454
+- 2026-04-25 13:02:20 | [PDF 6/38] START Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:02:22 | [PDF 6/38] OK Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=239588
+- 2026-04-25 13:02:22 | [PDF 7/38] START FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.html
+- 2026-04-25 13:02:23 | [PDF 7/38] OK FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.html pages=3 bytes=203959
+- 2026-04-25 13:02:23 | [PDF 8/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.html
+- 2026-04-25 13:02:23 | [PDF 8/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.html pages=4 bytes=274859
+- 2026-04-25 13:02:23 | [PDF 9/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:02:25 | [PDF 9/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.html pages=1 bytes=35586
+- 2026-04-25 13:02:25 | [PDF 10/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:02:27 | [PDF 10/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.html pages=1 bytes=32248
+- 2026-04-25 13:02:27 | [PDF 11/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:02:29 | [PDF 11/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=137109
+- 2026-04-25 13:02:29 | [PDF 12/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.html
+- 2026-04-25 13:02:32 | [PDF 12/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.html pages=3 bytes=192931
+- 2026-04-25 13:02:32 | [PDF 13/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:02:33 | [PDF 13/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.html pages=1 bytes=71171
+- 2026-04-25 13:02:33 | [PDF 14/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:02:35 | [PDF 14/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.html pages=1 bytes=33188
+- 2026-04-25 13:02:35 | [PDF 15/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:02:36 | [PDF 15/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.html pages=1 bytes=36179
+- 2026-04-25 13:02:36 | [PDF 16/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html
+- 2026-04-25 13:02:37 | [PDF 16/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html pages=3 bytes=117910
+- 2026-04-25 13:02:37 | [PDF 17/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html
+- 2026-04-25 13:02:39 | [PDF 17/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html pages=3 bytes=114805
+- 2026-04-25 13:02:39 | [PDF 18/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html
+- 2026-04-25 13:02:40 | [PDF 18/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html pages=3 bytes=117436
+- 2026-04-25 13:02:40 | [PDF 19/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:02:42 | [PDF 19/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=236474
+- 2026-04-25 13:02:42 | [PDF 20/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.html
+- 2026-04-25 13:02:44 | [PDF 20/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.html pages=3 bytes=842241
+- 2026-04-25 13:02:44 | [PDF 21/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:02:44 | [PDF 21/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.html pages=1 bytes=71254
+- 2026-04-25 13:02:44 | [PDF 22/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.html
+- 2026-04-25 13:02:46 | [PDF 22/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.html pages=1 bytes=35423
+- 2026-04-25 13:02:46 | [PDF 23/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.html
+- 2026-04-25 13:02:47 | [PDF 23/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.html pages=1 bytes=33386
+- 2026-04-25 13:02:47 | [PDF 24/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:02:49 | [PDF 24/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=137429
+- 2026-04-25 13:02:49 | [PDF 25/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.html
+- 2026-04-25 13:02:50 | [PDF 25/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.html pages=3 bytes=192545
+- 2026-04-25 13:02:50 | [PDF 26/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.html
+- 2026-04-25 13:02:50 | [PDF 26/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.html pages=1 bytes=70914
+- 2026-04-25 13:02:50 | [PDF 27/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.html
+- 2026-04-25 13:02:51 | [PDF 27/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.html pages=4 bytes=289800
+- 2026-04-25 13:02:51 | [PDF 28/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.html
+- 2026-04-25 13:02:53 | [PDF 28/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.html pages=1 bytes=33397
+- 2026-04-25 13:02:53 | [PDF 29/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.html
+- 2026-04-25 13:02:54 | [PDF 29/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.html pages=1 bytes=35796
+- 2026-04-25 13:02:54 | [PDF 30/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html
+- 2026-04-25 13:02:56 | [PDF 30/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html pages=3 bytes=117681
+- 2026-04-25 13:02:56 | [PDF 31/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html
+- 2026-04-25 13:02:57 | [PDF 31/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html pages=3 bytes=114748
+- 2026-04-25 13:02:57 | [PDF 32/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html
+- 2026-04-25 13:02:59 | [PDF 32/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html pages=3 bytes=117985
+- 2026-04-25 13:02:59 | [PDF 33/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:03:01 | [PDF 33/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=236139
+- 2026-04-25 13:03:01 | [PDF 34/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.html
+- 2026-04-25 13:03:02 | [PDF 34/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.html pages=3 bytes=841918
+- 2026-04-25 13:03:02 | [PDF 35/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.html
+- 2026-04-25 13:03:03 | [PDF 35/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.html pages=1 bytes=71202
+- 2026-04-25 13:03:03 | [PDF 36/38] START FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.html
+- 2026-04-25 13:03:03 | [PDF 36/38] OK FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.html pages=3 bytes=186886
+- 2026-04-25 13:03:03 | [PDF 37/38] START comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.html
+- 2026-04-25 13:03:06 | [PDF 37/38] OK comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.html pages=7 bytes=327754
+- 2026-04-25 13:03:06 | [PDF 38/38] START comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.html
+- 2026-04-25 13:03:08 | [PDF 38/38] OK comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.html pages=7 bytes=304794
+- 2026-04-25 13:03:08 | [DONE] TVT v02 HTML to PDF ok_or_skipped=38 failed=0 manifest=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/pdf_manifest.csv
+- 2026-04-25 13:03:08 | [DONE] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 13:03:08 | [SCREEN END] session=tvt_v02_html_pdf_20260425_130212 exit=0 log=/home/hduser/jupyter/gust/RisetEU/logs/detached/tvt_v02_html_pdf_20260425_130212.log
+- 2026-04-25 13:08:11 | [AUDIT] Correcting ARIMA TVT v02 exact train/test split before Bab I validation
+- 2026-04-25 13:10:56 | [AUDIT DONE] Regenerated ARIMA exact split, comparison reports, residual diagnostics, and TVT title normalization
+- 2026-04-25 13:12:37 | [AUDIT] Fixing finalize_tvt_v02 optional params and rerunning D1 LSTM exact final evaluation
+- 2026-04-25 13:13:16 | [AUDIT DONE] Rebuilt D1 reports after exact final LSTM config with l2_reg=1e-5
+- 2026-04-25 13:15:12 | [AUDIT DONE] Rebuilt Bab I draft DOCX after TVT v02 source correction
+- 2026-04-25 13:16:09 | [START] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02 args=--overwrite
+- 2026-04-25 13:16:09 | [START] TVT v02 HTML to PDF files=38 output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-25 13:16:09 | [PDF 1/38] START Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html
+- 2026-04-25 13:16:10 | [PDF 1/38] OK Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html pages=4 bytes=158023
+- 2026-04-25 13:16:10 | [PDF 2/38] START Arima/result/tvt_v02/d1_evaluation_last3/index.html
+- 2026-04-25 13:16:11 | [PDF 2/38] OK Arima/result/tvt_v02/d1_evaluation_last3/index.html pages=7 bytes=399526
+- 2026-04-25 13:16:11 | [PDF 3/38] START Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:16:12 | [PDF 3/38] OK Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=142950
+- 2026-04-25 13:16:12 | [PDF 4/38] START Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html
+- 2026-04-25 13:16:14 | [PDF 4/38] OK Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html pages=4 bytes=159608
+- 2026-04-25 13:16:14 | [PDF 5/38] START Arima/result/tvt_v02/h4_evaluation_last3/index.html
+- 2026-04-25 13:16:15 | [PDF 5/38] OK Arima/result/tvt_v02/h4_evaluation_last3/index.html pages=7 bytes=1321324
+- 2026-04-25 13:16:15 | [PDF 6/38] START Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:16:17 | [PDF 6/38] OK Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=240797
+- 2026-04-25 13:16:17 | [PDF 7/38] START FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.html
+- 2026-04-25 13:16:18 | [PDF 7/38] OK FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.html pages=3 bytes=203959
+- 2026-04-25 13:16:18 | [PDF 8/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.html
+- 2026-04-25 13:16:19 | [PDF 8/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.html pages=4 bytes=274859
+- 2026-04-25 13:16:19 | [PDF 9/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:16:21 | [PDF 9/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.html pages=1 bytes=35586
+- 2026-04-25 13:16:21 | [PDF 10/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:16:22 | [PDF 10/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.html pages=1 bytes=32248
+- 2026-04-25 13:16:22 | [PDF 11/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:16:24 | [PDF 11/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=137109
+- 2026-04-25 13:16:24 | [PDF 12/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.html
+- 2026-04-25 13:16:25 | [PDF 12/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.html pages=3 bytes=192931
+- 2026-04-25 13:16:25 | [PDF 13/38] START FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:16:26 | [PDF 13/38] OK FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.html pages=1 bytes=71171
+- 2026-04-25 13:16:26 | [PDF 14/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:16:28 | [PDF 14/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.html pages=1 bytes=33188
+- 2026-04-25 13:16:28 | [PDF 15/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:16:30 | [PDF 15/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.html pages=1 bytes=36179
+- 2026-04-25 13:16:30 | [PDF 16/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html
+- 2026-04-25 13:16:31 | [PDF 16/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html pages=3 bytes=117910
+- 2026-04-25 13:16:31 | [PDF 17/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html
+- 2026-04-25 13:16:32 | [PDF 17/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html pages=3 bytes=114805
+- 2026-04-25 13:16:32 | [PDF 18/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html
+- 2026-04-25 13:16:35 | [PDF 18/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html pages=3 bytes=117436
+- 2026-04-25 13:16:35 | [PDF 19/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:16:36 | [PDF 19/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=236474
+- 2026-04-25 13:16:36 | [PDF 20/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.html
+- 2026-04-25 13:16:38 | [PDF 20/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.html pages=3 bytes=842241
+- 2026-04-25 13:16:38 | [PDF 21/38] START FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.html
+- 2026-04-25 13:16:39 | [PDF 21/38] OK FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.html pages=1 bytes=71254
+- 2026-04-25 13:16:39 | [PDF 22/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.html
+- 2026-04-25 13:16:40 | [PDF 22/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.html pages=1 bytes=36180
+- 2026-04-25 13:16:40 | [PDF 23/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.html
+- 2026-04-25 13:16:41 | [PDF 23/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.html pages=1 bytes=33764
+- 2026-04-25 13:16:41 | [PDF 24/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:16:44 | [PDF 24/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=137490
+- 2026-04-25 13:16:44 | [PDF 25/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.html
+- 2026-04-25 13:16:46 | [PDF 25/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.html pages=3 bytes=192558
+- 2026-04-25 13:16:46 | [PDF 26/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.html
+- 2026-04-25 13:16:47 | [PDF 26/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.html pages=1 bytes=71038
+- 2026-04-25 13:16:47 | [PDF 27/38] START FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.html
+- 2026-04-25 13:16:47 | [PDF 27/38] OK FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.html pages=4 bytes=289800
+- 2026-04-25 13:16:47 | [PDF 28/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.html
+- 2026-04-25 13:16:49 | [PDF 28/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.html pages=1 bytes=33397
+- 2026-04-25 13:16:49 | [PDF 29/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.html
+- 2026-04-25 13:16:50 | [PDF 29/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.html pages=1 bytes=35796
+- 2026-04-25 13:16:50 | [PDF 30/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html
+- 2026-04-25 13:16:52 | [PDF 30/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html pages=3 bytes=117681
+- 2026-04-25 13:16:52 | [PDF 31/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html
+- 2026-04-25 13:16:55 | [PDF 31/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html pages=3 bytes=114748
+- 2026-04-25 13:16:55 | [PDF 32/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html
+- 2026-04-25 13:16:56 | [PDF 32/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html pages=3 bytes=117985
+- 2026-04-25 13:16:56 | [PDF 33/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+- 2026-04-25 13:16:58 | [PDF 33/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html pages=4 bytes=236139
+- 2026-04-25 13:16:58 | [PDF 34/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.html
+- 2026-04-25 13:17:00 | [PDF 34/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.html pages=3 bytes=841918
+- 2026-04-25 13:17:00 | [PDF 35/38] START FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.html
+- 2026-04-25 13:17:00 | [PDF 35/38] OK FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.html pages=1 bytes=71202
+- 2026-04-25 13:17:00 | [PDF 36/38] START FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.html
+- 2026-04-25 13:17:01 | [PDF 36/38] OK FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.html pages=3 bytes=186886
+- 2026-04-25 13:17:01 | [PDF 37/38] START comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.html
+- 2026-04-25 13:17:04 | [PDF 37/38] OK comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.html pages=7 bytes=327981
+- 2026-04-25 13:17:04 | [PDF 38/38] START comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.html
+- 2026-04-25 13:17:05 | [PDF 38/38] OK comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.html pages=7 bytes=304814
+- 2026-04-25 13:17:05 | [DONE] TVT v02 HTML to PDF ok_or_skipped=38 failed=0 manifest=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/pdf_manifest.csv
+- 2026-04-25 13:17:05 | [DONE] TVT v02 HTML PDF conversion output=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+- 2026-04-27 11:02:00 | [DOCX] Bagian I TVT v02 figure assets prepared png=20 manifest=bukuThesis/penyusunan_buku_tesis_tvt_v02/03_tabel_gambar/assets_bagian_i_tvt_v02/figure_manifest.csv
+- 2026-04-27 11:02:20 | [DOCX] Rebuilt Bagian I DOCX with figures generator=bukuThesis/build_chapter_docx.py output=bukuThesis/penyusunan_buku_tesis_tvt_v02/02_draft_bab/bagian_i_implementasi_pembahasan_hasil_tvt_v02_draft_v01.docx embedded_images=20 size=5.2M
+- 2026-04-27 11:10:00 | [DOCX] Rebuilt Bagian I DOCX after table-caption formatting check embedded_images=20 size=5.2M
+- 2026-04-27 11:25:00 | [DOCX] Added Bagian I overlay candle true-vs-predicted and Error AVG-vs-ATR figures for H4/D1 all models assets_png=32 embedded_images=32 size=6.8M source=tvt_v02
+- 2026-04-27 11:26:00 | [DOCX] Verified Bagian I DOCX paragraphs=488 tables=25 embedded_images=32 figure_captions=32 numbering=I.1-I.32
+- 2026-04-28 09:12:58 | [AUDIT] Checked Bagian I draft/DOCX for WF72 last5 contamination: old H4 values not found, fold 17-21 not found, TVT v02 H4/D1 winners and split wording verified, figure manifest rows=32 all source=tvt_v02
+- 2026-04-30 15:22:04 | [METODOLOGI] Installed python-pptx 1.0.2 and generated editable methodology deck output=bukuThesis/metodologi/gambar_metodologi_tvt_v02_editable.pptx slides=5 pictures=0 source=BabI_TVT_v02
+- 2026-04-30 15:42:05 | [METODOLOGI] Generated one-page editable methodology PPTX with specific shape icons output=bukuThesis/metodologi/gambar_metodologi_tvt_v02_1halaman_editable.pptx slides=1 shapes=171 pictures=0 connectors=72 generator=bukuThesis/metodologi/generate_gambar_metodologi_1halaman_tvt_v02.py
+- 2026-04-30 15:47:00 | [METODOLOGI] Revised one-page methodology PPTX so each icon is a single editable PowerPoint shape output=bukuThesis/metodologi/gambar_metodologi_tvt_v02_1halaman_editable.pptx slides=1 shapes=71 pictures=0 connectors=8 single_object_icons=13
+- 2026-04-30 16:44:18 | [PPTX] Rebuilt image-only digital procurement deck as editable PowerPoint shapes output=riset lain create pptx/digital_procure_diagram_editable_shapes.pptx slides=7 shapes=763 pictures=0 connectors=75 generator=riset lain create pptx/generate_digital_procure_editable_shapes.py source=riset lain create pptx/digital_procure_diagram_convert.pptx
+- 2026-04-30 19:01:58 | [PPTX] Revised digital procurement editable deck icons to be more visually similar/prominent and grouped as single selectable icon objects output=riset lain create pptx/digital_procure_diagram_editable_shapes.pptx slides=7 top_level_shapes=539 icon_groups=54 pictures=0 connectors=29 font_audit=all_main_text_ge10pt_bold

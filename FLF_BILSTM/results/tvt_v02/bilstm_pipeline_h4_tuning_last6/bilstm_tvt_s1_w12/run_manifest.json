@@ -1,0 +1,15 @@
+{
+  "schedule": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/h4/fold_schedule_tuning.csv",
+  "fold_root": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/h4",
+  "base_config": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/_bilstm_tvt_s1_w12_b06282907e784d4abffbddbf51b60c07.json",
+  "python_bin": "/home/hduser/miniconda3/envs/test/bin/python3.10",
+  "selected_folds": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "experiment_script": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/bilstm_flf_experiment_tvt_v01.py"
+}

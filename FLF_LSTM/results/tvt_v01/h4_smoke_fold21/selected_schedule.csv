@@ -1,0 +1,2 @@
+profile,fold,train_core_start,train_core_end,validation_start,validation_end,test_start,test_end,train_core_samples,validation_samples,test_samples,combined_samples
+h4,21,2019-09-02 00:00:00,2025-08-01 20:00:00,2025-08-04 00:00:00,2025-09-01 20:00:00,2025-09-02 00:00:00,2025-10-01 20:00:00,9217,126,132,9475

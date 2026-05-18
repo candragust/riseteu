@@ -1,0 +1,22 @@
+{
+  "data": "FLF_BILSTM/results/d1_ohlc/rolling_train72_test1/fold21_data.csv",
+  "sep": ",",
+  "columns": null,
+  "window": 12,
+  "split": 0.9860759494,
+  "units": 256,
+  "epochs": 50,
+  "batch": 128,
+  "lr": 0.0005,
+  "beta1": 0.9,
+  "beta2": 0.999,
+  "schedule_decay": 0.004,
+  "seed": 42,
+  "activation": "relu",
+  "recurrent_activation": "sigmoid",
+  "output_activation": "",
+  "lambda_coef": 1.0,
+  "sigma_coef": 0.05,
+  "out": "FLF_BILSTM/results/d1_ohlc/smoke/bilstm_d1_smoke_preds_v01.csv",
+  "history_out": "FLF_BILSTM/results/d1_ohlc/smoke/bilstm_d1_smoke_history_v01.csv"
+}

@@ -1,0 +1,2 @@
+profile,fold,train_core_start,train_core_end,validation_start,validation_end,test_start,test_end,train_core_samples,validation_samples,test_samples,mae_open_pips,mae_high_pips,mae_low_pips,mae_close_pips,mae_avg_pips,test_samples_predicted,preds_csv,history_csv
+h4,21,2019-09-02 00:00:00,2025-08-01 20:00:00,2025-08-04 00:00:00,2025-09-01 20:00:00,2025-09-02 00:00:00,2025-10-01 20:00:00,9217,126,132,3.3535227272727433,10.199159090909045,9.117280303030249,13.400386363636347,9.017587121212095,132,fold21_preds.csv,fold21_history.csv

@@ -32,6 +32,7 @@ class InputConfig:
 @dataclass
 class ArimaConfig:
     split: float
+    train_samples: Optional[int]
     order: tuple[int, int, int]
     order_by_column: Optional[Dict[str, tuple[int, int, int]]]
     order_search: bool
@@ -116,6 +117,12 @@ def parse_args():
 
     g_ar = parser.add_argument_group("ARIMA")
     g_ar.add_argument("--split", type=float, default=None, help="Train split ratio (0-1).")
+    g_ar.add_argument(
+        "--train-samples",
+        type=int,
+        default=None,
+        help="Exact number of training rows. When provided, this overrides --split.",
+    )
     g_ar.add_argument("--order", type=str, default=None, help="Shared ARIMA order, e.g. 1,1,0.")
     g_ar.add_argument(
         "--order-by-column",
@@ -193,6 +200,7 @@ def parse_args():
         "sep": ",",
         "columns": None,
         "split": 0.7,
+        "train_samples": None,
         "order": [1, 1, 0],
         "order_by_column": None,
         "order_search": False,
@@ -231,6 +239,7 @@ def parse_args():
     )
     arima_cfg = ArimaConfig(
         split=float(pick("split")),
+        train_samples=pick("train_samples"),
         order=_parse_order(pick("order")),
         order_by_column=_parse_order_by_column(pick("order_by_column")),
         order_search=bool(pick("order_search")),
@@ -338,7 +347,10 @@ def select_order_by_ic(train_values, requested_order, cfg: ArimaConfig):
 
 
 def walk_forward_forecast(series, split, requested_order, cfg: ArimaConfig):
-    split_idx = int(len(series) * split)
+    if cfg.train_samples is not None:
+        split_idx = int(cfg.train_samples)
+    else:
+        split_idx = int(len(series) * split)
     if split_idx < 10:
         raise ValueError("Train split too small for ARIMA baseline.")
     if split_idx >= len(series):

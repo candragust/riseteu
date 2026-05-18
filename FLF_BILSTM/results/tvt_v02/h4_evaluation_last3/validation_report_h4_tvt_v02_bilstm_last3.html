@@ -1,0 +1,134 @@
+<html><head><meta charset='UTF-8'><style>body{font-family:Arial, sans-serif; margin:20px;} .note{color:#555; max-width:980px;} table{border-collapse:collapse;} th,td{border:1px solid #ccc; padding:6px 10px; text-align:right;} th{background:#f5f5f5;}</style><title>EUR/USD H4 FLF-BiLSTM Last3 - Validation Report (TVT v02)</title></head><body><h1>EUR/USD H4 FLF-BiLSTM Last3 - Validation Report (TVT v02)</h1><p>Rata-rata MAE avg: <strong>11.40 pips</strong> | Median: <strong>11.85 pips</strong> | Mean corr2 avg HLC: <strong>0.8931</strong> | Mean Directional Accuracy body: <strong>52.21%</strong> | Fold terbaik: <strong>21</strong> (9.48 pips) | Fold terburuk: <strong>19</strong> (12.86 pips)</p><p class='note'>corr2 = kuadrat korelasi Pearson antara aktual dan prediksi. Directional Accuracy body = persentase kecocokan tanda close-open antara candle aktual dan prediksi.</p><p>Tail 30 fold terakhir (21): MAE avg <strong>7.97 pips</strong> | corr2 avg HLC <strong>0.7924</strong> | Directional Accuracy body <strong>53.33%</strong></p><h2>Ringkasan Metrik per Fold</h2><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>train_start</th>
+      <th>train_end</th>
+      <th>validation_start</th>
+      <th>validation_end</th>
+      <th>test_start</th>
+      <th>test_end</th>
+      <th>train_samples</th>
+      <th>validation_samples</th>
+      <th>test_samples</th>
+      <th>epochs_ran</th>
+      <th>best_epoch</th>
+      <th>best_val_loss</th>
+      <th>mae_avg_hlc_pips</th>
+      <th>mae_avg_pips</th>
+      <th>mae_open_pips</th>
+      <th>mae_high_pips</th>
+      <th>mae_low_pips</th>
+      <th>mae_close_pips</th>
+      <th>corr2_avg_hlc</th>
+      <th>corr2_avg_ohlc</th>
+      <th>corr2_open</th>
+      <th>corr2_high</th>
+      <th>corr2_low</th>
+      <th>corr2_close</th>
+      <th>da_body_pct</th>
+      <th>true_bull</th>
+      <th>true_bear</th>
+      <th>pred_bull</th>
+      <th>pred_bear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>19</td>
+      <td>2019-07-02 00:00:00</td>
+      <td>2025-05-30 20:00:00</td>
+      <td>2025-06-02 00:00:00</td>
+      <td>2025-07-01 20:00:00</td>
+      <td>2025-07-02 00:00:00</td>
+      <td>2025-08-01 20:00:00</td>
+      <td>9211</td>
+      <td>132</td>
+      <td>138</td>
+      <td>29</td>
+      <td>24</td>
+      <td>0.0005</td>
+      <td>14.8758</td>
+      <td>12.8646</td>
+      <td>6.8310</td>
+      <td>13.1838</td>
+      <td>13.8620</td>
+      <td>17.5818</td>
+      <td>0.9502</td>
+      <td>0.9608</td>
+      <td>0.9926</td>
+      <td>0.9566</td>
+      <td>0.9620</td>
+      <td>0.9319</td>
+      <td>55.7971</td>
+      <td>69</td>
+      <td>69</td>
+      <td>70</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>2019-08-02 00:00:00</td>
+      <td>2025-07-01 20:00:00</td>
+      <td>2025-07-02 00:00:00</td>
+      <td>2025-08-01 20:00:00</td>
+      <td>2025-08-04 00:00:00</td>
+      <td>2025-09-01 20:00:00</td>
+      <td>9205</td>
+      <td>138</td>
+      <td>126</td>
+      <td>27</td>
+      <td>22</td>
+      <td>0.0007</td>
+      <td>13.8898</td>
+      <td>11.8467</td>
+      <td>5.7173</td>
+      <td>12.6922</td>
+      <td>12.3691</td>
+      <td>16.6081</td>
+      <td>0.8054</td>
+      <td>0.8462</td>
+      <td>0.9686</td>
+      <td>0.8131</td>
+      <td>0.8704</td>
+      <td>0.7327</td>
+      <td>51.5873</td>
+      <td>62</td>
+      <td>64</td>
+      <td>69</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>2019-09-02 00:00:00</td>
+      <td>2025-08-01 20:00:00</td>
+      <td>2025-08-04 00:00:00</td>
+      <td>2025-09-01 20:00:00</td>
+      <td>2025-09-02 00:00:00</td>
+      <td>2025-10-01 20:00:00</td>
+      <td>9217</td>
+      <td>126</td>
+      <td>132</td>
+      <td>39</td>
+      <td>34</td>
+      <td>0.0004</td>
+      <td>11.3733</td>
+      <td>9.4847</td>
+      <td>3.8190</td>
+      <td>10.6917</td>
+      <td>9.7591</td>
+      <td>13.6690</td>
+      <td>0.9238</td>
+      <td>0.9410</td>
+      <td>0.9925</td>
+      <td>0.9356</td>
+      <td>0.9427</td>
+      <td>0.8932</td>
+      <td>49.2424</td>
+      <td>70</td>
+      <td>61</td>
+      <td>99</td>
+      <td>33</td>
+    </tr>
+  </tbody>
+</table></body></html>

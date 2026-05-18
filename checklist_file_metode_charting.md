@@ -130,21 +130,21 @@ Dokumen ini fokus ke **pipeline aktif** yang relevan untuk software charting:
 
 ### Core dan Runner
 
-- [ ] `bilstm_flf_experiment.py`
+- [ ] `FLF_BILSTM/bilstm_flf_experiment.py`
   Entry point utama FLF-BiLSTM.
-- [ ] `rolling_fixed_runner.py`
+- [ ] `FLF_BILSTM/rolling_fixed_runner.py`
   Runner walk-forward/fixed-window utama untuk BiLSTM.
 - [ ] `rolling_fixed_runner_days.py`
   Runner alternatif berbasis test-days.
-- [ ] `eurusd_pipeline_runner.py`
+- [ ] `FLF_BILSTM/eurusd_pipeline_runner.py`
   Pipeline tuning bertahap FLF-BiLSTM.
 - [ ] `pipeline_summary_generator.py`
   Generator summary HTML pipeline lama berbasis hasil hp sweep.
 - [ ] `generate_final_config.py`
-  Generator `final_config.json` dari hasil hp sweep.
+  Generator `FLF_BILSTM/final_config.json` dari hasil hp sweep.
 - [ ] `bilstm_flf_config.json`
   Config baseline BiLSTM.
-- [ ] `final_config.json`
+- [ ] `FLF_BILSTM/final_config.json`
   Config final aktif BiLSTM untuk pipeline.
 - [ ] `temp_config.json`
   Config eksperimen sementara.
@@ -153,47 +153,47 @@ Dokumen ini fokus ke **pipeline aktif** yang relevan untuk software charting:
 
 ### Hasil Evaluasi yang Bisa Dibaca Software
 
-- [ ] `results/rolling_train72_test1/rolling_fixed_summary.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/rolling_fixed_summary.csv`
   Rekap fold FLF-BiLSTM.
-- [ ] `results/rolling_train72_test1/fold19_data.csv` s.d. `results/rolling_train72_test1/fold21_data.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/fold19_data.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1/fold21_data.csv`
   Data input per fold.
-- [ ] `results/rolling_train72_test1/fold19_preds.csv` s.d. `results/rolling_train72_test1/fold21_preds.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/fold19_preds.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1/fold21_preds.csv`
   Output prediksi per fold untuk chart.
-- [ ] `results/rolling_train72_test1/fold19_history.csv` s.d. `results/rolling_train72_test1/fold21_history.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/fold19_history.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1/fold21_history.csv`
   History loss per fold.
-- [ ] `results/rolling_train72_test1/fold19_clean_with_atr.csv` s.d. `results/rolling_train72_test1/fold21_clean_with_atr.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/fold19_clean_with_atr.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1/fold21_clean_with_atr.csv`
   Data fold yang sudah diberi ATR.
-- [ ] `results/rolling_train72_test1/wf72_test1_combined_preds.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/wf72_test1_combined_preds.csv`
   Prediksi gabungan beberapa fold.
-- [ ] `results/rolling_train72_test1/wf72_test1_tail.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/wf72_test1_tail.csv`
   Data tail untuk analisis ringkas.
-- [ ] `results/rolling_train72_test1/rolling_train72_test1_report.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1/rolling_train72_test1_report.csv`
   Report CSV ringkasan.
-- [ ] `results/mae_atr_wf72_test1_fold19_tail30.html`
-- [ ] `results/mae_atr_wf72_test1_fold20_tail30.html`
-- [ ] `results/mae_atr_wf72_test1_fold21_tail30.html`
-- [ ] `results/mae_atr_wf72_test1_fold21_full.html`
-- [ ] `results/ohlc_dot_wf72_test1_all_folds.html`
+- [ ] `FLF_BILSTM/results/mae_atr_wf72_test1_fold19_tail30.html`
+- [ ] `FLF_BILSTM/results/mae_atr_wf72_test1_fold20_tail30.html`
+- [ ] `FLF_BILSTM/results/mae_atr_wf72_test1_fold21_tail30.html`
+- [ ] `FLF_BILSTM/results/mae_atr_wf72_test1_fold21_full.html`
+- [ ] `FLF_BILSTM/results/ohlc_dot_wf72_test1_all_folds.html`
 
 ### Hasil Last5 yang Bisa Dipakai untuk Perbandingan
 
-- [ ] `results/rolling_train72_test1_last5/rolling_fixed_summary.csv`
-- [ ] `results/rolling_train72_test1_last5/fold17_data.csv` s.d. `results/rolling_train72_test1_last5/fold21_data.csv`
-- [ ] `results/rolling_train72_test1_last5/fold17_preds.csv` s.d. `results/rolling_train72_test1_last5/fold21_preds.csv`
-- [ ] `results/rolling_train72_test1_last5/fold17_history.csv` s.d. `results/rolling_train72_test1_last5/fold21_history.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1_last5/rolling_fixed_summary.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1_last5/fold17_data.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1_last5/fold21_data.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1_last5/fold17_preds.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1_last5/fold21_preds.csv`
+- [ ] `FLF_BILSTM/results/rolling_train72_test1_last5/fold17_history.csv` s.d. `FLF_BILSTM/results/rolling_train72_test1_last5/fold21_history.csv`
 - [ ] `results/loss_wf72_test1_last5_bilstm.html`
 - [ ] `results/loss_gradient_wf72_test1_last5_bilstm.html`
 - [ ] `results/validation_report_wf72_test1_last5_bilstm.html`
-- [ ] `results/ohlc_dot_wf72_test1_last5_all_folds.html`
+- [ ] `FLF_BILSTM/results/ohlc_dot_wf72_test1_last5_all_folds.html`
 
 ### Hasil Tuning / Pipeline
 
-- [ ] `results/eurusd_pipeline/`
+- [ ] `FLF_BILSTM/results/eurusd_pipeline/`
   Folder utama hasil tuning bertahap BiLSTM.
-- [ ] `results/eurusd_pipeline/stage1_summary.csv` s.d. `results/eurusd_pipeline/stage6_summary.csv`
-- [ ] `results/eurusd_pipeline/best_progression.csv`
-- [ ] `results/validation_report.html`
-- [ ] `results/pipeline_summary.html`
+- [ ] `FLF_BILSTM/results/eurusd_pipeline/stage1_summary.csv` s.d. `FLF_BILSTM/results/eurusd_pipeline/stage6_summary.csv`
+- [ ] `FLF_BILSTM/results/eurusd_pipeline/best_progression.csv`
+- [ ] `FLF_BILSTM/results/validation_report.html`
+- [ ] `FLF_BILSTM/results/pipeline_summary.html`
 
 ## 5. Comparison, Rekap, dan Visual Bersama
 
@@ -208,10 +208,10 @@ Dokumen ini fokus ke **pipeline aktif** yang relevan untuk software charting:
 
 ### Output Comparison / Rekap
 
-- [ ] `results/comparison/README.md`
-- [ ] `results/comparison/comparison_lstm_vs_bilstm_wf72_test1.html`
-- [ ] `results/comparison/comparison_lstm_vs_bilstm_wf72_test1_last5.html`
-- [ ] `results/comparison/comparison_models_wf72_test1_last5.html`
+- [ ] `comparison/README.md`
+- [ ] `comparison/comparison_lstm_vs_bilstm_wf72_test1.html`
+- [ ] `comparison/comparison_lstm_vs_bilstm_wf72_test1_last5.html`
+- [ ] `comparison/comparison_models_wf72_test1_last5.html`
 - [ ] `bukuThesis/bahan/analisis_konvergensi_dan_diagnostik_model_wf72_test1_last5.md`
 - [ ] `bukuThesis/bahan/analisis_konvergensi_dan_diagnostik_model_wf72_test1_last5.html`
 
@@ -245,7 +245,7 @@ File-file ini masih terkait topik model, tetapi **bukan prioritas** untuk softwa
 
 ## 7. Catatan Penting untuk Integrasi Software
 
-- FLF-LSTM saat ini bergantung pada data fold hasil skenario rolling, terutama `results/rolling_train72_test1/fold21_data.csv`, karena path itu dipakai di `FLF_LSTM/lstm_flf_config_wf72_test1_latest.json` dan `FLF_LSTM/lstm_flf_config_wf72_test1_best.json`.
+- FLF-LSTM saat ini bergantung pada data fold hasil skenario rolling, terutama `FLF_BILSTM/results/rolling_train72_test1/fold21_data.csv`, karena path itu dipakai di `FLF_LSTM/lstm_flf_config_wf72_test1_latest.json` dan `FLF_LSTM/lstm_flf_config_wf72_test1_best.json`.
 - ARIMA tidak punya file `history.csv` seperti LSTM/BiLSTM. Rekap ARIMA ada di `foldXX_summary.json` dan visual residual HTML.
 - Untuk software charting, file yang paling penting dibaca UI biasanya:
   - `foldXX_preds.csv`

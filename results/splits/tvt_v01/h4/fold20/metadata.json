@@ -1,0 +1,14 @@
+{
+  "profile": "h4",
+  "fold": 20,
+  "train_core_start": "2019-08-02 00:00:00",
+  "train_core_end": "2025-07-01 20:00:00",
+  "validation_start": "2025-07-02 00:00:00",
+  "validation_end": "2025-08-01 20:00:00",
+  "test_start": "2025-08-04 00:00:00",
+  "test_end": "2025-09-01 20:00:00",
+  "train_core_samples": 9205,
+  "validation_samples": 138,
+  "test_samples": 126,
+  "combined_samples": 9469
+}

@@ -1,0 +1,3 @@
+model,best_job,window,units,mae_avg_pips
+LSTM,lstm_d1_s2_h128,4,128,31.867420454545417
+BiLSTM,bilstm_d1_s2_h96,6,96,31.18219318181832

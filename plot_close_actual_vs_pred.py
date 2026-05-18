@@ -7,8 +7,8 @@ import pandas as pd
 
 def main():
     parser = argparse.ArgumentParser(description="Plot actual vs predicted Close price.")
-    parser.add_argument("--preds", type=str, default="results/final_preds.csv", help="Preds CSV with pred_* and true_* cols.")
-    parser.add_argument("--output", type=str, default="results/close_actual_pred.png", help="Output image path.")
+    parser.add_argument("--preds", type=str, default="FLF_BILSTM/results/final_preds.csv", help="Preds CSV with pred_* and true_* cols.")
+    parser.add_argument("--output", type=str, default="FLF_BILSTM/results/close_actual_pred.png", help="Output image path.")
     parser.add_argument("--start-index", type=int, default=0, help="Optional starting index within preds (e.g., to skip early years).")
     args = parser.parse_args()
 

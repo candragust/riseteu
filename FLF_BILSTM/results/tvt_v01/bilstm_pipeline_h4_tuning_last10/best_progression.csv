@@ -1,0 +1,7 @@
+stage,best_name,stage_best_mae_avg_pips,window,units,activation,lr,epochs,lambda_coef,sigma_coef,batch
+Stage 1 - Window Sweep,bilstm_tvt_s1_w20_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b128,12.165250708011806,20,256,relu,0.0007,50,0.8,0.15,128
+Stage 2 - Units Sweep,bilstm_tvt_s2_w20_h256_actrelu_lr0.0007_e50_lam0.8_sig0.15_b128,12.531115573240196,20,256,relu,0.0007,50,0.8,0.15,128
+Stage 3 - Activation + Learning Rate Sweep,bilstm_tvt_s3_w20_h256_actrelu_lr0.0005_e50_lam0.8_sig0.15_b128,12.56306446393281,20,256,relu,0.0005,50,0.8,0.15,128
+Stage 4 - Lambda / Sigma Sweep,bilstm_tvt_s4_w20_h256_actrelu_lr0.0005_e50_lam1_sig0.05_b128,12.656790651507318,20,256,relu,0.0005,50,1.0,0.05,128
+Stage 5 - Batch Size Sweep,bilstm_tvt_s5_w20_h256_actrelu_lr0.0005_e50_lam1_sig0.05_b64,12.831803899005589,20,256,relu,0.0005,50,1.0,0.05,64
+Stage 6 - Epoch Sweep,bilstm_tvt_s6_w20_h256_actrelu_lr0.0005_e39_lam1_sig0.05_b64,12.641579822644145,20,256,relu,0.0005,39,1.0,0.05,64

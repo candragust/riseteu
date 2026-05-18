@@ -1,0 +1,33 @@
+{
+  "lstm": {
+    "metrics_csv": "/home/hduser/jupyter/gust/RisetEU/results/d1_ohlc/lstm_d1_wf72_test1_last5_metrics_v01.csv",
+    "mean_mae_avg_pips": 33.29635700757579,
+    "median_mae_avg_pips": 32.894409090909,
+    "mean_mae_avg_hlc_pips": 36.71007904040404,
+    "mean_corr2_avg_hlc": 0.6435915575645288,
+    "mean_da_body_pct": 51.742424242424235,
+    "mean_epochs_ran": 25.8,
+    "mean_best_epoch": 20.8,
+    "mean_best_val_loss": 0.00427255253307516,
+    "best_fold": 19,
+    "best_fold_mae_avg_pips": 30.673364583333406,
+    "worst_fold": 17,
+    "worst_fold_mae_avg_pips": 37.942954545454626
+  },
+  "bilstm": {
+    "metrics_csv": "/home/hduser/jupyter/gust/RisetEU/results/d1_ohlc/bilstm_d1_wf72_test1_last5_metrics_v01.csv",
+    "mean_mae_avg_pips": 28.546342424242425,
+    "median_mae_avg_pips": 29.767329545454707,
+    "mean_mae_avg_hlc_pips": 33.32963207070704,
+    "mean_corr2_avg_hlc": 0.6918762349442606,
+    "mean_da_body_pct": 46.36363636363636,
+    "mean_epochs_ran": 16.8,
+    "mean_best_epoch": 11.8,
+    "mean_best_val_loss": 0.0047586587257682595,
+    "best_fold": 21,
+    "best_fold_mae_avg_pips": 24.265784090908998,
+    "worst_fold": 19,
+    "worst_fold_mae_avg_pips": 30.623541666666625
+  },
+  "comparison_csv": "/home/hduser/jupyter/gust/RisetEU/results/d1_ohlc/lstm_vs_bilstm_d1_wf72_test1_last5_comparison_v01.csv"
+}

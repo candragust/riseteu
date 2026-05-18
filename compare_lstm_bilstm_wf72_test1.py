@@ -8,6 +8,7 @@ import pandas as pd
 
 
 PIP_FACTOR = 10000
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 def parse_args():
@@ -21,7 +22,7 @@ def parse_args():
     )
     parser.add_argument(
         "--bilstm-dir",
-        default="/home/hduser/jupyter/gust/RisetEU/results/rolling_train72_test1",
+        default=str(PROJECT_ROOT / "FLF_BILSTM" / "results" / "rolling_train72_test1"),
         help="Directory containing FLF-BiLSTM foldXX_preds.csv files.",
     )
     parser.add_argument(
@@ -31,12 +32,12 @@ def parse_args():
     )
     parser.add_argument(
         "--bilstm-meta-html",
-        default="/home/hduser/jupyter/gust/RisetEU/results/mae_atr_wf72_test1_fold21_tail30.html",
+        default=str(PROJECT_ROOT / "FLF_BILSTM" / "results" / "mae_atr_wf72_test1_fold21_tail30.html"),
         help="BiLSTM HTML report used to extract parameter string.",
     )
     parser.add_argument(
         "--out",
-        default="/home/hduser/jupyter/gust/RisetEU/results/comparison/comparison_lstm_vs_bilstm_wf72_test1.html",
+        default=str(PROJECT_ROOT / "comparison" / "comparison_lstm_vs_bilstm_wf72_test1.html"),
         help="Output HTML report path.",
     )
     parser.add_argument(

@@ -1,0 +1,81 @@
+{
+  "label": "TVT v02 D1 FLF-BiLSTM",
+  "final_selected_name": "bilstm_d1_s7_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b32",
+  "final_selected_mae_avg_pips": 30.68504210858585,
+  "final_selected_from": "stage_best",
+  "final_params": {
+    "window": 4,
+    "units": 256,
+    "activation": "relu",
+    "lr": 0.0007,
+    "epochs": 50,
+    "lambda_coef": 1.0,
+    "sigma_coef": 0.05,
+    "batch": 32
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage1_summary.csv",
+      "stage_best_name": "bilstm_d1_s1_w4_h256_actrelu_lr0.0005_e50_lam1_sig0.05_b128",
+      "stage_best_mae_avg_pips": 32.54437066197692,
+      "selected_name_after_stage": "bilstm_d1_s1_w4_h256_actrelu_lr0.0005_e50_lam1_sig0.05_b128",
+      "selected_mae_after_stage": 32.54437066197692,
+      "selected_from": "stage_best"
+    },
+    {
+      "stage": 2,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage2_summary.csv",
+      "stage_best_name": "bilstm_d1_s2_w4_h128_actrelu_lr0.0005_e50_lam1_sig0.05_b128",
+      "stage_best_mae_avg_pips": 36.47528208874455,
+      "selected_name_after_stage": "bilstm_d1_s1_w4_h256_actrelu_lr0.0005_e50_lam1_sig0.05_b128",
+      "selected_mae_after_stage": 32.54437066197692,
+      "selected_from": "carry_forward"
+    },
+    {
+      "stage": 3,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage3_summary.csv",
+      "stage_best_name": "bilstm_d1_s3_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b128",
+      "stage_best_mae_avg_pips": 31.948051740620517,
+      "selected_name_after_stage": "bilstm_d1_s3_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b128",
+      "selected_mae_after_stage": 31.948051740620517,
+      "selected_from": "stage_best"
+    },
+    {
+      "stage": 4,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage4_summary.csv",
+      "stage_best_name": "bilstm_d1_s4_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b128",
+      "stage_best_mae_avg_pips": 32.10089706890336,
+      "selected_name_after_stage": "bilstm_d1_s3_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b128",
+      "selected_mae_after_stage": 31.948051740620517,
+      "selected_from": "carry_forward"
+    },
+    {
+      "stage": 5,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage5_summary.csv",
+      "stage_best_name": "bilstm_d1_s5_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b32",
+      "stage_best_mae_avg_pips": 30.70875474386727,
+      "selected_name_after_stage": "bilstm_d1_s5_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b32",
+      "selected_mae_after_stage": 30.70875474386727,
+      "selected_from": "stage_best"
+    },
+    {
+      "stage": 6,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage6_summary.csv",
+      "stage_best_name": "bilstm_d1_s6_w4_h256_actrelu_lr0.0007_e40_lam1_sig0.05_b32",
+      "stage_best_mae_avg_pips": 30.929747573953836,
+      "selected_name_after_stage": "bilstm_d1_s5_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b32",
+      "selected_mae_after_stage": 30.70875474386727,
+      "selected_from": "carry_forward"
+    },
+    {
+      "stage": 7,
+      "stage_summary": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/stage7_summary.csv",
+      "stage_best_name": "bilstm_d1_s7_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b32",
+      "stage_best_mae_avg_pips": 30.68504210858585,
+      "selected_name_after_stage": "bilstm_d1_s7_w4_h256_actrelu_lr0.0007_e50_lam1_sig0.05_b32",
+      "selected_mae_after_stage": 30.68504210858585,
+      "selected_from": "stage_best"
+    }
+  ]
+}

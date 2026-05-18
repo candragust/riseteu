@@ -7,6 +7,7 @@ import pandas as pd
 
 
 PIP_FACTOR = 10000
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 def parse_args():
@@ -25,12 +26,12 @@ def parse_args():
     )
     parser.add_argument(
         "--bilstm-dir",
-        default="/home/hduser/jupyter/gust/RisetEU/results/rolling_train72_test1_last5",
+        default=str(PROJECT_ROOT / "FLF_BILSTM" / "results" / "rolling_train72_test1_last5"),
         help="Directory containing FLF-BiLSTM foldXX_preds.csv files.",
     )
     parser.add_argument(
         "--out",
-        default="/home/hduser/jupyter/gust/RisetEU/results/comparison/comparison_models_wf72_test1_last5.html",
+        default=str(PROJECT_ROOT / "comparison" / "comparison_models_wf72_test1_last5.html"),
         help="Output HTML report path.",
     )
     parser.add_argument(
@@ -114,7 +115,7 @@ def summarize_metrics(df: pd.DataFrame):
 
 
 def load_lstm_meta():
-    cfg_path = Path("/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/lstm_flf_config_wf72_test1_best.json")
+    cfg_path = PROJECT_ROOT / "FLF_LSTM" / "lstm_flf_config_wf72_test1_best.json"
     cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
     return (
         f"window={cfg['window']}, units={cfg['units']}, activation={cfg['activation']}, "
@@ -124,7 +125,7 @@ def load_lstm_meta():
 
 
 def load_bilstm_meta():
-    df = pd.read_csv("/home/hduser/jupyter/gust/RisetEU/results/eurusd_pipeline/best_progression.csv")
+    df = pd.read_csv(PROJECT_ROOT / "FLF_BILSTM" / "results" / "eurusd_pipeline" / "best_progression.csv")
     row = df.iloc[-1]
     return (
         f"window={int(row['window'])}, units={int(row['units'])}, activation={row['activation']}, "
@@ -134,7 +135,7 @@ def load_bilstm_meta():
 
 
 def load_arima_meta():
-    cfg = json.loads(Path("/home/hduser/jupyter/gust/RisetEU/Arima/arima_baseline_config.json").read_text(encoding="utf-8"))
+    cfg = json.loads((PROJECT_ROOT / "Arima" / "arima_baseline_config.json").read_text(encoding="utf-8"))
     p_values = ",".join(map(str, cfg["p_values"]))
     d_values = ",".join(map(str, cfg["d_values"]))
     q_values = ",".join(map(str, cfg["q_values"]))

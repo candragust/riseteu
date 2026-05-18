@@ -24,8 +24,29 @@ def compute_mae(preds_df: pd.DataFrame):
     }
 
 
+def ensure_atr_columns(df: pd.DataFrame) -> pd.DataFrame:
+    if {"atr6", "atr12"}.issubset(df.columns):
+        return df
+    required = {"open", "high", "low", "close"}
+    if not required.issubset(df.columns):
+        raise ValueError(f"Data OHLC wajib memiliki kolom {sorted(required)} untuk menghitung ATR.")
+    out = df.copy()
+    prev_close = out["close"].shift(1)
+    true_range = pd.concat(
+        [
+            out["high"] - out["low"],
+            (out["high"] - prev_close).abs(),
+            (out["low"] - prev_close).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    out["atr6"] = true_range.rolling(6, min_periods=6).mean()
+    out["atr12"] = true_range.rolling(12, min_periods=12).mean()
+    return out
+
+
 def load_atr(clean_path: Path, split_ratio: float, tail_len: int):
-    df = pd.read_csv(clean_path)
+    df = ensure_atr_columns(pd.read_csv(clean_path))
     start_val = int(len(df) * split_ratio)
     val_df = df.iloc[start_val:]
     atr6_mean = val_df["atr6"].mean()
@@ -186,6 +207,11 @@ def main():
 
     atr6_mean, atr12_mean, tail_clean, sample_label = load_atr(Path(args.clean), args.split, args.tail)
     tail_preds = preds_df.tail(len(tail_clean)).reset_index(drop=True)
+    if len(tail_clean) != len(tail_preds):
+        align_len = min(len(tail_clean), len(tail_preds))
+        tail_clean = tail_clean.tail(align_len).reset_index(drop=True)
+        tail_preds = preds_df.tail(align_len).reset_index(drop=True)
+        sample_label = f"{sample_label}, aligned to {align_len} predictions"
 
     fig_price = build_visual(tail_clean, tail_preds, sample_label)
     fig_overlay = build_overlay_visual(tail_clean, tail_preds, sample_label)

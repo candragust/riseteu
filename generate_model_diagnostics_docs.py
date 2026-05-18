@@ -160,6 +160,8 @@ def make_arima_html(
     summary: dict,
     combined_close_resid_pips: pd.Series,
     out_path: Path,
+    page_title: str = "ARIMA Residual Diagnostics WF72m/1m Last5",
+    scope_note: str = "baseline ARIMA OHLC-only, walk-forward fixed 72 bulan train / 1 bulan test, fold 17-21.",
 ):
     fig = make_subplots(
         rows=3,
@@ -227,10 +229,10 @@ def make_arima_html(
     """
 
     html = [
-        "<html><head><meta charset='UTF-8'><title>ARIMA Residual Diagnostics WF72m/1m Last5</title>",
+        f"<html><head><meta charset='UTF-8'><title>{page_title}</title>",
         f"<style>{style}</style></head><body>",
-        "<h1>ARIMA Residual Diagnostics WF72m/1m Last5</h1>",
-        "<p class='note'><strong>Ruang lingkup:</strong> baseline ARIMA OHLC-only, walk-forward fixed 72 bulan train / 1 bulan test, fold 17-21.</p>",
+        f"<h1>{page_title}</h1>",
+        f"<p class='note'><strong>Ruang lingkup:</strong> {scope_note}</p>",
         "<p class='note'><strong>Interpretasi singkat:</strong> "
         f"mean MAE avg = {summary['mean_mae_avg_pips']:.4f} pips; "
         f"combined close bias = {summary['combined_close_bias_pips']:.4f} pips; "
@@ -399,7 +401,7 @@ Dokumen ini paling tepat ditempatkan sebagai bahan untuk:
 
 def main():
     lstm_hist_dir = PROJECT_ROOT / "FLF_LSTM" / "results" / "wf72_test1_lstm_last5"
-    bilstm_hist_dir = PROJECT_ROOT / "results" / "rolling_train72_test1_last5"
+    bilstm_hist_dir = PROJECT_ROOT / "FLF_BILSTM" / "results" / "rolling_train72_test1_last5"
     arima_dir = PROJECT_ROOT / "Arima" / "result" / "arima_wf72_test1_last5"
 
     lstm_df, lstm_summary = analyze_nn_histories(lstm_hist_dir, "FLF-LSTM")

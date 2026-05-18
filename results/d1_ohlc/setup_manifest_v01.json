@@ -1,0 +1,76 @@
+{
+  "dataset": {
+    "raw": "EURUSD_D1_25Oct17.csv",
+    "clean": "results/EURUSD_D1_clean.csv",
+    "rows": 2023,
+    "start": "2018-01-02",
+    "end": "2025-10-16"
+  },
+  "protocol": {
+    "train_months": 72,
+    "test_months": 1,
+    "shift_months": 1,
+    "window_baseline": 12,
+    "min_test_samples": 15,
+    "fold_count": 21,
+    "analysis_focus": "last_5_folds"
+  },
+  "paths": {
+    "fold_root": "FLF_BILSTM/results/d1_ohlc/rolling_train72_test1",
+    "fold_last5_root": "FLF_BILSTM/results/d1_ohlc/rolling_train72_test1_last5",
+    "lstm_base_config": "FLF_LSTM/configs/d1_ohlc/lstm_flf_config_d1_ohlc_base_v01.json",
+    "bilstm_base_config": "FLF_BILSTM/configs/d1_ohlc/bilstm_flf_config_d1_ohlc_base_v01.json"
+  },
+  "last_5_folds": [
+    {
+      "index": 17,
+      "train_start": "2019-05-02",
+      "train_end": "2025-05-02",
+      "test_start": "2025-05-02",
+      "test_end": "2025-06-02",
+      "train_samples": 1558,
+      "test_samples": 21,
+      "split_ratio": 0.986700443318556
+    },
+    {
+      "index": 18,
+      "train_start": "2019-06-02",
+      "train_end": "2025-06-02",
+      "test_start": "2025-06-02",
+      "test_end": "2025-07-02",
+      "train_samples": 1557,
+      "test_samples": 22,
+      "split_ratio": 0.9860671310956302
+    },
+    {
+      "index": 19,
+      "train_start": "2019-07-02",
+      "train_end": "2025-07-02",
+      "test_start": "2025-07-02",
+      "test_end": "2025-08-02",
+      "train_samples": 1558,
+      "test_samples": 23,
+      "split_ratio": 0.9854522454142948
+    },
+    {
+      "index": 20,
+      "train_start": "2019-08-02",
+      "train_end": "2025-08-02",
+      "test_start": "2025-08-02",
+      "test_end": "2025-09-02",
+      "train_samples": 1558,
+      "test_samples": 21,
+      "split_ratio": 0.986700443318556
+    },
+    {
+      "index": 21,
+      "train_start": "2019-09-02",
+      "train_end": "2025-09-02",
+      "test_start": "2025-09-02",
+      "test_end": "2025-10-02",
+      "train_samples": 1558,
+      "test_samples": 22,
+      "split_ratio": 0.9860759493670886
+    }
+  ]
+}

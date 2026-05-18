@@ -1,0 +1,4 @@
+fold,high_lt_low,open_gt_high,open_lt_low,close_gt_high,close_lt_low,invalid_candles
+19,0,15,17,5,7,39
+20,0,10,9,5,3,25
+21,0,7,16,2,3,26

@@ -1,0 +1,125 @@
+[START] 2026-04-25 13:02:12
+[JOB] tvt_v02_html_pdf_conversion
+[RUNNER] /home/hduser/jupyter/gust/RisetEU/scripts/run_tvt_v02_html_pdf_conversion.sh
+[OUTPUT] /home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+[ARGS] --overwrite
+[ACTIVITY] /home/hduser/jupyter/gust/RisetEU/agentactivity.md
+Discovered 38 TVT v02 HTML files.
+01. Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.pdf
+02. Arima/result/tvt_v02/d1_evaluation_last3/index.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/d1_evaluation_last3/index.pdf
+03. Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.pdf
+04. Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.pdf
+05. Arima/result/tvt_v02/h4_evaluation_last3/index.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/h4_evaluation_last3/index.pdf
+06. Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.pdf
+07. FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.pdf
+08. FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.pdf
+09. FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.pdf
+10. FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.pdf
+11. FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.pdf
+12. FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.pdf
+13. FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.pdf
+14. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.pdf
+15. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.pdf
+16. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.pdf
+17. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.pdf
+18. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.pdf
+19. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.pdf
+20. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.pdf
+21. FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.pdf
+22. FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.pdf
+23. FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.pdf
+24. FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.pdf
+25. FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.pdf
+26. FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.pdf
+27. FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.pdf
+28. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.pdf
+29. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.pdf
+30. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.pdf
+31. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.pdf
+32. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.pdf
+33. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.pdf
+34. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.pdf
+35. FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.pdf
+36. FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.pdf
+37. comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.pdf
+38. comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.html -> bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.pdf
+[1/38] Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html
+  OK pages=4 bytes=157720 seconds=2.06 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/d1_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.pdf
+[2/38] Arima/result/tvt_v02/d1_evaluation_last3/index.html
+  OK pages=7 bytes=404857 seconds=0.41 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/d1_evaluation_last3/index.pdf
+[3/38] Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.html
+  OK pages=4 bytes=143144 seconds=2.41 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/d1_evaluation_last3/mae_atr_fold_allfull.pdf
+[4/38] Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.html
+  OK pages=4 bytes=160085 seconds=1.19 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/h4_evaluation_last3/arima_residual_diagnostics_tvt_v02_last3.pdf
+[5/38] Arima/result/tvt_v02/h4_evaluation_last3/index.html
+  OK pages=7 bytes=1324454 seconds=1.09 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/h4_evaluation_last3/index.pdf
+[6/38] Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+  OK pages=4 bytes=239588 seconds=1.91 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/Arima/result/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.pdf
+[7/38] FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.html
+  OK pages=3 bytes=203959 seconds=0.78 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/bilstm_pipeline_h4_tuning_last6/eurusd_bilstm_pipeline_tvt_summary.pdf
+[8/38] FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.html
+  OK pages=4 bytes=274859 seconds=0.76 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6/eurusd_bilstm_d1_pipeline_tvt_v02_summary.pdf
+[9/38] FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.html
+  OK pages=1 bytes=35586 seconds=1.33 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_bilstm_last3.pdf
+[10/38] FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.html
+  OK pages=1 bytes=32248 seconds=1.97 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_bilstm_last3.pdf
+[11/38] FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html
+  OK pages=4 bytes=137109 seconds=1.73 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.pdf
+[12/38] FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.html
+  OK pages=3 bytes=192931 seconds=3.55 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_bilstm_last3_all.pdf
+[13/38] FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.html
+  OK pages=1 bytes=71171 seconds=0.36 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_bilstm_last3.pdf
+[14/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.html
+  OK pages=1 bytes=33188 seconds=1.56 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_bilstm_last3.pdf
+[15/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.html
+  OK pages=1 bytes=36179 seconds=1.09 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_bilstm_last3.pdf
+[16/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html
+  OK pages=3 bytes=117910 seconds=1.30 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.pdf
+[17/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html
+  OK pages=3 bytes=114805 seconds=1.37 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.pdf
+[18/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html
+  OK pages=3 bytes=117436 seconds=1.36 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.pdf
+[19/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+  OK pages=4 bytes=236474 seconds=1.78 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.pdf
+[20/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.html
+  OK pages=3 bytes=842241 seconds=1.98 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_bilstm_last3_all.pdf
+[21/38] FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.html
+  OK pages=1 bytes=71254 seconds=0.33 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_BILSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_bilstm_last3.pdf
+[22/38] FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.html
+  OK pages=1 bytes=35423 seconds=1.34 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_d1_tvt_v02_lstm_last3.pdf
+[23/38] FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.html
+  OK pages=1 bytes=33386 seconds=1.16 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/loss_gradient_d1_tvt_v02_lstm_last3.pdf
+[24/38] FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.html
+  OK pages=4 bytes=137429 seconds=1.24 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/mae_atr_fold_allfull.pdf
+[25/38] FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.html
+  OK pages=3 bytes=192545 seconds=1.19 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/ohlc_dot_d1_tvt_v02_lstm_last3_all.pdf
+[26/38] FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.html
+  OK pages=1 bytes=70914 seconds=0.33 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3/validation_report_d1_tvt_v02_lstm_last3.pdf
+[27/38] FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.html
+  OK pages=4 bytes=289800 seconds=0.73 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6/eurusd_lstm_d1_pipeline_tvt_v02_summary.pdf
+[28/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.html
+  OK pages=1 bytes=33397 seconds=1.41 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_gradient_h4_tvt_v02_lstm_last3.pdf
+[29/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.html
+  OK pages=1 bytes=35796 seconds=1.40 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/loss_h4_tvt_v02_lstm_last3.pdf
+[30/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.html
+  OK pages=3 bytes=117681 seconds=1.45 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold19_full.pdf
+[31/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.html
+  OK pages=3 bytes=114748 seconds=1.52 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold20_full.pdf
+[32/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.html
+  OK pages=3 bytes=117985 seconds=1.36 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold21_full.pdf
+[33/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.html
+  OK pages=4 bytes=236139 seconds=1.87 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/mae_atr_fold_allfull.pdf
+[34/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.html
+  OK pages=3 bytes=841918 seconds=1.60 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/ohlc_dot_h4_tvt_v02_lstm_last3_all.pdf
+[35/38] FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.html
+  OK pages=1 bytes=71202 seconds=0.33 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/h4_evaluation_last3/validation_report_h4_tvt_v02_lstm_last3.pdf
+[36/38] FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.html
+  OK pages=3 bytes=186886 seconds=0.36 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/FLF_LSTM/results/tvt_v02/lstm_pipeline_h4_tuning_last6/eurusd_lstm_pipeline_tvt_summary.pdf
+[37/38] comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.html
+  OK pages=7 bytes=327754 seconds=2.40 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/comparison/tvt_v02/d1/comparison_models_d1_tvt_v02_last3_v01.pdf
+[38/38] comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.html
+  OK pages=7 bytes=304794 seconds=1.90 pdf=/home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/comparison/tvt_v02/h4/comparison_models_h4_tvt_v02_last3_v01.pdf
+Manifest: /home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02/pdf_manifest.csv
+Output  : /home/hduser/jupyter/gust/RisetEU/bukuThesis/penyusunan_buku_tesis_tvt_v02/04_lampiran_artefak/pdf_tvt_v02
+Done. ok_or_skipped=38, failed=0
+[END] 2026-04-25 13:03:08 exit=0

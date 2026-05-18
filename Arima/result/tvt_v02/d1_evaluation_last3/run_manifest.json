@@ -1,0 +1,12 @@
+{
+  "schedule": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1/fold_schedule_evaluation.csv",
+  "fold_root": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1",
+  "base_config": "/home/hduser/jupyter/gust/RisetEU/Arima/arima_baseline_config_d1_ohlc_v01.json",
+  "python_bin": "python3",
+  "selected_folds": [
+    19,
+    20,
+    21
+  ],
+  "experiment_script": "/home/hduser/jupyter/gust/RisetEU/Arima/arima_ohlc_experiment.py"
+}

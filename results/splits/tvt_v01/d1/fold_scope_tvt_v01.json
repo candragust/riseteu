@@ -1,0 +1,29 @@
+{
+  "profile": "d1",
+  "total_folds": 21,
+  "tuning_policy": {
+    "description": "Use the last 10 complete folds for hyperparameter tuning.",
+    "folds": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21
+    ]
+  },
+  "evaluation_policy": {
+    "description": "Use the last 5 complete folds for final comparative evaluation.",
+    "folds": [
+      17,
+      18,
+      19,
+      20,
+      21
+    ]
+  }
+}

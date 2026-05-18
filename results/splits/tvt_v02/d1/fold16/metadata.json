@@ -1,0 +1,14 @@
+{
+  "profile": "d1",
+  "fold": 16,
+  "train_core_start": "2019-04-02 00:00:00",
+  "train_core_end": "2024-12-31 00:00:00",
+  "validation_start": "2025-01-02 00:00:00",
+  "validation_end": "2025-04-01 00:00:00",
+  "test_start": "2025-04-02 00:00:00",
+  "test_end": "2025-05-01 00:00:00",
+  "train_core_samples": 1494,
+  "validation_samples": 64,
+  "test_samples": 22,
+  "combined_samples": 1580
+}

@@ -7,9 +7,10 @@ import pandas as pd
 
 def main():
     parser = argparse.ArgumentParser(description="Plot actual vs predicted OHLC prices.")
-    parser.add_argument("--preds", type=str, default="results/final_preds.csv", help="Preds CSV with pred_* and true_* cols.")
-    parser.add_argument("--output", type=str, default="results/ohlc_actual_pred.png", help="Output image path.")
+    parser.add_argument("--preds", type=str, default="FLF_BILSTM/results/final_preds.csv", help="Preds CSV with pred_* and true_* cols.")
+    parser.add_argument("--output", type=str, default="FLF_BILSTM/results/ohlc_actual_pred.png", help="Output image path.")
     parser.add_argument("--start-index", type=int, default=0, help="Optional starting index within preds.")
+    parser.add_argument("--method", type=str, default="FLF-BiLSTM", help="Method/model label for the plot title.")
     args = parser.parse_args()
 
     df = pd.read_csv(args.preds).iloc[args.start_index :].reset_index(drop=True)
@@ -29,7 +30,8 @@ def main():
         ax.set_title(col.capitalize())
         ax.grid(True, alpha=0.4)
         ax.legend(fontsize=8)
-    plt.tight_layout()
+    plt.suptitle(f"Actual vs Predicted OHLC - {args.method} (validation segment)", fontsize=12)
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,198 @@
+{
+  "scope": "D1 TVT v02 detached readiness",
+  "project_root": "/home/hduser/jupyter/gust/RisetEU",
+  "commands": {
+    "full_detached": "scripts/launch_d1_tvt_v02_end_to_end_detached.sh full 1 7",
+    "resume_detached": "scripts/launch_d1_tvt_v02_end_to_end_detached.sh full 4 7",
+    "rebuild_from_existing": "scripts/launch_d1_tvt_v02_end_to_end_detached.sh skip 1 7",
+    "status": "scripts/status_tvt_v02.sh"
+  },
+  "dependencies": {
+    "screen": true,
+    "tf_python": "/home/hduser/miniconda3/envs/test/bin/python",
+    "tf_python_exists": true,
+    "tf_python_modules": {
+      "tensorflow": true,
+      "statsmodels": true,
+      "pandas": true,
+      "numpy": true
+    },
+    "report_python": "python",
+    "report_python_modules": {
+      "plotly": true,
+      "pandas": true,
+      "numpy": true,
+      "statsmodels": true
+    }
+  },
+  "required_paths": [
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1",
+      "kind": "dir",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1/fold_schedule_tuning.csv",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1/fold_schedule_evaluation.csv",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/eurusd_lstm_d1_pipeline_runner_tvt_v02.py",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/eurusd_bilstm_d1_pipeline_runner_tvt_v02.py",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/rolling_tvt_lstm_d1_runner_v02.py",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/rolling_tvt_bilstm_d1_runner_v02.py",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/scripts/finalize_tvt_v02.py",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/Arima/arima_tvt_runner_v02.py",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/scripts/run_d1_tvt_v02_end_to_end.sh",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/scripts/launch_d1_tvt_v02_end_to_end_detached.sh",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/scripts/generate_d1_tvt_v02_reports.sh",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/configs/d1_ohlc/lstm_flf_config_d1_tvt_v02_base.json",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/configs/d1_ohlc/bilstm_flf_config_d1_tvt_v02_base.json",
+      "kind": "file",
+      "exists": true
+    },
+    {
+      "path": "/home/hduser/jupyter/gust/RisetEU/Arima/arima_baseline_config_d1_ohlc_v01.json",
+      "kind": "file",
+      "exists": true
+    }
+  ],
+  "schedules": {
+    "tuning": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1/fold_schedule_tuning.csv",
+      "folds": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "rows": 6,
+      "test_samples_total": 129,
+      "validation_samples_total": 384,
+      "train_core_samples_min": 1492,
+      "train_core_samples_max": 1494
+    },
+    "evaluation": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/results/splits/tvt_v02/d1/fold_schedule_evaluation.csv",
+      "folds": [
+        19,
+        20,
+        21
+      ],
+      "rows": 3,
+      "test_samples_total": 66,
+      "validation_samples_total": 197,
+      "train_core_samples_min": 1492,
+      "train_core_samples_max": 1493
+    }
+  },
+  "outputs": {
+    "lstm_tuning": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/results/tvt_v02/d1_ohlc/lstm_pipeline_d1_tuning_last6",
+      "exists": true,
+      "file_count": 35,
+      "key_files": [
+        "audit_finalize_report.md",
+        "best_progression.csv"
+      ]
+    },
+    "bilstm_tuning": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/bilstm_pipeline_d1_tuning_last6",
+      "exists": true,
+      "file_count": 33,
+      "key_files": [
+        "audit_finalize_report.md",
+        "best_progression.csv"
+      ]
+    },
+    "lstm_eval": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_LSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3",
+      "exists": true,
+      "file_count": 18,
+      "key_files": [
+        "mae_atr_fold_allfull.html",
+        "rolling_fixed_summary.csv",
+        "rolling_tvt_summary.csv"
+      ]
+    },
+    "bilstm_eval": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/FLF_BILSTM/results/tvt_v02/d1_ohlc/d1_evaluation_last3",
+      "exists": true,
+      "file_count": 18,
+      "key_files": [
+        "mae_atr_fold_allfull.html",
+        "rolling_fixed_summary.csv",
+        "rolling_tvt_summary.csv"
+      ]
+    },
+    "arima_eval": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/Arima/result/tvt_v02/d1_evaluation_last3",
+      "exists": true,
+      "file_count": 18,
+      "key_files": [
+        "index.html",
+        "mae_atr_fold_allfull.html",
+        "rolling_fixed_summary.csv",
+        "rolling_tvt_summary.csv"
+      ]
+    },
+    "comparison": {
+      "path": "/home/hduser/jupyter/gust/RisetEU/comparison/tvt_v02/d1",
+      "exists": true,
+      "file_count": 9,
+      "key_files": [
+        "comparison_models_d1_tvt_v02_last3_v01.html"
+      ]
+    }
+  },
+  "ready_to_launch": true,
+  "ready": true,
+  "results_complete": true
+}

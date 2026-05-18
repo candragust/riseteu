@@ -1,5 +1,5 @@
 {
-  "data": "results/rolling_train72_test1/fold21_data.csv",
+  "data": "FLF_BILSTM/results/rolling_train72_test1/fold21_data.csv",
   "sep": ",",
   "columns": null,
   "feature_columns": null,

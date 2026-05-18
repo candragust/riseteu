@@ -1,0 +1,551 @@
+
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Comparison ARIMA vs FLF-LSTM vs FLF-BiLSTM - EUR/USD 1D WF72m/1m Last5</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
+    h1, h2 { margin-bottom: 8px; }
+    p { line-height: 1.5; }
+    .meta { background: #f6f8fa; padding: 12px 14px; border: 1px solid #d0d7de; border-radius: 8px; margin-bottom: 16px; }
+    .data-table { border-collapse: collapse; width: 100%; margin-bottom: 18px; }
+    .data-table th, .data-table td { border: 1px solid #d0d7de; padding: 6px 8px; text-align: right; }
+    .data-table th { background: #f6f8fa; }
+    .data-table td:first-child, .data-table th:first-child { text-align: left; }
+    ul { margin-top: 6px; }
+    code { background: #f6f8fa; padding: 1px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>ARIMA vs FLF-LSTM vs FLF-BiLSTM</h1>
+  <p>Eksperimen <strong>EUR/USD 1D</strong> dengan protokol <strong>walk-forward 72 bulan train + 1 bulan test</strong> pada <strong>5 fold terakhir (17-21)</strong>.</p>
+
+  <h2>Metode</h2>
+  <div class="meta"><strong>ARIMA</strong>: order_search=true, requested_order=(1, 1, 0), grid p=(0, 1, 2), d=(0, 1), q=(0, 1, 2), selection_metric=aic; dominant selected orders: open=(1, 0, 0) (5/5 fold), high=(1, 0, 1) (5/5 fold), low=(1, 1, 0) (5/5 fold), close=(1, 0, 0) (5/5 fold)</div>
+  <div class="meta"><strong>FLF-LSTM</strong>: window=4, units=128, activation=relu, lr=0.0009, lambda=0.9, sigma=0.1, batch=64, epochs=60</div>
+  <div class="meta"><strong>FLF-BiLSTM</strong>: window=6, units=256, activation=relu, lr=0.0005, lambda=1.0, sigma=0.05, batch=32, epochs=50</div>
+
+  <h2>Ringkasan Model</h2>
+  <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>model</th>
+      <th>mean_mae_avg_pips</th>
+      <th>mean_corr2_avg_hlc</th>
+      <th>mean_da_body_pct</th>
+      <th>best_fold</th>
+      <th>best_fold_mae_avg_pips</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ARIMA</td>
+      <td>40.2983</td>
+      <td>0.6019</td>
+      <td>43.6364</td>
+      <td>21</td>
+      <td>36.0492</td>
+    </tr>
+    <tr>
+      <td>FLF-LSTM</td>
+      <td>33.2964</td>
+      <td>0.6436</td>
+      <td>51.7424</td>
+      <td>19</td>
+      <td>30.6734</td>
+    </tr>
+    <tr>
+      <td>FLF-BiLSTM</td>
+      <td>28.5463</td>
+      <td>0.6919</td>
+      <td>46.3636</td>
+      <td>21</td>
+      <td>24.2658</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h2>Temuan Utama</h2>
+  <ul>
+    <li>Pemenang <strong>MAE avg pips</strong>: <strong>FLF-BiLSTM</strong>.</li>
+    <li>Pemenang <strong>corr2 avg HLC</strong>: <strong>FLF-BiLSTM</strong>.</li>
+    <li>Pemenang <strong>Directional Accuracy</strong>: <strong>FLF-LSTM</strong>.</li>
+    <li>Mean MAE avg pips: ARIMA 40.2983, FLF-LSTM 33.2964, FLF-BiLSTM 28.5463.</li>
+    <li>Mean corr2 avg HLC: ARIMA 0.6019, FLF-LSTM 0.6436, FLF-BiLSTM 0.6919.</li>
+    <li>Mean Directional Accuracy: ARIMA 43.64%, FLF-LSTM 51.74%, FLF-BiLSTM 46.36%.</li>
+  </ul>
+
+  <h2>ARIMA Per Fold</h2>
+  <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>samples</th>
+      <th>mae_open_pips</th>
+      <th>mae_high_pips</th>
+      <th>mae_low_pips</th>
+      <th>mae_close_pips</th>
+      <th>mae_avg_pips</th>
+      <th>mae_avg_hlc_pips</th>
+      <th>corr2_open</th>
+      <th>corr2_high</th>
+      <th>corr2_low</th>
+      <th>corr2_close</th>
+      <th>corr2_avg_ohlc</th>
+      <th>corr2_avg_hlc</th>
+      <th>da_body_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>17</td>
+      <td>22</td>
+      <td>47.5046</td>
+      <td>39.2794</td>
+      <td>46.8640</td>
+      <td>49.5511</td>
+      <td>45.7998</td>
+      <td>45.2315</td>
+      <td>0.5457</td>
+      <td>0.5931</td>
+      <td>0.5287</td>
+      <td>0.4697</td>
+      <td>0.5343</td>
+      <td>0.5305</td>
+      <td>36.3636</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>22</td>
+      <td>46.9210</td>
+      <td>38.2293</td>
+      <td>34.4565</td>
+      <td>42.4415</td>
+      <td>40.5121</td>
+      <td>38.3758</td>
+      <td>0.8007</td>
+      <td>0.8644</td>
+      <td>0.8823</td>
+      <td>0.8592</td>
+      <td>0.8516</td>
+      <td>0.8686</td>
+      <td>54.5455</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>24</td>
+      <td>41.5876</td>
+      <td>41.2440</td>
+      <td>34.7333</td>
+      <td>46.0598</td>
+      <td>40.9061</td>
+      <td>40.6790</td>
+      <td>0.7258</td>
+      <td>0.5884</td>
+      <td>0.8338</td>
+      <td>0.6703</td>
+      <td>0.7046</td>
+      <td>0.6975</td>
+      <td>50.0000</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>22</td>
+      <td>45.2014</td>
+      <td>31.2582</td>
+      <td>33.6082</td>
+      <td>42.8297</td>
+      <td>38.2244</td>
+      <td>35.8987</td>
+      <td>0.4307</td>
+      <td>0.5092</td>
+      <td>0.5914</td>
+      <td>0.1840</td>
+      <td>0.4289</td>
+      <td>0.4282</td>
+      <td>36.3636</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>22</td>
+      <td>39.5040</td>
+      <td>33.4383</td>
+      <td>31.6489</td>
+      <td>39.6055</td>
+      <td>36.0492</td>
+      <td>34.8976</td>
+      <td>0.4169</td>
+      <td>0.5477</td>
+      <td>0.5084</td>
+      <td>0.3982</td>
+      <td>0.4678</td>
+      <td>0.4848</td>
+      <td>40.9091</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h2>FLF-LSTM Per Fold</h2>
+  <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>samples</th>
+      <th>mae_open_pips</th>
+      <th>mae_high_pips</th>
+      <th>mae_low_pips</th>
+      <th>mae_close_pips</th>
+      <th>mae_avg_pips</th>
+      <th>mae_avg_hlc_pips</th>
+      <th>corr2_open</th>
+      <th>corr2_high</th>
+      <th>corr2_low</th>
+      <th>corr2_close</th>
+      <th>corr2_avg_ohlc</th>
+      <th>corr2_avg_hlc</th>
+      <th>da_body_pct</th>
+      <th>epochs_ran</th>
+      <th>best_epoch</th>
+      <th>best_val_loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>17</td>
+      <td>22</td>
+      <td>28.4384</td>
+      <td>31.9982</td>
+      <td>40.4367</td>
+      <td>50.8985</td>
+      <td>37.9430</td>
+      <td>41.1111</td>
+      <td>0.8164</td>
+      <td>0.7014</td>
+      <td>0.5681</td>
+      <td>0.4397</td>
+      <td>0.6314</td>
+      <td>0.5697</td>
+      <td>45.4545</td>
+      <td>29</td>
+      <td>24</td>
+      <td>0.0051</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>22</td>
+      <td>24.7522</td>
+      <td>34.7412</td>
+      <td>29.0760</td>
+      <td>43.0082</td>
+      <td>32.8944</td>
+      <td>35.6085</td>
+      <td>0.9425</td>
+      <td>0.8886</td>
+      <td>0.9291</td>
+      <td>0.8454</td>
+      <td>0.9014</td>
+      <td>0.8877</td>
+      <td>77.2727</td>
+      <td>24</td>
+      <td>19</td>
+      <td>0.0039</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>24</td>
+      <td>13.7770</td>
+      <td>30.4659</td>
+      <td>31.7906</td>
+      <td>46.6600</td>
+      <td>30.6734</td>
+      <td>36.3055</td>
+      <td>0.9724</td>
+      <td>0.8271</td>
+      <td>0.8660</td>
+      <td>0.6412</td>
+      <td>0.8267</td>
+      <td>0.7781</td>
+      <td>54.1667</td>
+      <td>40</td>
+      <td>35</td>
+      <td>0.0047</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>22</td>
+      <td>25.8168</td>
+      <td>32.6206</td>
+      <td>28.4889</td>
+      <td>45.7194</td>
+      <td>33.1614</td>
+      <td>35.6096</td>
+      <td>0.7395</td>
+      <td>0.5807</td>
+      <td>0.7390</td>
+      <td>0.3224</td>
+      <td>0.5954</td>
+      <td>0.5474</td>
+      <td>40.9091</td>
+      <td>19</td>
+      <td>14</td>
+      <td>0.0041</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>22</td>
+      <td>22.4915</td>
+      <td>29.7957</td>
+      <td>33.3526</td>
+      <td>41.5986</td>
+      <td>31.8096</td>
+      <td>34.9157</td>
+      <td>0.7660</td>
+      <td>0.5627</td>
+      <td>0.4877</td>
+      <td>0.2547</td>
+      <td>0.5178</td>
+      <td>0.4350</td>
+      <td>40.9091</td>
+      <td>17</td>
+      <td>12</td>
+      <td>0.0035</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h2>FLF-BiLSTM Per Fold</h2>
+  <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>samples</th>
+      <th>mae_open_pips</th>
+      <th>mae_high_pips</th>
+      <th>mae_low_pips</th>
+      <th>mae_close_pips</th>
+      <th>mae_avg_pips</th>
+      <th>mae_avg_hlc_pips</th>
+      <th>corr2_open</th>
+      <th>corr2_high</th>
+      <th>corr2_low</th>
+      <th>corr2_close</th>
+      <th>corr2_avg_ohlc</th>
+      <th>corr2_avg_hlc</th>
+      <th>da_body_pct</th>
+      <th>epochs_ran</th>
+      <th>best_epoch</th>
+      <th>best_val_loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>17</td>
+      <td>22</td>
+      <td>10.4538</td>
+      <td>29.7175</td>
+      <td>32.1714</td>
+      <td>48.1670</td>
+      <td>30.1274</td>
+      <td>36.6853</td>
+      <td>0.9701</td>
+      <td>0.7607</td>
+      <td>0.6674</td>
+      <td>0.4410</td>
+      <td>0.7098</td>
+      <td>0.6230</td>
+      <td>40.9091</td>
+      <td>16</td>
+      <td>11</td>
+      <td>0.0055</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>22</td>
+      <td>18.6436</td>
+      <td>28.0228</td>
+      <td>25.2156</td>
+      <td>39.9084</td>
+      <td>27.9476</td>
+      <td>31.0489</td>
+      <td>0.9716</td>
+      <td>0.9044</td>
+      <td>0.9415</td>
+      <td>0.8525</td>
+      <td>0.9175</td>
+      <td>0.8995</td>
+      <td>18.1818</td>
+      <td>14</td>
+      <td>9</td>
+      <td>0.0043</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>24</td>
+      <td>14.9585</td>
+      <td>27.8191</td>
+      <td>32.7188</td>
+      <td>46.9978</td>
+      <td>30.6235</td>
+      <td>35.8452</td>
+      <td>0.9843</td>
+      <td>0.8614</td>
+      <td>0.8605</td>
+      <td>0.6609</td>
+      <td>0.8418</td>
+      <td>0.7943</td>
+      <td>50.0000</td>
+      <td>22</td>
+      <td>17</td>
+      <td>0.0062</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>22</td>
+      <td>20.8161</td>
+      <td>29.2352</td>
+      <td>26.1850</td>
+      <td>42.8330</td>
+      <td>29.7673</td>
+      <td>32.7511</td>
+      <td>0.8429</td>
+      <td>0.5954</td>
+      <td>0.7646</td>
+      <td>0.2967</td>
+      <td>0.6249</td>
+      <td>0.5522</td>
+      <td>63.6364</td>
+      <td>12</td>
+      <td>7</td>
+      <td>0.0045</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>22</td>
+      <td>6.1104</td>
+      <td>24.5134</td>
+      <td>25.4945</td>
+      <td>40.9449</td>
+      <td>24.2658</td>
+      <td>30.3176</td>
+      <td>0.9858</td>
+      <td>0.7116</td>
+      <td>0.6936</td>
+      <td>0.3659</td>
+      <td>0.6892</td>
+      <td>0.5904</td>
+      <td>59.0909</td>
+      <td>20</td>
+      <td>15</td>
+      <td>0.0033</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h2>Perbandingan Antar Model Per Fold</h2>
+  <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>arima_mae_avg_pips</th>
+      <th>arima_corr2_avg_hlc</th>
+      <th>arima_da_body_pct</th>
+      <th>lstm_mae_avg_pips</th>
+      <th>lstm_corr2_avg_hlc</th>
+      <th>lstm_da_body_pct</th>
+      <th>bilstm_mae_avg_pips</th>
+      <th>bilstm_corr2_avg_hlc</th>
+      <th>bilstm_da_body_pct</th>
+      <th>winner_mae</th>
+      <th>winner_corr2</th>
+      <th>winner_da</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>17</td>
+      <td>45.7998</td>
+      <td>0.5305</td>
+      <td>36.3636</td>
+      <td>37.9430</td>
+      <td>0.5697</td>
+      <td>45.4545</td>
+      <td>30.1274</td>
+      <td>0.6230</td>
+      <td>40.9091</td>
+      <td>bilstm_mae_avg_pips</td>
+      <td>bilstm_corr2_avg_hlc</td>
+      <td>lstm_da_body_pct</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>40.5121</td>
+      <td>0.8686</td>
+      <td>54.5455</td>
+      <td>32.8944</td>
+      <td>0.8877</td>
+      <td>77.2727</td>
+      <td>27.9476</td>
+      <td>0.8995</td>
+      <td>18.1818</td>
+      <td>bilstm_mae_avg_pips</td>
+      <td>bilstm_corr2_avg_hlc</td>
+      <td>lstm_da_body_pct</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>40.9061</td>
+      <td>0.6975</td>
+      <td>50.0000</td>
+      <td>30.6734</td>
+      <td>0.7781</td>
+      <td>54.1667</td>
+      <td>30.6235</td>
+      <td>0.7943</td>
+      <td>50.0000</td>
+      <td>bilstm_mae_avg_pips</td>
+      <td>bilstm_corr2_avg_hlc</td>
+      <td>lstm_da_body_pct</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>38.2244</td>
+      <td>0.4282</td>
+      <td>36.3636</td>
+      <td>33.1614</td>
+      <td>0.5474</td>
+      <td>40.9091</td>
+      <td>29.7673</td>
+      <td>0.5522</td>
+      <td>63.6364</td>
+      <td>bilstm_mae_avg_pips</td>
+      <td>bilstm_corr2_avg_hlc</td>
+      <td>bilstm_da_body_pct</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>36.0492</td>
+      <td>0.4848</td>
+      <td>40.9091</td>
+      <td>31.8096</td>
+      <td>0.4350</td>
+      <td>40.9091</td>
+      <td>24.2658</td>
+      <td>0.5904</td>
+      <td>59.0909</td>
+      <td>bilstm_mae_avg_pips</td>
+      <td>bilstm_corr2_avg_hlc</td>
+      <td>bilstm_da_body_pct</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h2>Artefak</h2>
+  <ul>
+    <li>Summary JSON: <code>/home/hduser/jupyter/gust/RisetEU/comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_summary.json</code></li>
+    <li>ARIMA metrics CSV: <code>/home/hduser/jupyter/gust/RisetEU/comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_arima_metrics.csv</code></li>
+    <li>LSTM metrics CSV: <code>/home/hduser/jupyter/gust/RisetEU/comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_lstm_metrics.csv</code></li>
+    <li>BiLSTM metrics CSV: <code>/home/hduser/jupyter/gust/RisetEU/comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_bilstm_metrics.csv</code></li>
+    <li>Pairwise CSV: <code>/home/hduser/jupyter/gust/RisetEU/comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_pairwise.csv</code></li>
+  </ul>
+</body>
+</html>

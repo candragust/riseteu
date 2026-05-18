@@ -16,7 +16,7 @@ Memprediksi OHLC candle berikutnya pada pasangan EURUSD interval 4 jam sambil me
 - Evaluasi: MAE per komponen OHLC + perbandingan baseline (Single-/Multi-/OHLC-LSTM, ARIMA, FBProphet dari paper).
 
 **Solusi Teknis**  
-- Skrip `bilstm_flf_experiment.py` memuat CLI untuk memilih dataset, delimiter, window, units, aktivasi, konstanta FLF, serta jalur output.  
+- Skrip `FLF_BILSTM/bilstm_flf_experiment.py` memuat CLI untuk memilih dataset, delimiter, window, units, aktivasi, konstanta FLF, serta jalur output.  
 - Pipeline otomatis: deteksi kolom OHLC → sliding window → training BiLSTM dengan loss FLF → output CSV prediksi & history (opsional).  
 - Nilai default mengikuti konfigurasi studi terdahulu (window 20, split 0.7, units 200, epochs 75, batch 128, aktivasi tanh/linear).
 

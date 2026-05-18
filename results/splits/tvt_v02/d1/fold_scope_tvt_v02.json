@@ -1,0 +1,24 @@
+{
+  "profile": "d1",
+  "total_folds": 21,
+  "tuning_policy": {
+    "description": "Use the 6 complete folds immediately preceding the final evaluation window.",
+    "folds": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "evaluation_policy": {
+    "description": "Use the latest 3 complete folds for final comparative evaluation.",
+    "folds": [
+      19,
+      20,
+      21
+    ]
+  },
+  "overlap": false
+}

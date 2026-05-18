@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Index Report D1 v02</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --border: #d7dfeb;
+      --text: #1b2638;
+      --muted: #5f6f86;
+      --accent: #1d4ed8;
+      --accent-soft: #e8f0ff;
+      --ok: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+    p {
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }
+    .lead {
+      color: var(--muted);
+      max-width: 980px;
+    }
+    .note {
+      margin: 18px 0 24px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 20px 0 26px;
+    }
+    .card, .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .card {
+      padding: 16px 18px;
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .metric {
+      display: block;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ok);
+    }
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .section {
+      margin-top: 18px;
+      overflow: hidden;
+    }
+    .section-head {
+      padding: 14px 18px;
+      background: var(--accent-soft);
+      border-bottom: 1px solid var(--border);
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .section-body {
+      padding: 16px 18px 18px;
+    }
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    li {
+      margin: 8px 0;
+      line-height: 1.45;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+      background: #f2f4f8;
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .paths {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 900px) {
+      body { padding: 16px; }
+      .summary { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Index Report D1 v02</h1>
+    <p class="lead">
+      Halaman ini mengumpulkan seluruh report utama eksperimen <strong>EUR/USD 1D OHLC</strong>
+      untuk skenario <strong>walk-forward 72 bulan train + 1 bulan test</strong> pada
+      <strong>fold 17-21</strong>. Tujuannya agar semua artefak utama bisa dibuka dari satu tempat.
+    </p>
+
+    <div class="note">
+      <p><strong>Catatan:</strong> baseline ini tetap <strong>OHLC-only</strong>, tetapi report detail
+      <code>mae_atr...</code> versi ini sudah menghitung <strong>ATR6</strong> dan <strong>ATR12</strong>
+      langsung dari data OHLC pada tiap fold, sehingga struktur halaman kini sejajar dengan artefak
+      detail 4H: ringkasan last5, overlay candle fold 21, dan evaluasi error terhadap ATR.</p>
+      <p class="small">Ringkasan final saat ini: FLF-BiLSTM unggul pada MAE dan corr2, sedangkan FLF-LSTM unggul pada Directional Accuracy. Namun metrik arah tetap perlu dibaca hati-hati.</p>
+    </div>
+
+    <div class="summary">
+      <div class="card">
+        <h2>ARIMA</h2>
+        <span class="metric">40.2983</span>
+        <div>Mean MAE avg pips</div>
+        <div class="small">corr2 avg HLC = 0.6019 | DA = 43.6364%</div>
+      </div>
+      <div class="card">
+        <h2>FLF-LSTM</h2>
+        <span class="metric">33.2964</span>
+        <div>Mean MAE avg pips</div>
+        <div class="small">corr2 avg HLC = 0.6436 | DA = 51.7424%</div>
+      </div>
+      <div class="card">
+        <h2>FLF-BiLSTM</h2>
+        <span class="metric">28.5463</span>
+        <div>Mean MAE avg pips</div>
+        <div class="small">corr2 avg HLC = 0.6919 | DA = 46.3636%</div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-head"><h2>FLF-LSTM</h2></div>
+      <div class="section-body">
+        <ul>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/validation_report_wf72_test1_lstm_d1_last5_v01.html">Validation Report D1 Last5</a></li>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/ohlc_dot_wf72_test1_lstm_d1_last5_all_v01.html">OHLC Dot Plot D1 Last5</a></li>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/loss_wf72_test1_lstm_d1_last5_v01.html">Loss Curve D1 Last5</a></li>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/loss_gradient_wf72_test1_lstm_d1_last5_v01.html">Loss Gradient D1 Last5</a></li>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/mae_atr_wf72_test1_lstm_d1_last5_v02.html">Detail MAE vs ATR D1 Last5</a></li>
+        </ul>
+        <div class="paths">Folder output: <code>FLF_LSTM/results/d1_ohlc</code></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>FLF-BiLSTM</h2></div>
+      <div class="section-body">
+        <ul>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/validation_report_wf72_test1_bilstm_d1_last5_v01.html">Validation Report D1 Last5</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/ohlc_dot_wf72_test1_bilstm_d1_last5_all_v01.html">OHLC Dot Plot D1 Last5</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/loss_wf72_test1_bilstm_d1_last5_v01.html">Loss Curve D1 Last5</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/loss_gradient_wf72_test1_bilstm_d1_last5_v01.html">Loss Gradient D1 Last5</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/mae_atr_wf72_test1_bilstm_d1_last5_v02.html">Detail MAE vs ATR D1 Last5</a></li>
+        </ul>
+        <div class="paths">Folder output: <code>FLF_BILSTM/results/d1_ohlc</code></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>ARIMA</h2></div>
+      <div class="section-body">
+        <ul>
+          <li><a href="../../Arima/result/d1_ohlc/arima_wf72_test1_last5_report_v01.html">ARIMA Output Report D1 Last5</a></li>
+          <li><a href="../../Arima/result/d1_ohlc/mae_atr_wf72_test1_arima_d1_last5_v01.html">ARIMA MAE Summary D1 Last5</a></li>
+        </ul>
+        <div class="paths">Folder output: <code>Arima/result/d1_ohlc</code></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Static Assets for Word</h2></div>
+      <div class="section-body">
+        <ul>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/screenshots/ohlc_dot_wf72_test1_last5_lstm_d1_v01.png">OHLC Dot PNG D1 Last5 - FLF-LSTM</a></li>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/screenshots/mae_atr_fold21_overlay_lstm_d1_v01.png">Overlay Candle PNG Fold 21 - FLF-LSTM</a></li>
+          <li><a href="../../FLF_LSTM/results/d1_ohlc/screenshots/mae_atr_fold21_error_avg_atr_lstm_d1_v01.png">Error AVG vs ATR PNG Fold 21 - FLF-LSTM</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/screenshots/ohlc_dot_wf72_test1_last5_bilstm_d1_v01.png">OHLC Dot PNG D1 Last5 - FLF-BiLSTM</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/screenshots/mae_atr_fold21_overlay_bilstm_d1_v01.png">Overlay Candle PNG Fold 21 - FLF-BiLSTM</a></li>
+          <li><a href="../../FLF_BILSTM/results/d1_ohlc/screenshots/mae_atr_fold21_error_avg_atr_bilstm_d1_v01.png">Error AVG vs ATR PNG Fold 21 - FLF-BiLSTM</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Comparison</h2></div>
+      <div class="section-body">
+        <ul>
+          <li><a href="../../comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01.html">Comparison Final ARIMA vs FLF-LSTM vs FLF-BiLSTM</a></li>
+          <li><a href="../../comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_summary.json">Summary JSON</a></li>
+          <li><a href="../../comparison/d1_ohlc/comparison_models_d1_wf72_test1_last5_v01_pairwise.csv">Pairwise CSV</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Reference</h2></div>
+      <div class="section-body">
+        <ul>
+          <li><a href="runbook_1d_ohlc_v01.md">Runbook 1D OHLC</a></li>
+          <li><a href="d1_wf72_test1_last5_summary_v02.json">Summary 1D Last5 v02</a></li>
+          <li><a href="lstm_d1_wf72_test1_last5_metrics_v01.csv">LSTM Metrics CSV</a></li>
+          <li><a href="bilstm_d1_wf72_test1_last5_metrics_v01.csv">BiLSTM Metrics CSV</a></li>
+          <li><a href="arima_d1_wf72_test1_last5_metrics_v01.csv">ARIMA Metrics CSV</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

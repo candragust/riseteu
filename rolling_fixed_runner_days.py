@@ -7,7 +7,10 @@ import sys
 
 import pandas as pd
 
-from rolling_fixed_runner import prepare_dataframe, month_offset
+from FLF_BILSTM.rolling_fixed_runner import prepare_dataframe, month_offset
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+FLF_BILSTM_ROOT = PROJECT_ROOT / "FLF_BILSTM"
 
 
 @dataclass
@@ -68,13 +71,13 @@ def parse_args():
     parser.add_argument(
         "--base-config",
         type=str,
-        default="final_config.json",
+        default=str(FLF_BILSTM_ROOT / "final_config.json"),
         help="Config JSON used as hyperparameter baseline.",
     )
     parser.add_argument(
         "--out-dir",
         type=str,
-        default="results/rolling_fixed_days",
+        default=str(FLF_BILSTM_ROOT / "results" / "rolling_fixed_days"),
         help="Output directory for fold CSV/preds/history.",
     )
     parser.add_argument(
@@ -164,7 +167,7 @@ def run_fold(fold: FoldInfo, fold_df: pd.DataFrame, base_cfg: Path, out_dir: Pat
 
     cmd = [
         sys.executable,
-        "bilstm_flf_experiment.py",
+        str(FLF_BILSTM_ROOT / "bilstm_flf_experiment.py"),
         "--config",
         str(base_cfg),
         "--data",

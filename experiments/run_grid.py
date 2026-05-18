@@ -2,6 +2,8 @@ import json
 import subprocess
 from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 
 def load_plan(plan_path: Path):
     with plan_path.open("r", encoding="utf-8") as f:
@@ -18,7 +20,7 @@ def run_job(base_cfg: Path, job: dict, idx: int):
 
     cmd = [
         "python",
-        "bilstm_flf_experiment.py",
+        str(PROJECT_ROOT / "FLF_BILSTM" / "bilstm_flf_experiment.py"),
         "--config",
         str(base_cfg),
         "--window",
@@ -45,6 +47,8 @@ def main():
     plan_path = Path(__file__).parent / "grid_plan.json"
     plan = load_plan(plan_path)
     base_cfg = Path(plan["base_config"])
+    if not base_cfg.is_absolute():
+        base_cfg = (PROJECT_ROOT / base_cfg).resolve()
 
     for idx, job in enumerate(plan["runs"], start=1):
         run_job(base_cfg, job, idx)
@@ -52,4 +56,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
